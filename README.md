@@ -1,54 +1,71 @@
-# React + TypeScript + Vite
+# Power Apps By Your Own Code (PABYOC) 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository demonstrates how to create custom web applications that run within Power Apps using the "Code App" feature. Build your own code while leveraging Power Platform's authentication, data connectivity, and lifecycle management capabilities.
 
-Currently, two official plugins are available:
+## What is a Code App? ✨
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Code Apps allow developers to write custom code (React, Angular, Vue, etc.) that runs seamlessly within Power Apps. This gives you:
 
-## Expanding the ESLint configuration
+- **Full control over your UI and logic** 💻
+- **Access to Power Platform data sources** 📊
+- **Enterprise-grade authentication** 🔐
+- **Simplified deployment and ALM** 🔄
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Prerequisites 📋
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Node.js](https://nodejs.org/) (LTS version)
+- [Git](https://git-scm.com/)
+- [Power Apps CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
+
+## Getting Started 🚀
+
+### 1. Clone this repository
+
+```bash
+git clone https://github.com/microsoft/PABYOC.git
+cd PABYOC
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+### 3. Run locally
+
+```bash
+npm run dev
+```
+
+### 4. Deploy to Power Apps
+
+```bash
+pac auth create --url https://orgname.crm.dynamics.com
+pac code push --description "Initial deployment"
+```
+
+## Connecting to Data 🔌
+
+Code Apps can connect to any data source supported by Power Platform:
+
+- Dataverse
+- SharePoint
+- SQL Server
+- Microsoft 365
+- And hundreds more!
+
+## Learn More 📚
+
+- [Official documentation](https://learn.microsoft.com/power-apps/developer/code-app-overview)
+- [Sample applications](https://github.com/microsoft/PABYOC/samples)
+- [Community forum](https://powerusers.microsoft.com/t5/Developer-Forum/bd-p/PowerAppsDeveloperForum)
+
+## Contributing 🤝
+
+Contributions are welcome! Please see our [contribution guidelines](CONTRIBUTING.md) for details.
+
+## License 📄
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
