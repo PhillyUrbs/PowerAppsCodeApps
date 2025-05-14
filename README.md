@@ -49,13 +49,7 @@ pac code push
 
 ## Connecting to Data 🔌
 
-Code Apps can connect to any data source supported by Power Platform:
-
-- Dataverse
-- SharePoint
-- SQL Server
-- Microsoft 365
-- And hundreds more!
+todo: add connection and add-data minimum scenario/info
 
 ## License 📄
 
