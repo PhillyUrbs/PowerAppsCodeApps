@@ -31,6 +31,7 @@ cd PowerAppsCodeApps
 
 ```bash
 npm install
+pac auth create 
 pac code init
 ```
 
@@ -43,7 +44,6 @@ npm run dev | pac code run
 ### 4. Deploy to Power Apps
 
 ```bash
-pac auth create 
 pac code push 
 ```
 
