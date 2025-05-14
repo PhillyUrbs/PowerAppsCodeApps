@@ -31,19 +31,20 @@ cd PowerAppsCodeApps
 
 ```bash
 npm install
+pac code init
 ```
 
 ### 3. Run locally
 
 ```bash
-npm run dev
+npm run dev | pac code run
 ```
 
 ### 4. Deploy to Power Apps
 
 ```bash
-pac auth create --url https://orgname.crm.dynamics.com
-pac code push --description "Initial deployment"
+pac auth create 
+pac code push 
 ```
 
 ## Connecting to Data 🔌
