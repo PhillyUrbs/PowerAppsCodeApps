@@ -1,4 +1,4 @@
-# Power Apps By Your Own Code (PABYOC) 🚀
+# Power Apps Code Apps 🚀
 
 This repository demonstrates how to create custom web applications that run within Power Apps using the "Code App" feature. Build your own code while leveraging Power Platform's authentication, data connectivity, and lifecycle management capabilities.
 
@@ -23,8 +23,8 @@ Code Apps allow developers to write custom code (React, Angular, Vue, etc.) that
 ### 1. Clone this repository
 
 ```bash
-git clone https://github.com/microsoft/PABYOC.git
-cd PABYOC
+git clone https://github.com/microsoft/PowerAppsCodeApps.git
+cd PowerAppsCodeApps
 ```
 
 ### 2. Install dependencies
@@ -59,7 +59,7 @@ Code Apps can connect to any data source supported by Power Platform:
 ## Learn More 📚
 
 - [Official documentation](https://learn.microsoft.com/power-apps/developer/code-app-overview)
-- [Sample applications](https://github.com/microsoft/PABYOC/samples)
+- [Sample applications](https://github.com/microsoft/PowerAppsCodeApps/samples)
 - [Community forum](https://powerusers.microsoft.com/t5/Developer-Forum/bd-p/PowerAppsDeveloperForum)
 
 ## Contributing 🤝
