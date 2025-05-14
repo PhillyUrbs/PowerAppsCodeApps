@@ -57,16 +57,12 @@ Code Apps can connect to any data source supported by Power Platform:
 - Microsoft 365
 - And hundreds more!
 
-## Learn More 📚
-
-- [Official documentation](https://learn.microsoft.com/power-apps/developer/code-app-overview)
-- [Sample applications](https://github.com/microsoft/PowerAppsCodeApps/samples)
-- [Community forum](https://powerusers.microsoft.com/t5/Developer-Forum/bd-p/PowerAppsDeveloperForum)
-
-## Contributing 🤝
-
-Contributions are welcome! Please see our [contribution guidelines](CONTRIBUTING.md) for details.
-
 ## License 📄
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Code of Conduct
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
