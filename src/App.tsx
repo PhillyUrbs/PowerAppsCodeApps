@@ -6,7 +6,7 @@ import './App.css';
 const App: React.FC = () => {
   return (
     <Stack horizontalAlign="center" verticalAlign="center" styles={{ root: { height: '100vh' } }}>
-      <Text variant="xxLarge">Hello, Power Platform</Text>
+      <Text variant="xxLarge">Power Platform ❤️ Code</Text>
     </Stack>
   );
 };
