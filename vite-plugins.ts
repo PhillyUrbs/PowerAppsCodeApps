@@ -23,11 +23,9 @@ export function propagateQueryPlugin(): Plugin {
 <script>
 (function injectAssetsWithQuery() {
   const query = window.location.search;
-  if (!query) return;
-
   const basePath = window.location.pathname.replace(/\\/[^/]*$/, '/');
-  const appendQuery = (url) => {
-    if (!url || url.includes('?') || url.startsWith('http')) return url;
+  const appendQueryIfNeeded = (url) => {
+    if (!url || url.includes('?') || url.startsWith('http') || !query.includes("sig=") || url.startsWith('data:')) return url;
     const fullUrl = url.startsWith('/') ? basePath + url.slice(1) : basePath + url;
     const parsed = new URL(fullUrl, window.location.origin);
     parsed.search = query;
@@ -37,14 +35,14 @@ export function propagateQueryPlugin(): Plugin {
   // Inject JS
   const script = document.createElement('script');
   script.type = 'module';
-  script.src = appendQuery('./${mainScript}');
+  script.src = appendQueryIfNeeded('./${mainScript}');
   document.head.appendChild(script);
 
   // Inject CSS
   ${mainStyle ? `
   const style = document.createElement('link');
   style.rel = 'stylesheet';
-  style.href = appendQuery('./${mainStyle}');
+  style.href = appendQueryIfNeeded('./${mainStyle}');
   document.head.appendChild(style);
   ` : ''}
 
@@ -53,7 +51,7 @@ export function propagateQueryPlugin(): Plugin {
   if (originalImageSrc && originalImageSrc.set) {
     Object.defineProperty(Image.prototype, 'src', {
       set(value) {
-        const newVal = appendQuery(value);
+        const newVal = appendQueryIfNeeded(value);
         originalImageSrc.set.call(this, newVal);
       },
     });
@@ -63,9 +61,9 @@ export function propagateQueryPlugin(): Plugin {
   const originalFetch = window.fetch;
   window.fetch = function(input, init) {
     if (typeof input === 'string') {
-      input = appendQuery(input);
+      input = appendQueryIfNeeded(input);
     } else if (input instanceof Request) {
-      input = new Request(appendQuery(input.url), input);
+      input = new Request(appendQueryIfNeeded(input.url), input);
     }
     return originalFetch(input, init);
   };
@@ -88,15 +86,13 @@ export function AddSasKey(): Plugin {
     transformIndexHtml(html) {
       const runtimeScript = `
       <script>
-      (function appendQueryToAssets() {
+      (function appendQueryIfNeededToAssets() {
         const query = window.location.search;
-        if (!query) return;
-      
         const basePath = window.location.pathname.replace(/\\/[^/]*$/, '/');
       
-        const appendQuery = (url) => {
+        const appendQueryIfNeeded = (url) => {
           try {
-            if (url.startsWith('http') || url.includes('?')) return url;
+            if (url.startsWith('http') || url.includes('?') || !query.includes("sig=")) return url;
             const fullUrl = url.startsWith('/') ? basePath + url.slice(1) : basePath + url;
             const parsed = new URL(fullUrl, window.location.origin);
             parsed.search = query;
@@ -114,7 +110,7 @@ export function AddSasKey(): Plugin {
           const url = el.getAttribute(attr);
           if (!url) return;
       
-          const newUrl = appendQuery(url);
+          const newUrl = appendQueryIfNeeded(url);
       
           if (tag === 'script') {
             const newScript = document.createElement('script');
@@ -133,7 +129,7 @@ export function AddSasKey(): Plugin {
         if (originalImageSrc && originalImageSrc.set) {
           Object.defineProperty(Image.prototype, 'src', {
             set(value) {
-              const newVal = appendQuery(value);
+              const newVal = appendQueryIfNeeded(value);
               originalImageSrc.set.call(this, newVal);
             },
           });
@@ -143,9 +139,9 @@ export function AddSasKey(): Plugin {
         const originalFetch = window.fetch;
         window.fetch = function(input, init) {
           if (typeof input === 'string') {
-            input = appendQuery(input);
+            input = appendQueryIfNeeded(input);
           } else if (input instanceof Request) {
-            input = new Request(appendQuery(input.url), input);
+            input = new Request(appendQueryIfNeeded(input.url), input);
           }
           return originalFetch(input, init);
         };
