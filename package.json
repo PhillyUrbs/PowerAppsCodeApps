@@ -17,6 +17,7 @@
   "devDependencies": {
     "@power-platform/power-code-sdk": "file:./sdk/5-8-power-code-sdk.tar",
     "@eslint/js": "^9.25.0",
+    "@types/node": "^20.11.8",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
     "@vitejs/plugin-react": "^4.4.1",
