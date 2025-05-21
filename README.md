@@ -2,7 +2,7 @@
 
 Power Apps aims to empower developers of all skillsets, including developers building web apps in IDEs like Visual Studio Code, to efficiently build and run business apps in a managed platform. Code apps is a new way for developers to bring Power Apps capabilities in web apps they’re building in an code first IDE. These capabilities are available during local development and when an app runs in Power Platform. Power Apps capabilities available to code apps includes out-of-box Microsoft Entra authentication and authorization, access to 1,500+ Power Platform connectors which can be called directly from JavaScript. Code apps make it so any developer with a command line can publish and host their line of business web app in Power Platform. Also, code apps respect your organization’s Managed Platform policies like app sharing limits, Conditional access policies and Data Loss Prevention. Code apps and the managed platform reinforces accelerated innovation in safe places and, when ready, these apps can be deployed to dedicated production environments. 
 
-## What is a code app? ✨
+# What is a code app? ✨
 
 Code apps allow developers to write custom code (React, Angular, Vue, etc.) that runs seamlessly within Power Platform. This gives you:
 
@@ -11,35 +11,35 @@ Code apps allow developers to write custom code (React, Angular, Vue, etc.) that
 - **Enterprise-grade authentication** 🔐
 - **Simplified deployment and ALM** 🔄
 
-## Prerequisites 📋
+# Prerequisites 📋
 Code apps require several developer tools like Visual Studio Code, git, dotnet, node.js, and npm to be available on the command line.  
 
-### Install the following developer tools
+## Install the following developer tools
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Node.js](https://nodejs.org/) (LTS version)
 - [Git](https://git-scm.com/)
 - [Power Apps CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
 
-### Create a first release Power Platform environment
+## Create a first release Power Platform environment
 First release environments are intended for non-production use and they receive Power Platform updates before other environments. For code apps EAP, it's recommended that you use a first release environment. Code app capabilities will eventually be available to all environments. Code apps require dataverse to exist in the environment.  
 
 > [!IMPORTANT] Early access preview participants must inform Microsoft of the first release environment you want code apps enabled.
 
-#### Option 1 – Create a first release environment using Power Platform Admin Center 
+### Option 1 – Create a first release environment using Power Platform Admin Center 
 If you create an environment in the admin center, be sure to toggle ‘Get new features early’ to ‘Yes’. [Learn more](https://learn.microsoft.com/power-platform/admin/create-environment). 
 
-#### Option 2 - Create a first release environment using command line 
+### Option 2 - Create a first release environment using command line 
 If you create an environment using command line, be sure to set LocationName to “unitedstatesfirstrelease”. [Learn more](https://learn.microsoft.com/power-platform/admin/powerapps-powershell) 
 
 ```PowerShell 
 New-AdminPowerAppEnvironment -DisplayName "Code App env" -EnvironmentSku Trial -LocationName "unitedstatesfirstrelease" -ProvisionDatabase 
 ```
-#### License end-users with Power Apps Premium 
+## License end-users with Power Apps Premium 
 End-users that run code apps will need a [Power Apps Premium license](https://www.microsoft.com/power-platform/products/power-apps/pricing). 
 
-## Getting Started 🚀
+# Getting Started 🚀
 
-### 1. Clone this repository
+## 1. Clone this repository
 This repository has the start of a TypeScript app that already includes the Power Platform SDK. Later in EAP we'll add guidance to that allows you to start from scratch without using this base app. 
 
 ```bash
@@ -52,20 +52,20 @@ cd PowerAppsCodeApps
 pac auth create --environment {environment id}
 ```
 
-### 3. Install dependencies
+## 3. Install dependencies
 
 ```bash
 npm install
 pac code init
 ```
 
-### 4. Run locally
+## 4. Run locally
 
 ```bash
 npm run dev | pac code run
 ```
 
-### 5. Deploy to Power Apps
+## 5. Deploy to Power Apps
 
 ```bash
 npm run build | pac code push
@@ -81,32 +81,32 @@ Congratulations! You have successfully pushed your first code app!
 > 1. that you ran npm run build
 > 2. there are no issues in PowerProvider.tsx
 
-## Additional Scenarios
+# Additional Scenarios
 
-### 1. Connect a code app to data 🔌
+## 1. Connect a code app to data 🔌
 Code apps enable connecting to Power Platform connectors. To do this, you will create connections, add them to the app, and update the app to call them. 
 
 Note that these steps require that you have completed the Getting Started section and already initialized the app with “pac code init”. 
 
 > [!IMPORTANT] For the initial release, only SQL, SharePoint, and Office 365 Users connectors are formally supported. Other connectors (e.g. SharePoint) are expected to work but are untested. Dataverse is explicitly not supported, yet.
 
-#### Create and set up connections in Maker Portal
+### Create and set up connections in Maker Portal
 You will need to start by creating and configuring connections at https://make.powerapps.com and you’ll need to copy connection metadata from there for use in later steps. 
 
 > [!IMPORTANT] For the initial release, you can only configure code apps to use existing connections that have already been pre-created in the make.powerapps.com. You cannot create new connections through PAC CLI commands. Support for creating new connections will be added in a future release.
 
-##### 1. Launch the Maker Portal Connections page.
+#### 1. Launch the Maker Portal Connections page.
 Go to https://make.powerapps.com and navigate to the Connections page from the left-hand navigation. 
 
-##### 2. Create an Office 365 Users connection. 
+#### 2. Create an Office 365 Users connection. 
 
 Click “+ New connection” and select Office 365 Users. Click “Create”. 
 
 > [!NOTE] If you already have an Office 365 Users connection, you can use that instead of creating a new one.
 
-##### 3. (Optional) Create a SQL connection (or a connection for another tabular data source). 
+#### 3. (Optional) Create a SQL connection (or a connection for another tabular data source). 
 
-##### 4. Copy connection metadata for all created connections. 
+#### 4. Copy connection metadata for all created connections. 
 
 Copy the API name and the connection ID from the URL for each connection: 
 
@@ -115,12 +115,12 @@ Connection ID - Yellow highlighted
 
  todo: add screenshot
 
- #### Create and set up connections
+### Create and set up connections
 Once you have created or identified existing connections to use and copied the connection metadata from the previous step, you will now add those connections to the app. 
 
 Adding the data sources to the app will automatically generate a strongly typed Typescript model and service file in the repo. For example, the Office 365 Users data source will produce Office365UsersModel and Office365UsersService. 
 
-##### 1. Add a non-tabular data source (e.g. Office 365 Users) to the app. 
+#### 1. Add a non-tabular data source (e.g. Office 365 Users) to the app. 
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 ```bash
@@ -132,7 +132,7 @@ Example
 pac code add-data-source -a "shared_office365users" -c "aa35d97110f747a49205461cbfcf8558"
 ```
 
-##### 2. (Optional) Add a tabular data source (e.g. SQL, SharePoint) to the app. 
+#### 2. (Optional) Add a tabular data source (e.g. SQL, SharePoint) to the app. 
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 >[!NOTE] You will additionally need to pass a table ID and dataset name, which is controlled by the schema of your tabular data source. If you don’t already have these, instructions on how to find it are below. 
@@ -172,7 +172,7 @@ https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.
 
 
 
-##### 3. (Optional) Add a SQL stored procedure as a data source. 
+#### 3. (Optional) Add a SQL stored procedure as a data source. 
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 ```bash
@@ -184,7 +184,7 @@ Example
 pac code add-data-source –a "shared_sql" -c "c9a56bae5dcb43f7ac086a2fc86fd33c" -d "paconnectivitysql0425.database.windows.net,paruntimedb" -sp "[dbo].[GetRecordById]" 
 ```
 
-##### 4. (Optional) If needed, you can delete data sources after adding. 
+#### 4. (Optional) If needed, you can delete data sources after adding. 
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 ```bash
@@ -198,12 +198,12 @@ pac code delete-data-source -a "shared_sql" -d "MobileDeviceInventory"
 
 >[!IMPORTANT] If the schema on a connection changes, there is no command to refresh the strongly typed model and service files. To do this, delete the data source and re-add it.
 
-#### Update the app to call connections
+### Update the app to call connections
 Once connections are added, you can update the app to use the generated model and service. 
 
 >[!NOTE] These changes can also be made via with an IDE’s agent. For instance, in Visual Studio Code you may use Github Copilot agent mode to make them for you after the data sources have been added.
 
-##### 1. Update the app to use the non-tabular data source (e.g. Office 365 Users).
+#### 1. Update the app to use the non-tabular data source (e.g. Office 365 Users).
 You can see the generated files under the src/Models and src/Services folders for the strongly typed connection API. 
 
 ```code
@@ -226,7 +226,7 @@ await Office365UsersService.MyProfile()
       } 
       if (photoData) setPhoto(`data:image/jpeg;base64,${photoData}`); 
 ```
-##### 2. (Optional) Update the app to use the tabular data source (e.g. SQL). 
+#### 2. (Optional) Update the app to use the tabular data source (e.g. SQL). 
 You can see the generated files under the src/Models and src/Services folders for the strongly typed connection API. 
 
 Example 
@@ -244,17 +244,17 @@ setAssets((prevAssets) =>
   prevAssets.map((asset) => { 
     if (asset.id === assetId) { 
 ``` 
-##### 3. Run the app locally to verify changes 
+#### 3. Run the app locally to verify changes 
 ```bash
 npm run dev | pac code run
 ```
 
-##### 4. Push the app to run on Power Apps 
+#### 4. Push the app to run on Power Apps 
 ```bash
 npm run build | pac code push
 ```
 
-## Supported managed platform capabilities  
+# Supported managed platform capabilities  
 
 |                                                         Capability                                    |                                                Notes                                 |
 |-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
@@ -266,14 +266,19 @@ npm run build | pac code push
 | Admin consent dialog suppression | Consent suppression is supported for both Microsoft connecters that use OAuth as well as custom connectors that use OAuth. [Learn more](https://learn.microsoft.com/power-apps/maker/canvas-apps/add-manage-connections#suppress-consent-dialog-for-apps-that-use-custom-connectors-using-microsoft-entra-id-oauth)  | 
 | Tenant isolation | [Learn more](https://learn.microsoft.com/power-platform/admin/cross-tenant-restrictions) |
 
-## Preview disclaimer 
+# Limitations
+1. Code apps don’t support Power Platform Native source code integration.
+2. Code apps don’t support Dataverse solutions and therefore cannot use Power Platform pipelines for deployments.
+3. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure) 
+
+# Preview disclaimer 
 Preview features are features that aren’t complete but are made available on a “preview” basis so customers can get early access and provide feedback. Preview features are not supported by Microsoft Support, may have limited or restricted functionality, aren’t meant for production use, and may be available only in selected geographic areas.  
 
-## License 📄
+# License 📄
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Code of Conduct
+# Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
