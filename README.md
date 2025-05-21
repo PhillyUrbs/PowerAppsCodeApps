@@ -43,22 +43,26 @@ New-AdminPowerAppEnvironment -DisplayName "Code App env" -EnvironmentSku Trial -
 git clone https://github.com/microsoft/PowerAppsCodeApps.git
 cd PowerAppsCodeApps
 ```
+## 2. Authenticate PAC CLI and point to your first release environment
 
-### 2. Install dependencies
+```bash
+pac auth create --environment {environment id}
+```
+
+### 3. Install dependencies
 
 ```bash
 npm install
-pac auth create 
 pac code init
 ```
 
-### 3. Run locally
+### 4. Run locally
 
 ```bash
 npm run dev | pac code run
 ```
 
-### 4. Deploy to Power Apps
+### 5. Deploy to Power Apps
 
 ```bash
 pac code push 
