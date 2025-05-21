@@ -1,10 +1,10 @@
-# Power Apps Code Apps 🚀
+# Power Apps code apps 🚀
 
-This repository demonstrates how to create custom web applications that run within Power Apps using the "Code App" feature. Build your own code while leveraging Power Platform's authentication, data connectivity, and lifecycle management capabilities.
+Power Apps aims to empower developers of all skillsets, including developers building web apps in IDEs like Visual Studio Code, to efficiently build and run business apps in a managed platform. Code apps is a new way for developers to bring Power Apps capabilities in web apps they’re building in an code first IDE. These capabilities are available during local development and when an app runs in Power Platform. Power Apps capabilities available to code apps includes out-of-box Microsoft Entra authentication and authorization, access to 1,500+ Power Platform connectors which can be called directly from JavaScript. Code apps make it so any developer with a command line can publish and host their line of business web app in Power Platform. Also, code apps respect your organization’s Managed Platform policies like app sharing limits, Conditional access policies and Data Loss Prevention. Code apps and the managed platform reinforces accelerated innovation in safe places and, when ready, these apps can be deployed to dedicated production environments. 
 
 ## What is a Code App? ✨
 
-Code Apps allow developers to write custom code (React, Angular, Vue, etc.) that runs seamlessly within Power Apps. This gives you:
+Code Apps allow developers to write custom code (React, Angular, Vue, etc.) that runs seamlessly within Power Platform. This gives you:
 
 - **Full control over your UI and logic** 💻
 - **Access to Power Platform data sources** 📊
