@@ -28,6 +28,8 @@ First release environments are intended for non-production use and they receive 
 ### Option 1 – Create a first release environment using Power Platform Admin Center 
 If you create an environment in the admin center, be sure to toggle ‘Get new features early’ to ‘Yes’. [Learn more](https://learn.microsoft.com/power-platform/admin/create-environment). 
 
+![](./contentMedia/admin_center_create_first_release_env.png)
+
 ### Option 2 - Create a first release environment using command line 
 If you create an environment using command line, be sure to set LocationName to “unitedstatesfirstrelease”. [Learn more](https://learn.microsoft.com/power-platform/admin/powerapps-powershell) 
 
@@ -98,22 +100,28 @@ You will need to start by creating and configuring connections at https://make.p
 #### 1. Launch the Maker Portal Connections page.
 Go to https://make.powerapps.com and navigate to the Connections page from the left-hand navigation. 
 
+![](./contentMedia/maker_portal_create_connection.png)
+
 #### 2. Create an Office 365 Users connection. 
 
 Click “+ New connection” and select Office 365 Users. Click “Create”. 
 
 > [!NOTE] If you already have an Office 365 Users connection, you can use that instead of creating a new one.
 
+![](./contentMedia/maker_portal_create_office_connection.png)
+
 #### 3. (Optional) Create a SQL connection (or a connection for another tabular data source). 
 
 #### 4. Copy connection metadata for all created connections. 
 
+![](./contentMedia/maker_portal_select_connection.png)
+
 Copy the API name and the connection ID from the URL for each connection: 
 
-API name - Green highlighted 
-Connection ID - Yellow highlighted 
+API name 
+Connection ID 
 
- todo: add screenshot
+![](./contentMedia/maker_portal_connection_apiName_connectionId.png)
 
 ### Create and set up connections
 Once you have created or identified existing connections to use and copied the connection metadata from the previous step, you will now add those connections to the app. 
