@@ -23,7 +23,7 @@ Code apps require several developer tools like Visual Studio Code, git, dotnet, 
 ### Create a first release Power Platform environment
 First release environments are intended for non-production use and they receive Power Platform updates before other environments. For code apps EAP, it's recommended that you use a first release environment. Code app capabilities will eventually be available to all environments. Code apps require dataverse to exist in the environment.  
 
-[!IMPORTANT] Early access preview participants must inform Microsoft of the first release environment you want code apps enabled.
+> [!IMPORTANT] Early access preview participants must inform Microsoft of the first release environment you want code apps enabled.
 
 #### Option 1 – Create a first release environment using Power Platform Admin Center 
 If you create an environment in the admin center, be sure to toggle ‘Get new features early’ to ‘Yes’. [Learn more](https://learn.microsoft.com/power-platform/admin/create-environment). 
