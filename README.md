@@ -34,6 +34,8 @@ If you create an environment using command line, be sure to set LocationName to 
 ```PowerShell 
 New-AdminPowerAppEnvironment -DisplayName "Code App env" -EnvironmentSku Trial -LocationName "unitedstatesfirstrelease" -ProvisionDatabase 
 ```
+#### License end-users with Power Apps Premium 
+End-users that run code apps will need a [Power Apps Premium license](https://www.microsoft.com/power-platform/products/power-apps/pricing). 
 
 ## Getting Started 🚀
 
@@ -155,25 +157,19 @@ If you don’t already have the table and dataset name, you will have to get the
 3. Bind the connection to a gallery control.
 4. Publish and run the app.
 5. Open your browser’s Developer Tools, go to the Network tab, and inspect requests made when the app loads. Check the “invoke” request, and go to its response.
-6. Find an APIM request with the connection ID, dataset name, and table ID, and copy those values. 
+6. Find an APIM request with the connection ID, dataset name, and table ID, and copy those values.
 
-Example data request URL through APIM 
+   
+Example data request URL through APIM. The bolded sections are the **connection ID**, **dataset name** and **table ID**.
 
+https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.net/apim/sharepointonline/**ad4035b2c5d6496d9ad095d2b134a5e6**/datasets/**https%253A%252F%252Fauroratstgeo.sharepoint.com%252Fsites%252FTEST_Aurora_TST**/tables/**d1709e17-387c-4f02-89b9-19a0421a841a**/items
 
-https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.net/apim/sharepointonline/ad4035b2c5d6496d9ad095d2b134a5e6/datasets/https%253A%252F%252Fauroratstgeo.sharepoint.com%252Fsites%252FTEST_Aurora_TST/tables/d1709e17-387c-4f02-89b9-19a0421a841a/items 
+| property      | example value                                                                 |
+|---------------|-------------------------------------------------------------------------------|
+| connection ID | ad4035b2c5d6496d9ad095d2b134a5e6                                              |
+| dataset name  | https%253A%252F%252Fauroratstgeo.sharepoint.com%252Fsites%252FTEST_Aurora_TST |
+| table ID      | d1709e17-387c-4f02-89b9-19a0421a841a    |
 
-
-In the example data request URL, the bolded section is the **connection ID** 
-
-https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.net/apim/sharepointonline/**ad4035b2c5d6496d9ad095d2b134a5e6**/datasets/https%253A%252F%252Fauroratstgeo.sharepoint.com%252Fsites%252FTEST_Aurora_TST/tables/d1709e17-387c-4f02-89b9-19a0421a841a/items
-
-In the example data request URL, the bolded section is the **dataset name**
-
-https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.net/apim/sharepointonline/ad4035b2c5d6496d9ad095d2b134a5e6/datasets/**https%253A%252F%252Fauroratstgeo.sharepoint.com%252Fsites%252FTEST_Aurora_TST**/tables/d1709e17-387c-4f02-89b9-19a0421a841a/items 
-
-In the example data request URL, the bolded section is the **table ID**
-
-https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.net/apim/sharepointonline/ad4035b2c5d6496d9ad095d2b134a5e6/datasets/https%253A%252F%252Fauroratstgeo.sharepoint.com%252Fsites%252FTEST_Aurora_TST/tables/**d1709e17-387c-4f02-89b9-19a0421a841a**/items 
 
 
 ##### 3. (Optional) Add a SQL stored procedure as a data source. 
