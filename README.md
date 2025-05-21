@@ -184,7 +184,7 @@ https[]()://0aa4969d-c8e7-e0a7-9bf8-6925c5922de3.01.common.tip1002.azure-apihub.
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 ```bash
-pac code add-data-source -a <apiId> -c <connectionId> -ds <dataSourceName> -sp <storedProcedureName> 
+pac code add-data-source -a <apiId> -c <connectionId> -d <dataSourceName> -sp <storedProcedureName> 
 ```
 
 Example
