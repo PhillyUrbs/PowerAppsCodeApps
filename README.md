@@ -46,7 +46,7 @@ This repository has the start of a TypeScript app that already includes the Powe
 
 ```bash
 git clone https://github.com/microsoft/PowerAppsCodeApps.git
-cd PowerAppsCodeApps
+cd PowerAppsCodeApps\samples\HelloWorld
 ```
 ## 2. Authenticate PAC CLI and point to your first release environment
 
