@@ -1,6 +1,32 @@
-# Power Apps code apps (early access preview) 🚀
+# Power Apps Code Apps (Early Access Preview) 🚀
 
-Power Apps aims to empower developers of all skillsets, including developers building web apps in IDEs like Visual Studio Code, to efficiently build and run business apps in a managed platform. Code apps is a new way for developers to bring Power Apps capabilities in web apps they’re building in an code first IDE. These capabilities are available during local development and when an app runs in Power Platform. Power Apps capabilities available to code apps includes out-of-box Microsoft Entra authentication and authorization, access to 1,500+ Power Platform connectors which can be called directly from JavaScript. Code apps make it so any developer with a command line can publish and host their line of business web app in Power Platform. Also, code apps respect your organization’s Managed Platform policies like app sharing limits, Conditional access policies and Data Loss Prevention. Code apps and the managed platform reinforces accelerated innovation in safe places and, when ready, these apps can be deployed to dedicated production environments. 
+Power Apps empowers developers of all skillsets—including those building web apps in IDEs like Visual Studio Code—to efficiently build and run business apps on a managed platform.
+
+**Code Apps** is a new way for developers to bring Power Apps capabilities into web apps built in a code-first IDE. These capabilities are available both during local development and when an app runs in Power Platform.
+
+**Key features include:**
+- Out-of-the-box Microsoft Entra authentication and authorization
+- Access to 1,500+ Power Platform connectors, callable directly from JavaScript
+- Easy publishing and hosting of line-of-business web apps in Power Platform
+- Adherence to your organization’s Managed Platform policies (app sharing limits, Conditional Access, Data Loss Prevention, etc.)
+
+The managed platform accelerates innovation in safe environments. When ready, apps can be deployed to dedicated production environments. Code Apps and the managed platform reinforce safe, rapid innovation, and, when ready, these apps can be deployed to dedicated production environments.
+
+[**Sign up for Early Access**](https://aka.ms/paCodeAppsEAP)
+
+# Table of Contents
+- [What is a code app?](#what-is-a-code-app-)
+- [Prerequisites](#prerequisites-)
+  - [Install the following developer tools](#install-the-following-developer-tools)
+  - [Create a first release Power Platform environment](#create-a-first-release-power-platform-environment)
+- [Getting Started](#getting-started-)
+- [Additional Scenarios](#additional-scenarios)
+  - [Connect a code app to data](#1-connect-a-code-app-to-data-)
+- [Supported managed platform capabilities](#supported-managed-platform-capabilities)
+- [Limitations](#limitations)
+- [Preview disclaimer](#preview-disclaimer)
+- [License](#license-)
+- [Code of Conduct](#code-of-conduct)
 
 # What is a code app? ✨
 
@@ -64,7 +90,7 @@ pac code init
 ## 4. Run locally
 
 ```bash
-npm run dev | pac code run
+npm run dev 
 ```
 
 ## 5. Deploy to Power Apps
@@ -112,16 +138,25 @@ Click “+ New connection” and select Office 365 Users. Click “Create”.
 
 #### 3. (Optional) Create a SQL connection (or a connection for another tabular data source). 
 
-#### 4. Copy connection metadata for all created connections. 
+#### 4. Get connection metadata for all created connections. 
+
+You can use the Power Apps CLI to list your available connections and retrieve their IDs:
+
+```bash
+pac connection list
+```
+
+This command will display a table of all your connections, including the **Connection ID** and **API Name** (which is used as the appId when adding a data source).
+
+![](./contentMedia/pac_cli_connection_list.png)
+
+You can also retrive this using the maker portal:
 
 ![](./contentMedia/maker_portal_select_connection.png)
 
-Copy the API name and the connection ID from the URL for each connection: 
-
-API name 
-Connection ID 
-
 ![](./contentMedia/maker_portal_connection_apiName_connectionId.png)
+
+Copy the API name and the connection ID from PAC CLI the URL for each connection: 
 
 ### Create and set up connections
 Once you have created or identified existing connections to use and copied the connection metadata from the previous step, you will now add those connections to the app. 
