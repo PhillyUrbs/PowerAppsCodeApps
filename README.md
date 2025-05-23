@@ -87,6 +87,9 @@ npm install
 pac code init
 ```
 
+>[!NOTE] If you observe a PAC CLI error stating the environment does not support code apps it means Microsoft didn't enable code apps for your environment. Use the documentation provided in your EAP welcome email to submit the environment to Microsoft. 
+> ![](./contentMedia/pac_code_error_with_enabled_environment.png)
+
 ## 4. Run locally
 
 ```bash
@@ -174,6 +177,8 @@ Example
 ```bash
 pac code add-data-source -a "shared_office365users" -c "aa35d97110f747a49205461cbfcf8558"
 ```
+>[!NOTE] If you observe a PAC CLI 403 error whent attempting to add a data source, which you have access to, it's expected to be a result of not using a first release environment as guided above. 
+> ![](./contentMedia/add_data_source_error_without_first_release.png)
 
 #### 2. (Optional) Add a tabular data source (e.g. SQL, SharePoint) to the app. 
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
