@@ -84,7 +84,7 @@ pac auth create --environment {environment id}
 
 ```bash
 npm install
-pac code init
+pac code init --displayName "Hello World"
 ```
 
 >[!NOTE] If you observe a PAC CLI error stating the environment does not support code apps it means Microsoft didn't enable code apps for your environment. Use the documentation provided in your EAP welcome email to submit the environment to Microsoft. 
