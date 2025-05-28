@@ -6,7 +6,8 @@ import PowerProvider from './PowerProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <PowerProvider/>
-    <App />
+    <PowerProvider>
+      <App />
+    </PowerProvider>
   </StrictMode>,
 )
