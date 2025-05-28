@@ -47,17 +47,12 @@ Code apps require several developer tools like Visual Studio Code, git, dotnet, 
 - [Power Apps CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
 
 ## Create a first release Power Platform environment
-First release environments are intended for non-production use and they receive Power Platform updates before other environments. For code apps EAP, it's recommended that you use a first release environment. Code app capabilities will eventually be available to all environments. Code apps require dataverse to exist in the environment.  
+First release environments are intended for non-production use and they receive Power Platform updates before other environments. For code apps EAP, it's recommended that you use a first release environment (it is required for SQL connector). Code app capabilities will eventually be available to all environments. Code apps require dataverse to exist in the environment.  
 
 > [!IMPORTANT] Early access preview participants must inform Microsoft of the first release environment you want code apps enabled.
 
-### Option 1 – Create a first release environment using Power Platform Admin Center 
-If you create an environment in the admin center, be sure to toggle ‘Get new features early’ to ‘Yes’. [Learn more](https://learn.microsoft.com/power-platform/admin/create-environment). 
-
-![](./contentMedia/admin_center_create_first_release_env.png)
-
-### Option 2 - Create a first release environment using command line 
-If you create an environment using command line, be sure to set LocationName to “unitedstatesfirstrelease”. [Learn more](https://learn.microsoft.com/power-platform/admin/powerapps-powershell) 
+### Create a first release environment using command line 
+Be sure to set LocationName to “unitedstatesfirstrelease”. [Learn more](https://learn.microsoft.com/power-platform/admin/powerapps-powershell) 
 
 ```PowerShell 
 New-AdminPowerAppEnvironment -DisplayName "Code App env" -EnvironmentSku Trial -LocationName "unitedstatesfirstrelease" -ProvisionDatabase 
