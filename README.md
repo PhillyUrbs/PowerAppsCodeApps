@@ -51,7 +51,12 @@ First release environments are intended for non-production use and they receive 
 
 > [!IMPORTANT] Early access preview participants must inform Microsoft of the first release environment you want code apps enabled.
 
-### Create a first release environment using command line 
+### Option 1 - Create a first release environment using PAC CLI
+```PowerShell
+pac admin create --name 'Code Apps' --region 'unitedstatesfirstrelease' --type 'Developer'
+```
+
+### Option 2 - Create a first release environment using command line 
 Be sure to set LocationName to “unitedstatesfirstrelease”. [Learn more](https://learn.microsoft.com/power-platform/admin/powerapps-powershell) 
 
 ```PowerShell 
