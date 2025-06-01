@@ -186,7 +186,7 @@ From a command line, run the following. Use the API name and connection ID colle
 >[!NOTE] You will additionally need to pass a table ID and dataset name, which is controlled by the schema of your tabular data source. If you don’t already have these, instructions on how to find it are below. 
 
 ```bash
-pac code add-data-source -a <apiName> -c <connectionId> --t <tableId> -d <datasetName> 
+pac code add-data-source -a <apiName> -c <connectionId> -t <tableId> -d <datasetName> 
 ```
 
 Examples
