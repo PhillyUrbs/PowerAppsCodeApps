@@ -236,12 +236,12 @@ pac code add-data-source –a "shared_sql" -c "c9a56bae5dcb43f7ac086a2fc86fd33c"
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 ```bash
-pac code delete-data-source -a <apiName> -d <dataSourceName> 
+pac code delete-data-source -a <apiName> -ds <dataSourceName> 
 ```
 
 Example
 ```bash
-pac code delete-data-source -a "shared_sql" -d "MobileDeviceInventory" 
+pac code delete-data-source -a "shared_sql" -ds "MobileDeviceInventory" 
 ```
 
 >[!IMPORTANT] If the schema on a connection changes, there is no command to refresh the strongly typed model and service files. To do this, delete the data source and re-add it.
