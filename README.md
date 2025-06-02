@@ -294,12 +294,13 @@ setAssets((prevAssets) =>
 ``` 
 #### 3. Run the app locally to verify changes 
 ```bash
-npm run dev | pac code run
+npm run dev
 ```
 
 #### 4. Push the app to run on Power Apps 
 ```bash
-npm run build | pac code push
+npm run build
+pac code push
 ```
 
 # Supported managed platform capabilities  
