@@ -835,6 +835,17 @@ This guide covers:
 1. You should see data grid of projects:   
    ![image-20250601220434405](./assets/sql-datagrid)
 
+### Publishing the App to Power Apps
+
+1. Once your app is ready for publishing and sharing, make sure the Vite server is stopped using `Ctrl + C`, then use the following PowerShell:
+   ```
+   npm run build
+   pac code push
+   ```
+
+1. Open the app using the link provided to test it out!   
+   ![image-20250602093801731](./assets/sql-pushed)
+
 ## Troubleshooting
 
 This section covers common issues you might encounter while setting up Power Apps Code Apps with Azure SQL Database.
