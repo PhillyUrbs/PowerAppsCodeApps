@@ -1,7 +1,3 @@
-
-
-
-
 # Connect Power Apps Code Apps to Azure SQL: Full Walkthrough
 
 This guide walks through how to set up an Azure SQL Database and connect it to a Power Apps Code App using the the Power SDK. 
@@ -838,3 +834,120 @@ This guide covers:
 
 1. You should see data grid of projects:   
    ![image-20250601220434405](./assets/sql-datagrid)
+
+## Troubleshooting
+
+This section covers common issues you might encounter while setting up Power Apps Code Apps with Azure SQL Database.
+
+### Azure SQL Database Issues
+
+#### Cannot Connect to Azure SQL Database
+
+**Symptoms:**
+- Connection timeout errors
+- Authentication failures when connecting from VS Code SQL extension
+
+**Solutions:**
+
+1. **Check Firewall Settings:**
+   - In Azure Portal, navigate to your SQL Server
+   - Go to **Security** → **Networking**
+   - Ensure "Allow Azure services and resources to access this server" is set to **Yes**
+   - Add your current client IP address to the firewall rules
+
+2. **Verify Authentication Method:**
+   - Ensure you're using **Microsoft Entra ID - Universal with MFA support** in VS Code
+   - Make sure you're signed into the same Azure account in both Azure Portal and VS Code
+   - Try signing out and back in to refresh authentication tokens
+
+3. **Check Network Connectivity:**
+   ```powershell
+   # Test connectivity to SQL Server
+   Test-NetConnection -ComputerName "your-sql-server.database.windows.net" -Port 1433
+   ```
+
+#### SQL Query Execution Errors
+
+**Symptoms:**
+- Permission denied errors when executing SQL scripts
+- Object already exists errors
+
+**Solutions:**
+
+1. **Permission Issues:**
+   - Ensure your user account is set as the Azure AD admin for the SQL Server
+   - Verify you have `db_owner` or appropriate permissions on the database
+
+2. **Object Exists Errors:**
+   - The SQL script includes `DROP` statements - these are safe to run multiple times
+   - If you get constraint errors, run the drop statements individually first
+
+### Node.js and npm Issues
+
+#### Port 3000 Already in Use
+
+**Symptoms:**
+- "EADDRINUSE: address already in use :::3000"
+- Vite server won't start
+
+**Solutions:**
+
+1. **Kill Existing Process:**
+   ```powershell
+   # Find process using port 3000
+   netstat -ano | findstr :3000
+   # Kill the process (replace PID with actual process ID)
+   taskkill /PID [PID] /F
+   ```
+
+2. **Use Alternative Port:**
+   - Update `vite.config.ts` to use a different port
+   - Update Power SDK configuration accordingly
+
+#### Package Installation Failures
+
+**Symptoms:**
+- npm install errors
+- Module not found errors
+
+**Solutions:**
+
+1. **Clear npm Cache:**
+   ```powershell
+   npm cache clean --force
+   npm install
+   ```
+
+2. **Delete node_modules and Reinstall:**
+   ```powershell
+   Remove-Item -Recurse -Force node_modules
+   Remove-Item package-lock.json
+   npm install
+   ```
+
+3. **Node Version Issues:**
+   ```powershell
+   # Check Node version
+   node --version
+   # Should be LTS version (18.x or 20.x)
+   ```
+
+#### Runtime Connection Errors
+
+**Symptoms:**
+- "Failed to load data" in the React app
+- Connection refused errors
+
+**Solutions:**
+
+1. **Check Power Platform Connection:**
+   - Verify the SQL Server connection is working in Power Platform
+   - Test the connection in Power Platform maker portal
+
+2. **Consent Issues:**
+   - Ensure you've given consent when the app first loads
+   - Clear browser cache and try again
+
+3. **Environment Mismatch:**
+   - Verify you're running the app in the same environment where the connection was created
+   - Check that the browser profile matches your Power Platform account
