@@ -186,7 +186,7 @@ From a command line, run the following. Use the API name and connection ID colle
 >[!NOTE] You will additionally need to pass a table ID and dataset name, which is controlled by the schema of your tabular data source. If you don’t already have these, instructions on how to find it are below. 
 
 ```bash
-pac code add-data-source -a <apiName> -c <connectionId> --t <tableId> -d <datasetName> 
+pac code add-data-source -a <apiName> -c <connectionId> -t <tableId> -d <datasetName> 
 ```
 
 Examples
@@ -236,12 +236,12 @@ pac code add-data-source –a "shared_sql" -c "c9a56bae5dcb43f7ac086a2fc86fd33c"
 From a command line, run the following. Use the API name and connection ID collected from Step #2 above. 
 
 ```bash
-pac code delete-data-source -a <apiName> -d <dataSourceName> 
+pac code delete-data-source -a <apiName> -ds <dataSourceName> 
 ```
 
 Example
 ```bash
-pac code delete-data-source -a "shared_sql" -d "MobileDeviceInventory" 
+pac code delete-data-source -a "shared_sql" -ds "MobileDeviceInventory" 
 ```
 
 >[!IMPORTANT] If the schema on a connection changes, there is no command to refresh the strongly typed model and service files. To do this, delete the data source and re-add it.
@@ -294,12 +294,13 @@ setAssets((prevAssets) =>
 ``` 
 #### 3. Run the app locally to verify changes 
 ```bash
-npm run dev | pac code run
+npm run dev
 ```
 
 #### 4. Push the app to run on Power Apps 
 ```bash
-npm run build | pac code push
+npm run build
+pac code push
 ```
 
 # Supported managed platform capabilities  
