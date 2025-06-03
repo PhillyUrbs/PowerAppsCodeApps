@@ -160,7 +160,7 @@ Click “+ New connection” and select Office 365 Users. Click “Create”.
 
 #### 3. (Optional) Create a SQL connection (or a connection for another tabular data source)
 
-> **Tip:** For a step-by-step guide to connecting your code app to Azure SQL, see [docs/how-to-connect-to-azure-sql.md](../docs/how-to-connect-to-azure-sql.md).
+> **Tip:** For a step-by-step guide to connecting your code app to Azure SQL, see [docs/how-to-connect-to-azure-sql.md](docs/how-to-connect-to-azure-sql.md).
 
 #### 4. Get connection metadata for all created connections
 
