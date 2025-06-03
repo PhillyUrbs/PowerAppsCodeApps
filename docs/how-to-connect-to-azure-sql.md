@@ -799,22 +799,24 @@ This guide covers:
    ```
 
 1. Add the `FluentProvider` and `ProjectsTable` to `maint.tsx`:
+
    ```typescript
-   import { StrictMode } from 'react'
-   import { createRoot } from 'react-dom/client'
-   import './index.css'
-   import PowerProvider from './PowerProvider.tsx'
-   import { FluentProvider, webLightTheme } from '@fluentui/react-components'
-   
-   createRoot(document.getElementById('root')!).render(
-     <StrictMode>
-       <PowerProvider>
-         <FluentProvider theme={webLightTheme}>
-           <ProjectsTable />
-         </FluentProvider>
-       </PowerProvider>
-     </StrictMode>,
-   )
+    import { StrictMode } from 'react'
+    import { createRoot } from 'react-dom/client'
+    import './index.css'
+    import PowerProvider from './PowerProvider.tsx'
+    import { FluentProvider, webLightTheme } from '@fluentui/react-components'
+    import ProjectsTable from './ProjectsTable.tsx'
+
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <PowerProvider>
+          <FluentProvider theme={webLightTheme}>
+            <ProjectsTable />
+          </FluentProvider>
+        </PowerProvider>
+      </StrictMode>,
+    )
    
    ```
 
