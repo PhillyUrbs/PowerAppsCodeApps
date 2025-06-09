@@ -30,6 +30,7 @@ The managed platform accelerates innovation in safe environments. When ready, ap
   - [Connect a code app to data](#1-connect-a-code-app-to-data-)
 - [Supported managed platform capabilities](#supported-managed-platform-capabilities)
 - [Limitations](#limitations)
+- [See also](#see-also)
 - [Preview disclaimer](#preview-disclaimer)
 - [License](#license-)
 - [Code of Conduct](#code-of-conduct)
@@ -339,14 +340,7 @@ npm run build
 pac code push
 ```
 
-## 2. Hide the Power Apps header when playing an app
-You can hide the header that appears when playing an app adding 'hideNavBar=true' as a query string parameter. In practice, append this to the app link before sharing the app link. 
-
-<pre>
-https://apps.powerapps.com/play/e/{environment id}/a/{app id}
-
-https://apps.powerapps.com/play/e/{environment id}/a/{app id}?<b>hideNavBar=true</b>
-</pre>
+## 2. [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) — Find a detailed walkthrough for connecting your code app to Azure SQL.
 
 # Supported managed platform capabilities  
 
