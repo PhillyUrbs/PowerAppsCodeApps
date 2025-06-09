@@ -368,7 +368,7 @@ https://apps.powerapps.com/play/e/{environment id}/a/{app id}?<b>hideNavBar=true
 4. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure)
 
 # See also
-1. [Limits and config](./docs/limits-config.md)
+1. [Limits and config](./docs/limits-and-config.md)
 
 # Preview disclaimer
 
