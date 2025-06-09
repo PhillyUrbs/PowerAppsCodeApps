@@ -367,6 +367,9 @@ https://apps.powerapps.com/play/e/{environment id}/a/{app id}?<b>hideNavBar=true
 3. Code apps don’t support Dataverse solutions and therefore cannot use Power Platform pipelines for deployments.
 4. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure)
 
+# See also
+1. [Limits and config](./docs/limits-config.md)
+
 # Preview disclaimer
 
 Preview features are features that aren’t complete but are made available on a “preview” basis so customers can get early access and provide feedback. Preview features are not supported by Microsoft Support, may have limited or restricted functionality, aren’t meant for production use, and may be available only in selected geographic areas.  
