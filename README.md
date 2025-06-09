@@ -339,6 +339,15 @@ npm run build
 pac code push
 ```
 
+## 2. Hide the Power Apps header when playing an app
+You can hide the header that appears when playing an app adding 'hideNavBar=true' as a query string parameter. In practice, append this to the app link before sharing the app link. 
+
+<pre>
+https://apps.powerapps.com/play/e/{environment id}/a/{app id}
+
+https://apps.powerapps.com/play/e/{environment id}/a/{app id}?<b>hideNavBar=true</b>
+</pre>
+
 # Supported managed platform capabilities  
 
 |                                                         Capability                                    |                                                Notes                                 |
@@ -353,9 +362,10 @@ pac code push
 
 # Limitations
 
-1. Code apps don’t support Power Platform Native source code integration.
-2. Code apps don’t support Dataverse solutions and therefore cannot use Power Platform pipelines for deployments.
-3. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure)
+1. Code apps can invoke APIs outside of Power Platform connectors. Code apps do not support [Content Security Policy](https://learn.microsoft.com/power-platform/admin/content-security-policy) (CSP), yet. 
+2. Code apps don’t support Power Platform Native source code integration.
+3. Code apps don’t support Dataverse solutions and therefore cannot use Power Platform pipelines for deployments.
+4. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure)
 
 # Preview disclaimer
 
