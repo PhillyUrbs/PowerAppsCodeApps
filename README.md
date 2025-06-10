@@ -353,13 +353,15 @@ pac code push
 | Conditional Access on an individual app | [Learn more](https://learn.microsoft.com/power-platform/admin/admin-manage-apps?tabs=new#managed-environments-conditional-access-on-individual-apps) |
 | Admin consent dialog suppression | Consent suppression is supported for both Microsoft connecters that use OAuth as well as custom connectors that use OAuth. [Learn more](https://learn.microsoft.com/power-apps/maker/canvas-apps/add-manage-connections#suppress-consent-dialog-for-apps-that-use-custom-connectors-using-microsoft-entra-id-oauth)  |
 | Tenant isolation | [Learn more](https://learn.microsoft.com/power-platform/admin/cross-tenant-restrictions) |
+| Azure B2B (external user access) | Code apps may be shared with and access by end-users using Azure B2B to access resources in a tenant, similar to canvas apps. [Learn more](https://learn.microsoft.com/power-apps/maker/canvas-apps/share-app-guests) |
 
 # Limitations
 
-1. Code apps can invoke APIs outside of Power Platform connectors. Code apps do not support [Content Security Policy](https://learn.microsoft.com/power-platform/admin/content-security-policy) (CSP), yet. 
-2. Code apps don’t support Power Platform Native source code integration.
-3. Code apps don’t support Dataverse solutions and therefore cannot use Power Platform pipelines for deployments.
-4. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure)
+1. Code apps can invoke APIs outside of Power Platform connectors. Code apps do not support [Content Security Policy](https://learn.microsoft.com/power-platform/admin/content-security-policy) (CSP), yet.
+2. Code apps do not support [Storage Shared Access Signature (SAS) IP restriction](https://learn.microsoft.com/power-platform/admin/security/data-storage#advanced-security-features ), yet.
+3. Code apps don’t support Power Platform Native source code integration.
+4. Code apps don’t support Dataverse solutions and therefore cannot use Power Platform pipelines for deployments.
+5. Code apps don’t have a Power Platform native integration with Azure Application Insights. Azure Application Insights can be added as it would be to a generic web app but it will not include information recognized in the platform layer, such as app open events (to measure success/failure)
 
 # See also
 1. [Limits and config](./docs/limits-and-config.md)
