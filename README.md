@@ -27,7 +27,9 @@ The managed platform accelerates innovation in safe environments. When ready, ap
   - [Create a first release Power Platform environment](#create-a-first-release-power-platform-environment)
 - [Getting Started](#getting-started-)
 - [Additional Scenarios](#additional-scenarios)
+  - [Create a code app from scratch](docs/how-to-create-from-scratch.md)
   - [Connect a code app to data](#1-connect-a-code-app-to-data-)
+  - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md)
 - [Supported managed platform capabilities](#supported-managed-platform-capabilities)
 - [Limitations](#limitations)
 - [See also](#see-also)
@@ -130,6 +132,7 @@ Congratulations! You have successfully pushed your first code app!
 > 2. there are no issues in PowerProvider.tsx
 
 # Additional Scenarios
+## 1. [Create a code app from scratch](docs/how-to-create-from-scratch.md) -- A walkthrough to turn a blank app created with vite into Power Apps code app. 
 
 ## 1. Connect a code app to data 🔌
 
