@@ -1,9 +1,7 @@
-# Create an app from scratch - turn an app from vite into a Power Apps code app
-
-This guide walks through how to set up an blank app from vite and connect it to a Power Apps using a Power Platform SDK. 
+# Create an app from scratch 
+This guide walks through how to set up an blank app from vite and turn it into a Power Apps code app. 
 
 This guide covers:
-
 - Configuring a TypeScript app using the Power Platform SDK
 
 ## Prerequisites
@@ -27,6 +25,10 @@ This guide covers:
 1. If you are asked, agree to install `create-vite`
 
 1. Accept the default package name `AppFromScratch` by pressing **Enter**.
+
+1. If you are asked to select a framework, select **React**.
+
+1. If you are asked to select a variant, select **TypeScript**.
 
 1. At this time, the Power SDK requires the port to be 3000 in the default configuration. 
 
