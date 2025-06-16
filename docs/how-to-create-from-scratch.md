@@ -1,11 +1,10 @@
-# Connect Power Apps Code Apps to Azure SQL: Full Walkthrough
+# Create an app from scratch - turn an app from vite into a Power Apps code app
 
 This guide walks through how to set up an blank app from vite and connect it to a Power Apps using a Power Platform SDK. 
 
 This guide covers:
 
 - Configuring a TypeScript app using the Power Platform SDK
-
 
 ## Prerequisites
 
