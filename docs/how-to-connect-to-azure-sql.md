@@ -241,6 +241,10 @@ This guide covers:
 
 1. Accept the default package name `projectmanagementapp` by pressing **Enter**.
 
+1. If you are asked to select a framework, select **React**.
+
+1. If you are asked to select a variant, select **TypeScript**.
+   
 1. At this time, the Power SDK requires the port to be 3000 in the default configuration. 
 
    Install the node type defintions using:
