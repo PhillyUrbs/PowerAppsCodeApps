@@ -9,7 +9,7 @@ Note that these steps require that you have completed the Getting Started sectio
 # Table of Contents
 
 1. [Create and set up connections in Maker Portal](#1-create-and-set-up-connections-in-maker-portal)
-2. [Create and set up connections](#2-create-and-set-up-connections)
+2. [Add a connection to a code app](#2-add-a-connection-to-a-code-app)
 3. [Update the app to call connections](#3-update-the-app-to-call-connections)
 
 ## 1. Create and set up connections in Maker Portal
@@ -56,7 +56,7 @@ You can also retrive this using the maker portal:
 
 Copy the API name and the connection ID from PAC CLI the URL for each connection:
 
-## 2. Create and set up connections
+## 2. Add a connection to a code app
 
 Once you have created or identified existing connections to use and copied the connection metadata from the previous step, you will now add those connections to the app.
 
