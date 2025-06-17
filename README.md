@@ -28,7 +28,7 @@ The managed platform accelerates innovation in safe environments. When ready, ap
 - [Getting Started](#getting-started-)
 - [Additional Scenarios](#additional-scenarios)
   - [Create a code app from scratch](docs/how-to-create-from-scratch.md)
-  - [Connect a code app to data](#1-connect-a-code-app-to-data-)
+  - [Connect a code app to data](docs/how-to-connect-to-data.md)
   - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md)
 - [Supported managed platform capabilities](#supported-managed-platform-capabilities)
 - [Limitations](#limitations)
