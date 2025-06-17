@@ -132,9 +132,10 @@ Congratulations! You have successfully pushed your first code app!
 > 2. there are no issues in PowerProvider.tsx
 
 # Additional Scenarios
-## 1. [Create a code app from scratch](docs/how-to-create-from-scratch.md) -- A walkthrough to turn a blank app created with vite into Power Apps code app. 
+## 1. [Create a code app from scratch](docs/how-to-create-from-scratch.md) 
+The linked documentation contains a detailed walkthrough to turn a blank app created with vite into Power Apps code app. 
 
-## 1. Connect a code app to data 🔌
+## 2. Connect a code app to data 🔌
 
 Code apps enable connecting to Power Platform connectors. To do this, you will create connections, add them to the app, and update the app to call them.
 
@@ -142,7 +143,7 @@ Note that these steps require that you have completed the Getting Started sectio
 
 > [!IMPORTANT] For the initial release, only SQL, SharePoint, and Office 365 Users connectors are formally supported. Other connectors (e.g. SharePoint) are expected to work but are untested. Dataverse is explicitly not supported, yet.
 
-### Create and set up connections in Maker Portal
+### 1. Create and set up connections in Maker Portal
 
 You will need to start by creating and configuring connections at <https://make.powerapps.com> and you’ll need to copy connection metadata from there for use in later steps.
 
@@ -186,7 +187,7 @@ You can also retrive this using the maker portal:
 
 Copy the API name and the connection ID from PAC CLI the URL for each connection:
 
-### Create and set up connections
+### 2. Create and set up connections
 
 Once you have created or identified existing connections to use and copied the connection metadata from the previous step, you will now add those connections to the app.
 
@@ -278,7 +279,7 @@ pac code delete-data-source -a "shared_sql" -ds "MobileDeviceInventory"
 
 >[!IMPORTANT] If the schema on a connection changes, there is no command to refresh the strongly typed model and service files. To do this, delete the data source and re-add it.
 
-### Update the app to call connections
+### 3. Update the app to call connections
 
 Once connections are added, you can update the app to use the generated model and service.
 
@@ -339,11 +340,11 @@ npm run dev
 #### 4. Push the app to run on Power Apps
 
 ```bash
-npm run build
-pac code push
+npm run build | pac code push
 ```
 
-## 2. [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) — Find a detailed walkthrough for connecting your code app to Azure SQL.
+## 3. [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) 
+The linked documentation contains a detailed walkthrough for connecting your code app to Azure SQL.
 
 # Supported managed platform capabilities  
 
