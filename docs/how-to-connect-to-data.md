@@ -8,9 +8,9 @@ Note that these steps require that you have completed the Getting Started sectio
 
 # Table of Contents
 
-- Create and set up connections in Maker Portal
-- Create and set up connections
-- Update the app to call connections
+1. [Create and set up connections in Maker Portal](#1-create-and-set-up-connections-in-maker-portal)
+2. [Create and set up connections](#2-create-and-set-up-connections)
+3. [Update the app to call connections](#3-update-the-app-to-call-connections)
 
 ## 1. Create and set up connections in Maker Portal
 
