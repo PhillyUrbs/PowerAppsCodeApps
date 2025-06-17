@@ -6,6 +6,12 @@ Note that these steps require that you have completed the Getting Started sectio
 
 > [!IMPORTANT] For the initial release, only SQL, SharePoint, and Office 365 Users connectors are formally supported. Other connectors (e.g. SharePoint) are expected to work but are untested. Dataverse is explicitly not supported, yet.
 
+# Table of Contents
+
+- Create and set up connections in Maker Portal
+- Create and set up connections
+- Update the app to call connections
+
 ## 1. Create and set up connections in Maker Portal
 
 You will need to start by creating and configuring connections at <https://make.powerapps.com> and you’ll need to copy connection metadata from there for use in later steps.
@@ -16,7 +22,7 @@ You will need to start by creating and configuring connections at <https://make.
 
 Go to <https://make.powerapps.com> and navigate to the Connections page from the left-hand navigation.
 
-![](./contentMedia/maker_portal_create_connection.png)
+![](../contentMedia/maker_portal_create_connection.png)
 
 ### 2. Create an Office 365 Users connection
 
@@ -24,7 +30,7 @@ Click “+ New connection” and select Office 365 Users. Click “Create”.
 
 > [!NOTE] If you already have an Office 365 Users connection, you can use that instead of creating a new one.
 
-![](./contentMedia/maker_portal_create_office_connection.png)
+![](../contentMedia/maker_portal_create_office_connection.png)
 
 ### 3. (Optional) Create a SQL connection (or a connection for another tabular data source)
 
@@ -40,13 +46,13 @@ pac connection list
 
 This command will display a table of all your connections, including the **Connection ID** and **API Name** (which is used as the appId when adding a data source).
 
-![](./contentMedia/pac_cli_connection_list.png)
+![](../contentMedia/pac_cli_connection_list.png)
 
 You can also retrive this using the maker portal:
 
-![](./contentMedia/maker_portal_select_connection.png)
+![](../contentMedia/maker_portal_select_connection.png)
 
-![](./contentMedia/maker_portal_connection_apiName_connectionId.png)
+![](../contentMedia/maker_portal_connection_apiName_connectionId.png)
 
 Copy the API name and the connection ID from PAC CLI the URL for each connection:
 
@@ -71,7 +77,7 @@ pac code add-data-source -a "shared_office365users" -c "aa35d97110f747a49205461c
 ```
 
 >[!NOTE] If you observe a PAC CLI 403 error whent attempting to add a data source, which you have access to, it's expected to be a result of not using a first release environment as guided above.
-> ![](./contentMedia/add_data_source_error_without_first_release.png)
+> ![](../contentMedia/add_data_source_error_without_first_release.png)
 
 ### 2. (Optional) Add a tabular data source (e.g. SQL, SharePoint) to the app
 
@@ -203,6 +209,5 @@ npm run dev
 ### 4. Push the app to run on Power Apps
 
 ```bash
-npm run build
-pac code push
+npm run build | pac code push
 ```
