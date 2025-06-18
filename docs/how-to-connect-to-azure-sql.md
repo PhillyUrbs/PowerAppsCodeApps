@@ -347,7 +347,7 @@ This guide covers:
 
    Save the updated `pacakage.json`.
 
-7. **Add a new file** under the `src` folder named `PowerProvider.tsx` and grab the code from [PowerProvider.tsx](https://raw.githubusercontent.com/scottdurow/PowerAppsCodeApps/refs/heads/main/samples/HelloWorld/src/PowerProvider.tsx)
+7. **Add a new file** under the `src` folder named `PowerProvider.tsx` and grab the code from [PowerProvider.tsx](./assets/PowerProvider.tsx)
 
 8. **Save** the file.
 
