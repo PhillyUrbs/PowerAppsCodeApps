@@ -70,6 +70,24 @@ This guide covers:
    ```powershell
    npm run dev
    ```
+>[!NOTE] If you are developing on macOS, you may need to update package.json to not reference 'start vite'. For instance you'd change the dev entry from
+>```powershell
+>"scripts": {    
+>    "dev": "start vite && start pac code run",
+>    "build": "tsc -b && vite build",
+>   "lint": "eslint .",
+>   "preview": "vite preview"
+> }
+>```
+> to
+>```powershell
+>  "scripts": {    
+>    "dev": "vite && pac code run",
+>    "build": "tsc -b && vite build",
+>    "lint": "eslint .",
+>    "preview": "vite preview"
+>  }
+>```
 
 1. The template project will start and run locally. Browse to the http://localhost:3000 address given.  
    ![image-20250530184115434](./assets/sql-localhost)
