@@ -18,7 +18,7 @@ This guide covers:
    mkdir C:\CodeApps -Force
    cd C:\CodeApps
    npm create vite@latest AppFromScratch -- --template react-ts
-   cd C:\CodeApps\ProjectManagementApp
+   cd C:\CodeApps\AppFromScratch
    npm install
    ```
 
