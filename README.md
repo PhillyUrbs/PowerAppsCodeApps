@@ -30,6 +30,7 @@ The managed platform accelerates innovation in safe environments. When ready, ap
   - [Create a code app from scratch](docs/how-to-create-from-scratch.md)
   - [Connect a code app to data](docs/how-to-connect-to-data.md)
   - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md)
+  - ...
 - [Limitations](#limitations)
 - [See also](#see-also)
 - [Preview disclaimer](#preview-disclaimer)
@@ -139,6 +140,8 @@ Code apps enable connecting to Power Platform connectors. To do this, you will c
 
 ## 3. [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) 
 The linked documentation contains a detailed walkthrough for connecting your code app to Azure SQL.
+
+## 4. [How to analyze connector data requests and responses](./docs/how-to-analyze-data-request-response.md)
 
 # Limitations
 
