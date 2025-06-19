@@ -30,7 +30,6 @@ The managed platform accelerates innovation in safe environments. When ready, ap
   - [Create a code app from scratch](docs/how-to-create-from-scratch.md)
   - [Connect a code app to data](docs/how-to-connect-to-data.md)
   - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md)
-- [Supported managed platform capabilities](#supported-managed-platform-capabilities)
 - [Limitations](#limitations)
 - [See also](#see-also)
 - [Preview disclaimer](#preview-disclaimer)
@@ -141,19 +140,6 @@ Code apps enable connecting to Power Platform connectors. To do this, you will c
 ## 3. [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) 
 The linked documentation contains a detailed walkthrough for connecting your code app to Azure SQL.
 
-# Supported managed platform capabilities  
-
-|                                                         Capability                                    |                                                Notes                                 |
-|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| End-users see consent dialog for connector permissions | [Learn more](https://learn.microsoft.com/power-apps/maker/canvas-apps/add-manage-connections#consent-dialog-fine-grained-permssions)|
-| Sharing limits | Code apps respect canvas app sharing limits. [Learn more](https://learn.microsoft.com/power-platform/admin/managed-environment-sharing-limits)  |
-| App Quarantine | [Learn more](https://learn.microsoft.com/power-platform/admin/admin-manage-apps?tabs=new#manage-app-quarantine-state) |
-| Data Loss policy enforcement during app launch | [Learn more](https://learn.microsoft.com/power-platform/admin/wp-data-loss-prevention) |
-| Conditional Access on an individual app | [Learn more](https://learn.microsoft.com/power-platform/admin/admin-manage-apps?tabs=new#managed-environments-conditional-access-on-individual-apps) |
-| Admin consent dialog suppression | Consent suppression is supported for both Microsoft connecters that use OAuth as well as custom connectors that use OAuth. [Learn more](https://learn.microsoft.com/power-apps/maker/canvas-apps/add-manage-connections#suppress-consent-dialog-for-apps-that-use-custom-connectors-using-microsoft-entra-id-oauth)  |
-| Tenant isolation | [Learn more](https://learn.microsoft.com/power-platform/admin/cross-tenant-restrictions) |
-| Azure B2B (external user access) | Code apps may be shared with and access by end-users using Azure B2B to access resources in a tenant, similar to canvas apps. [Learn more](https://learn.microsoft.com/power-apps/maker/canvas-apps/share-app-guests) |
-
 # Limitations
 
 1. Code apps can invoke APIs outside of Power Platform connectors. Code apps do not support [Content Security Policy](https://learn.microsoft.com/power-platform/admin/content-security-policy) (CSP), yet.
@@ -164,6 +150,7 @@ The linked documentation contains a detailed walkthrough for connecting your cod
 
 # See also
 1. [Limits and config](./docs/limits-and-config.md)
+2. [Supported Managed Platform capabilities](./docs/managed-platform-support.md)
 
 # Preview disclaimer
 
