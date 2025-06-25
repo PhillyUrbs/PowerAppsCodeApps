@@ -28,8 +28,6 @@ The managed platform accelerates innovation in safe environments. When ready, ap
 
 # Table of Contents 📑
 
-It clearly represents a list or index and is widely recognized for documentation.
-
 - [What are code apps?](#what-are-code-apps-)
 - [Prerequisites](#prerequisites-)
   - [Install the following developer tools](#install-the-following-developer-tools)
