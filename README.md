@@ -1,8 +1,15 @@
 # Power Apps Code Apps (Early Access Preview) 🚀
 
-> **Additional Documentation:**
+> **Quick start** ⚡
 >
+> - [How to create a First Release Environment](#create-a-first-release-power-platform-environment) - Get an environment ready to run Code Apps!
+> - [Start in minutes with a Hello World sample code](samples/HelloWorld/README.md) - A ready to run React sample, with minimum setps to run on Power Apps.
+> - [How to create an app from Scratch](docs/how-to-create-from-scratch.md) - A detailed walkthrough to turn a blank app created with vite into Power Apps code app.
+> - [How to connect to data](docs/how-to-connect-to-data.md) - Code apps enable connecting to Power Platform connectors. To do this, you will create connections, add them to the app, and update the app to call them.
 > - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) — Find a detailed walkthrough for connecting your code app to Azure SQL.
+> - ✨ [How to analyze data requests/response](docs/how-to-analyze-data-request-response.md) - Guide to troubleshoot and debug.
+> - ✨ [How to create sample api and a custom connector](docs/how-to-create-api-and-custom-connector.md) - Quickly create a mock api and a custom connector to test Code Apps with Custom Connectors.
+> 
 
 Power Apps empowers developers of all skillsets—including those building web apps in IDEs like Visual Studio Code—to efficiently build and run business apps on a managed platform.
 
@@ -19,18 +26,15 @@ The managed platform accelerates innovation in safe environments. When ready, ap
 
 [**Sign up for Early Access**](https://aka.ms/paCodeAppsEAP)
 
-# Table of Contents
+# Table of Contents 📑
 
-- [What is a code app?](#what-is-a-code-app-)
+It clearly represents a list or index and is widely recognized for documentation.
+
+- [What are code apps?](#what-are-code-apps-)
 - [Prerequisites](#prerequisites-)
   - [Install the following developer tools](#install-the-following-developer-tools)
   - [Create a first release Power Platform environment](#create-a-first-release-power-platform-environment)
-- [Getting Started](#getting-started-)
-- [Additional Scenarios](#additional-scenarios)
-  - [Create a code app from scratch](docs/how-to-create-from-scratch.md)
-  - [Connect a code app to data](docs/how-to-connect-to-data.md)
-  - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md)
-  - ...
+  - [License end-users with Power Apps Premium](#license-end-users-with-power-apps-premium)
 - [Limitations](#limitations)
 - [See also](#see-also)
 - [Preview disclaimer](#preview-disclaimer)
@@ -57,7 +61,7 @@ Code apps require several developer tools like Visual Studio Code, git, dotnet, 
 - [Git](https://git-scm.com/)
 - [Power Apps CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
 
-## Create a first release Power Platform environment
+## Create a first release Power Platform environment 🧪
 
 First release environments are intended for non-production use and they receive Power Platform updates before other environments. For code apps EAP, it's recommended that you use a first release environment (it is required for SQL connector). Code app capabilities will eventually be available to all environments. Code apps require dataverse to exist in the environment.  
 
@@ -81,69 +85,7 @@ New-AdminPowerAppEnvironment -DisplayName "Code App env" -EnvironmentSku Trial -
 
 End-users that run code apps will need a [Power Apps Premium license](https://www.microsoft.com/power-platform/products/power-apps/pricing).
 
-# Getting Started 🚀
-
-## 1. Clone this repository
-
-This repository has the start of a TypeScript app that already includes the Power Platform SDK. Later in EAP we'll add guidance to that allows you to start from scratch without using this base app.
-
-```bash
-git clone https://github.com/microsoft/PowerAppsCodeApps.git
-cd PowerAppsCodeApps\samples\HelloWorld
-```
-
-## 2. Authenticate PAC CLI and point to your first release environment
-
-```bash
-pac auth create --environment {environment id}
-```
-
-## 3. Install dependencies
-
-```bash
-npm install
-pac code init --displayName "Hello World"
-```
-
->[!NOTE] If you observe a PAC CLI error stating the environment does not support code apps it means Microsoft didn't enable code apps for your environment. Use the documentation provided in your EAP welcome email to submit the environment to Microsoft.
-> ![](./contentMedia/pac_code_error_with_enabled_environment.png)
-
-## 4. Run locally
-
-```bash
-npm run dev 
-```
-
-## 5. Deploy to Power Apps
-
-```bash
-npm run build | pac code push
-```
-
-If successful, this command should return a Power Apps URL to run the app.
-
-Optionally, you can navigate to <https://make.powerapps.com> to see the app in the Maker Portal. You can play, share, or see details from there.
-
-Congratulations! You have successfully pushed your first code app!
-
-> [!NOTE] If you get stuck on the “fetching your app” loading screen or see an “App timed out” error screen, double check:
->
-> 1. that you ran npm run build
-> 2. there are no issues in PowerProvider.tsx
-
-# Additional Scenarios
-## 1. [Create a code app from scratch](docs/how-to-create-from-scratch.md) 
-The linked documentation contains a detailed walkthrough to turn a blank app created with vite into Power Apps code app. 
-
-## 2. [Connect a code app to data](docs/how-to-connect-to-data.md) 🔌
-Code apps enable connecting to Power Platform connectors. To do this, you will create connections, add them to the app, and update the app to call them.
-
-## 3. [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) 
-The linked documentation contains a detailed walkthrough for connecting your code app to Azure SQL.
-
-## 4. [How to analyze connector data requests and responses](./docs/how-to-analyze-data-request-response.md)
-
-# Limitations
+# Limitations 🚧
 
 1. Code apps can invoke APIs outside of Power Platform connectors. Code apps do not support [Content Security Policy](https://learn.microsoft.com/power-platform/admin/content-security-policy) (CSP), yet.
 2. Code apps do not support [Storage Shared Access Signature (SAS) IP restriction](https://learn.microsoft.com/power-platform/admin/security/data-storage#advanced-security-features ), yet.
