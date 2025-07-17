@@ -316,7 +316,19 @@ export default function Layout({ children }: LayoutProps) {
     <div className={styles.root}>
       {/* Mobile Header */}
       <div className={styles.mobileHeader}>
-        <Text className={styles.logo}>FluentSample</Text>
+        <Text className={styles.logo}>
+          <img 
+            src="/PowerApps_scalable.svg" 
+            alt="Power Apps" 
+            style={{ 
+              width: '20px', 
+              height: '20px', 
+              marginRight: '8px', 
+              verticalAlign: 'middle' 
+            }} 
+          />
+          Sample Code App
+        </Text>
         <Button
           icon={<NavigationRegular />}
           appearance="subtle"
@@ -338,7 +350,19 @@ export default function Layout({ children }: LayoutProps) {
       <aside className={sidebarClassName}>
         <div className={styles.header}>
           {!collapsed && (
-            <Text className={styles.logo}>FluentSample</Text>
+            <Text className={styles.logo}>
+              <img 
+                src="/PowerApps_scalable.svg" 
+                alt="Power Apps" 
+                style={{ 
+                  width: '20px', 
+                  height: '20px', 
+                  marginRight: '8px', 
+                  verticalAlign: 'middle' 
+                }} 
+              />
+              Sample Code App
+            </Text>
           )}
           <Button
             icon={collapsed ? <NavigationRegular /> : <DismissRegular />}
