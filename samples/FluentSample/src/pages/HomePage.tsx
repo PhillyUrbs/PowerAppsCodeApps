@@ -1,0 +1,293 @@
+import { 
+  Text, 
+  Card, 
+  CardHeader,
+  CardPreview,
+  makeStyles,
+  shorthands,
+  Button,
+  Link,
+  tokens
+} from '@fluentui/react-components';
+import { 
+  PeopleRegular,
+  DatabaseRegular,
+  CloudRegular,
+  ArrowRightRegular,
+  CodeRegular,
+  BookRegular
+} from '@fluentui/react-icons';
+import { Link as RouterLink } from 'react-router-dom';
+
+const useStyles = makeStyles({
+  container: {
+    maxWidth: '1200px',
+    ...shorthands.margin('0', 'auto'),
+  },
+  powerAppsLove: {
+    textAlign: 'center',
+    ...shorthands.padding('64px', '24px'),
+    backgroundColor: tokens.colorNeutralBackground2,
+    ...shorthands.borderRadius(tokens.borderRadiusLarge),
+    ...shorthands.border('2px', 'solid', tokens.colorNeutralStroke2),
+    marginBottom: '48px',
+  },
+  loveText: {
+    fontSize: '48px',
+    fontWeight: tokens.fontWeightBold,
+    color: tokens.colorBrandForeground1,
+    marginBottom: '16px',
+    textShadow: `0 2px 4px ${tokens.colorNeutralShadowAmbient}`,
+  },
+  loveSubtext: {
+    fontSize: tokens.fontSizeBase400,
+    color: tokens.colorNeutralForeground2,
+    fontStyle: 'italic',
+  },
+  section: {
+    marginBottom: '48px',
+  },
+  sectionTitle: {
+    fontSize: tokens.fontSizeBase600,
+    fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorNeutralForeground1,
+    marginBottom: '16px',
+  },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+    ...shorthands.gap('24px'),
+  },
+  card: {
+    height: '100%',
+    cursor: 'pointer',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: `0 8px 24px ${tokens.colorNeutralShadowAmbient}`,
+      ...shorthands.border('1px', 'solid', tokens.colorBrandStroke1),
+    },
+  },
+  cardIcon: {
+    fontSize: '48px',
+    color: tokens.colorBrandForeground1,
+    marginBottom: '16px',
+  },
+  cardTitle: {
+    fontSize: tokens.fontSizeBase400,
+    fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorNeutralForeground1,
+    marginBottom: '8px',
+  },
+  cardDescription: {
+    fontSize: tokens.fontSizeBase300,
+    color: tokens.colorNeutralForeground2,
+    lineHeight: tokens.lineHeightBase300,
+    marginBottom: '16px',
+  },
+  cardButton: {
+    marginTop: 'auto',
+  },
+  featuresGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    ...shorthands.gap('20px'),
+    marginTop: '24px',
+  },
+  featureCard: {
+    ...shorthands.padding('24px'),
+    textAlign: 'center',
+  },
+  featureIcon: {
+    fontSize: '32px',
+    color: tokens.colorPaletteGreenForeground1,
+    marginBottom: '12px',
+  },
+  featureTitle: {
+    fontSize: tokens.fontSizeBase300,
+    fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorNeutralForeground1,
+    marginBottom: '8px',
+  },
+  featureDescription: {
+    fontSize: tokens.fontSizeBase200,
+    color: tokens.colorNeutralForeground2,
+    lineHeight: tokens.lineHeightBase200,
+  },
+});
+
+const connectorExamples = [
+  {
+    path: '/office365',
+    title: 'Office 365 Connector',
+    description: 'Explore user profiles, calendar events, and email integration with mock Office 365 data. Learn how to implement authentication and data retrieval patterns.',
+    icon: <PeopleRegular />,
+    features: ['User Profiles', 'Calendar Events', 'Email Integration', 'Search & Filtering'],
+  },
+  {
+    path: '/sql',
+    title: 'SQL Database Connector',
+    description: 'See CRUD operations, data grids, and pagination with mock SQL data. Perfect for learning database integration patterns and data management.',
+    icon: <DatabaseRegular />,
+    features: ['CRUD Operations', 'Data Grid', 'Pagination', 'Search & Filter'],
+  },
+  {
+    path: '/custom-api',
+    title: 'Custom API Connector',
+    description: 'Understand REST API integration, HTTP methods, and error handling with mock API responses. Great for custom connector development.',
+    icon: <CloudRegular />,
+    features: ['REST API Calls', 'HTTP Methods', 'Error Handling', 'Response Parsing'],
+  },
+];
+
+const templateFeatures = [
+  {
+    icon: <CodeRegular />,
+    title: 'Clean Code',
+    description: 'TypeScript code with Fluent UI components and responsive design',
+  },
+  {
+    icon: <BookRegular />,
+    title: 'Learning Focused',
+    description: 'Helpful comments and examples showing Power Apps best practices',
+  },
+  {
+    icon: <ArrowRightRegular />,
+    title: 'Easy Extension',
+    description: 'Replace mock data with real connectors using clear integration points',
+  },
+];
+
+export default function HomePage() {
+  const styles = useStyles();
+
+  return (
+    <div className={styles.container}>
+      {/* Power Apps Love Code Section - Now the Hero */}
+      <section className={styles.powerAppsLove}>
+        <div className={styles.loveText}>Power Apps ❤️ Code</div>
+        <Text className={styles.loveSubtext}>
+          Building amazing experiences with modern web technologies
+        </Text>
+      </section>
+
+      {/* Connector Examples Section */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Connector Examples</h2>
+        <Text size={300} style={{ color: tokens.colorNeutralForeground2, marginBottom: '24px', display: 'block' }}>
+          Explore different connector patterns with realistic mock data. Each example shows UI components,
+          data handling, and integration points where you can replace mock data with real connectors.
+        </Text>
+        
+        <div className={styles.grid}>
+          {connectorExamples.map((example) => (
+            <Card key={example.path} className={styles.card}>
+              <CardPreview>
+                <div style={{ padding: '24px', textAlign: 'center' }}>
+                  <div className={styles.cardIcon}>{example.icon}</div>
+                </div>
+              </CardPreview>
+              <CardHeader>
+                <div style={{ padding: '0 24px 24px' }}>
+                  <h3 className={styles.cardTitle}>{example.title}</h3>
+                  <p className={styles.cardDescription}>{example.description}</p>
+                  
+                  <div style={{ marginBottom: '16px' }}>
+                    {example.features.map((feature, index) => (
+                      <Text
+                        key={index}
+                        size={200}
+                        style={{
+                          display: 'inline-block',
+                          padding: '4px 8px',
+                          margin: '2px',
+                          backgroundColor: tokens.colorNeutralBackground3,
+                          borderRadius: tokens.borderRadiusSmall,
+                          fontSize: '12px',
+                        }}
+                      >
+                        {feature}
+                      </Text>
+                    ))}
+                  </div>
+                  
+                  <Button
+                    as={RouterLink}
+                    to={example.path}
+                    appearance="primary"
+                    icon={<ArrowRightRegular />}
+                    iconPosition="after"
+                    className={styles.cardButton}
+                  >
+                    View Example
+                  </Button>
+                </div>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Template Features Section */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Template Features</h2>
+        <div className={styles.featuresGrid}>
+          {templateFeatures.map((feature, index) => (
+            <Card key={index} className={styles.featureCard}>
+              <div className={styles.featureIcon}>{feature.icon}</div>
+              <h3 className={styles.featureTitle}>{feature.title}</h3>
+              <p className={styles.featureDescription}>{feature.description}</p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Getting Started Section */}
+      <section className={styles.section}>
+        <Card style={{ padding: '32px', backgroundColor: tokens.colorNeutralBackground2 }}>
+          <h2 className={styles.sectionTitle}>Getting Started</h2>
+          <Text size={300} style={{ marginBottom: '20px', display: 'block', color: tokens.colorNeutralForeground2 }}>
+            This template is designed to help you learn Power Apps Code Apps patterns and provide
+            a foundation for your own projects.
+          </Text>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+            <div>
+              <Text weight="semibold" size={300} style={{ display: 'block', marginBottom: '8px', color: tokens.colorNeutralForeground1 }}>
+                1. Explore Examples
+              </Text>
+              <Text size={200} style={{ color: tokens.colorNeutralForeground2 }}>
+                Navigate through each connector example to see different patterns and UI components in action.
+              </Text>
+            </div>
+            
+            <div>
+              <Text weight="semibold" size={300} style={{ display: 'block', marginBottom: '8px', color: tokens.colorNeutralForeground1 }}>
+                2. Understand the Code
+              </Text>
+              <Text size={200} style={{ color: tokens.colorNeutralForeground2 }}>
+                Review the source code, comments, and mock data structures to understand implementation patterns.
+              </Text>
+            </div>
+            
+            <div>
+              <Text weight="semibold" size={300} style={{ display: 'block', marginBottom: '8px', color: tokens.colorNeutralForeground1 }}>
+                3. Add Real Connectors
+              </Text>
+              <Text size={200} style={{ color: tokens.colorNeutralForeground2 }}>
+                Replace mock data with real Power Apps connectors using the clear integration points provided.
+              </Text>
+            </div>
+          </div>
+          
+          <div style={{ marginTop: '24px', textAlign: 'center' }}>
+            <Link href="https://github.com/microsoft/PowerAppsCodeApps" target="_blank">
+              Learn more about Power Apps Code Apps →
+            </Link>
+          </div>
+        </Card>
+      </section>
+    </div>
+  );
+}
