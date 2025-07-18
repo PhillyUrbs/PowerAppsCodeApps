@@ -150,12 +150,11 @@ export default function HomePage() {
         </Text>
       </section>
 
-      {/* Connector Examples Section */}
+      {/* Examples Section */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Connector Examples</h2>
+        <h2 className={styles.sectionTitle}>Examples</h2>
         <Text size={300} style={{ color: tokens.colorNeutralForeground2, marginBottom: '24px', display: 'block' }}>
-          Explore different connector patterns with realistic mock data. Each example shows UI components,
-          data handling, and integration points where you can replace mock data with real connectors.
+          Each example shows UI components, data handling and integration points where you can replace mock data with data from your Power Platform environment, using Power Apps SDK.
         </Text>
         
         <div className={styles.grid}>
