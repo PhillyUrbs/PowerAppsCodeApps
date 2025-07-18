@@ -32,7 +32,7 @@ export interface MockApiError {
   code: number;
   message: string;
   timestamp: string;
-  details?: Record<string, any>;
+  details?: Record<string, string | number | boolean>;
 }
 
 // Mock assets for API responses
@@ -276,7 +276,7 @@ export const mockApiClient = {
     throw new Error(`Unknown endpoint: ${endpoint}`);
   },
 
-  async post<T>(endpoint: string, data: any): Promise<MockApiResponse<T> | MockApiError> {
+  async post<T>(endpoint: string, data: Omit<MockAsset, 'id' | 'lastUpdated'>): Promise<MockApiResponse<T> | MockApiError> {
     await simulateNetworkDelay();
     
     if (simulateRandomError()) {
@@ -290,7 +290,7 @@ export const mockApiClient = {
     throw new Error(`Unknown endpoint: ${endpoint}`);
   },
 
-  async put<T>(endpoint: string, data: any): Promise<MockApiResponse<T> | MockApiError> {
+  async put<T>(endpoint: string, data: Partial<MockAsset>): Promise<MockApiResponse<T> | MockApiError> {
     await simulateNetworkDelay();
     
     if (simulateRandomError()) {

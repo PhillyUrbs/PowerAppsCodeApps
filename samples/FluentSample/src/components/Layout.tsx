@@ -24,7 +24,7 @@ import {
 } from '@fluentui/react-icons';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 
 const useStyles = makeStyles({
   root: {
