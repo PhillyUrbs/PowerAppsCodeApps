@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 const useStyles = makeStyles({
   container: {
     marginBottom: '32px',
+    backgroundColor: tokens.colorNeutralBackground1,
   },
   header: {
     display: 'flex',

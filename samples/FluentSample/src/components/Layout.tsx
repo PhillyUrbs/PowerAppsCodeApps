@@ -527,7 +527,7 @@ export default function Layout({ children }: LayoutProps) {
             color: tokens.colorNeutralForeground2,
             fontSize: 'inherit'
           }}>
-            Power Apps Code Apps sample crafted with Copilot Chat ✨
+            Power Apps Code App sample crafted with Copilot Chat 🤖
           </Text>
         </footer>
       </div>

@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { makeStyles, shorthands } from '@fluentui/react-components'
+import { makeStyles, shorthands, tokens } from '@fluentui/react-components'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import Office365Page from './pages/Office365Page'
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     ...shorthands.margin(0),
     ...shorthands.padding(0),
     minHeight: '100vh',
-    backgroundColor: '#fafafa',
+    backgroundColor: tokens.colorNeutralBackground1,
   },
 });
 

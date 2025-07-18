@@ -10,8 +10,6 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--colorNeutralBackground1);
-  color: var(--colorNeutralForeground1);
 }
 
 #root {
@@ -19,8 +17,6 @@ html, body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: var(--colorNeutralBackground1);
-  color: var(--colorNeutralForeground1);
 }
 
 /* Remove any default styling that might interfere */

@@ -11,6 +11,7 @@ const useStyles = makeStyles({
   container: {
     maxWidth: '1200px',
     ...shorthands.margin('0', 'auto'),
+    backgroundColor: tokens.colorNeutralBackground1,
   },
   section: {
     marginBottom: '32px',
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
   userCard: {
     ...shorthands.padding('16px'),
     height: 'fit-content',
+    backgroundColor: tokens.colorNeutralBackground1,
   },
   userCardHeader: {
     display: 'flex',
@@ -293,7 +295,7 @@ export default function Office365Page() {
 
         <div className={styles.grid}>
           {loading && users.length === 0 && (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '20px', backgroundColor: tokens.colorNeutralBackground1 }}>
               <Spinner size="medium" label="Loading users..." />
             </div>
           )}
@@ -359,15 +361,9 @@ export default function Office365Page() {
       </section>
 
       {/* Integration Note */}
-      <Card style={{ padding: '24px', backgroundColor: tokens.colorNeutralBackground2, marginTop: '32px' }}>
-        <Text weight="semibold" style={{ display: 'block', marginBottom: '12px', color: tokens.colorNeutralForeground1 }}>
-          � Sample Integration Status
-        </Text>
-        <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300 }}>
-          This page demonstrates Office 365 connector integration patterns using mock data. To connect to real Office 365 data, 
-          use GitHub Copilot to help convert the mock data calls to live Office365UsersService APIs. The code structure is ready 
-          for live Office365UsersService.SearchUser() and MyProfile() APIs - simply ask Copilot to replace the mock data usage 
-          with real connector calls. This provides a solid foundation for user management applications built on Power Apps Code Apps.
+      <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginTop: '32px' }}>
+        <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, textAlign: 'center' }}>
+          💡 <strong>Using mock data</strong> - Ask Copilot to convert to live Office 365 APIs
         </Text>
       </Card>
     </div>
