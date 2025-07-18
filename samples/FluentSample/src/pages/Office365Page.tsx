@@ -271,7 +271,6 @@ export default function Office365Page() {
               
               <div style={{ borderTop: `1px solid ${tokens.colorNeutralStroke2}`, paddingTop: '12px', marginTop: '12px', fontSize: tokens.fontSizeBase200, color: tokens.colorNeutralForeground3 }}>
                 <div><strong>Account Status:</strong> {currentUser.AccountEnabled ? '✅ Active' : '❌ Disabled'}</div>
-                <div><strong>User ID:</strong> {currentUser.Id}</div>
               </div>
             </div>
           </Card>
