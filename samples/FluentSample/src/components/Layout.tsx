@@ -4,7 +4,10 @@ import {
   shorthands,
   Text,
   Button,
-  tokens
+  tokens,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbDivider
 } from '@fluentui/react-components';
 import { 
   HomeRegular,
@@ -16,7 +19,6 @@ import {
   CloudRegular,
   CloudFilled,
   NavigationRegular,
-  DismissRegular,
   WeatherMoonRegular,
   WeatherSunnyRegular
 } from '@fluentui/react-icons';
@@ -43,10 +45,12 @@ const useStyles = makeStyles({
     left: 0,
     height: '100vh',
     zIndex: 1000,
+    paddingTop: '76px',
     transition: 'transform 0.3s ease-in-out',
     '@media (max-width: 768px)': {
       width: '100vw',
       transform: 'translateX(-100%)',
+      paddingTop: '60px',
     },
   },
   sidebarVisible: {
@@ -94,21 +98,59 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '280px',
+    marginTop: '76px',
     width: 'calc(100vw - 280px)',
     '@media (max-width: 768px)': {
       marginLeft: 0,
+      marginTop: '60px',
       width: '100vw',
       paddingTop: '60px', // Account for mobile header
     },
   },
   contentCollapsed: {
     marginLeft: '60px',
+    marginTop: '76px',
     width: 'calc(100vw - 60px)',
     '@media (max-width: 768px)': {
       marginLeft: 0,
+      marginTop: '60px',
       width: '100vw',
       paddingTop: '60px',
     },
+  },
+  appHeader: {
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.borderBottom('1px', 'solid', tokens.colorNeutralStroke2),
+    ...shorthands.padding('16px', '24px'),
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1100,
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr auto',
+    alignItems: 'center',
+    minHeight: '60px',
+    boxShadow: tokens.shadow4,
+  },
+  headerLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  headerCenter: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerRight: {
+    // Reserved for future actions like user menu, etc.
+  },
+  pageTitle: {
+    fontSize: tokens.fontSizeBase500,
+    fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorNeutralForeground1,
+    marginLeft: '16px',
   },
   header: {
     display: 'flex',
@@ -226,6 +268,8 @@ const useStyles = makeStyles({
     marginTop: 'auto',
     ...shorthands.padding('12px'),
     borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
+    display: 'flex',
+    justifyContent: 'center',
   },
   footer: {
     ...shorthands.padding('16px', '24px'),
@@ -285,6 +329,13 @@ const navItems: NavItem[] = [
   },
 ];
 
+const routeNames: Record<string, string> = {
+  '/': 'Home',
+  '/office365': 'Office 365 Connector',
+  '/sql': 'SQL Database Connector', 
+  '/custom-api': 'Custom API Connector'
+};
+
 interface LayoutProps {
   children: ReactNode;
 }
@@ -295,6 +346,24 @@ export default function Layout({ children }: LayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
+
+  const getBreadcrumbs = () => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    const breadcrumbs = [{ path: '/', name: 'Home' }];
+    
+    let currentPath = '';
+    pathSegments.forEach(segment => {
+      currentPath += `/${segment}`;
+      const routeName = routeNames[currentPath];
+      if (routeName) {
+        breadcrumbs.push({ path: currentPath, name: routeName });
+      }
+    });
+    
+    return breadcrumbs;
+  };
+
+  const breadcrumbs = getBreadcrumbs();
 
   const handleMobileToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -314,21 +383,69 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className={styles.root}>
-      {/* Mobile Header */}
-      <div className={styles.mobileHeader}>
-        <Text className={styles.logo}>
+      {/* Fixed App Header with Hamburger, Breadcrumbs, and Centered Title */}
+      <header className={styles.appHeader}>
+        {/* Left Section: Hamburger + Breadcrumbs */}
+        <div className={styles.headerLeft}>
+          <Button
+            icon={<NavigationRegular />}
+            appearance="subtle"
+            onClick={() => setCollapsed(!collapsed)}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          />
+          <Breadcrumb aria-label="Breadcrumb navigation">
+            {breadcrumbs.map((crumb, index) => (
+              <div key={crumb.path} style={{ display: 'flex', alignItems: 'center' }}>
+                <BreadcrumbItem>
+                  {index === breadcrumbs.length - 1 ? (
+                    <Text weight="semibold">{crumb.name}</Text>
+                  ) : (
+                    <Link 
+                      to={crumb.path}
+                      style={{ 
+                        textDecoration: 'none',
+                        color: tokens.colorBrandForeground1
+                      }}
+                    >
+                      {crumb.name}
+                    </Link>
+                  )}
+                </BreadcrumbItem>
+                {index < breadcrumbs.length - 1 && <BreadcrumbDivider />}
+              </div>
+            ))}
+          </Breadcrumb>
+        </div>
+        
+        {/* Center Section: App Title with Logo */}
+        <div className={styles.headerCenter}>
           <img 
             src="/PowerApps_scalable.svg" 
             alt="Power Apps" 
             style={{ 
-              width: '20px', 
-              height: '20px', 
-              marginRight: '8px', 
-              verticalAlign: 'middle' 
+              width: '24px', 
+              height: '24px', 
+              marginRight: '12px' 
             }} 
           />
-          Sample Code App
-        </Text>
+          <Text 
+            weight="semibold"
+            size={500}
+            style={{ 
+              color: tokens.colorNeutralForeground1
+            }}
+          >
+            Sample Code App
+          </Text>
+        </div>
+        
+        {/* Right Section: Reserved for future actions */}
+        <div className={styles.headerRight}>
+          {/* Space for user menu, notifications, etc. */}
+        </div>
+      </header>
+      {/* Mobile Header */}
+      <div className={styles.mobileHeader}>
         <Button
           icon={<NavigationRegular />}
           appearance="subtle"
@@ -348,31 +465,6 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Sidebar */}
       <aside className={sidebarClassName}>
-        <div className={styles.header}>
-          {!collapsed && (
-            <Text className={styles.logo}>
-              <img 
-                src="/PowerApps_scalable.svg" 
-                alt="Power Apps" 
-                style={{ 
-                  width: '20px', 
-                  height: '20px', 
-                  marginRight: '8px', 
-                  verticalAlign: 'middle' 
-                }} 
-              />
-              Sample Code App
-            </Text>
-          )}
-          <Button
-            icon={collapsed ? <NavigationRegular /> : <DismissRegular />}
-            appearance="subtle"
-            className={styles.toggleButton}
-            onClick={() => setCollapsed(!collapsed)}
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          />
-        </div>
-        
         <nav style={{ flex: 1 }}>
           <ul className={styles.navList}>
             {navItems.map((item) => {
@@ -413,8 +505,9 @@ export default function Layout({ children }: LayoutProps) {
             onClick={toggleTheme}
             title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             style={{ 
-              width: '100%',
+              width: collapsed ? 'auto' : '100%',
               justifyContent: collapsed ? 'center' : 'flex-start',
+              minWidth: collapsed ? '40px' : 'auto',
             }}
           >
             {!collapsed && (isDarkMode ? 'Light Mode' : 'Dark Mode')}

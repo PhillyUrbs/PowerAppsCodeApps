@@ -48,7 +48,8 @@ const useStyles = makeStyles({
     lineHeight: tokens.lineHeightBase200,
   },
   searchBox: {
-    maxWidth: '400px',
+    maxWidth: '600px',
+    width: '100%',
     marginBottom: '16px',
   },
   eventCard: {

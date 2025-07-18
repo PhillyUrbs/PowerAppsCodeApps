@@ -1,11 +1,8 @@
 import { 
   Text, 
   Card, 
-  CardHeader,
-  CardPreview,
   makeStyles,
   shorthands,
-  Button,
   Link,
   tokens
 } from '@fluentui/react-components';
@@ -13,11 +10,9 @@ import {
   PeopleRegular,
   DatabaseRegular,
   CloudRegular,
-  ArrowRightRegular,
-  CodeRegular,
-  BookRegular
+  ArrowRightRegular
 } from '@fluentui/react-icons';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles({
   container: {
@@ -141,26 +136,9 @@ const connectorExamples = [
   },
 ];
 
-const templateFeatures = [
-  {
-    icon: <CodeRegular />,
-    title: 'Clean Code',
-    description: 'TypeScript code with Fluent UI components and responsive design',
-  },
-  {
-    icon: <BookRegular />,
-    title: 'Learning Focused',
-    description: 'Helpful comments and examples showing Power Apps best practices',
-  },
-  {
-    icon: <ArrowRightRegular />,
-    title: 'Easy Extension',
-    description: 'Replace mock data with real connectors using clear integration points',
-  },
-];
-
 export default function HomePage() {
   const styles = useStyles();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
@@ -182,62 +160,85 @@ export default function HomePage() {
         
         <div className={styles.grid}>
           {connectorExamples.map((example) => (
-            <Card key={example.path} className={styles.card}>
-              <CardPreview>
-                <div style={{ padding: '24px', textAlign: 'center' }}>
-                  <div className={styles.cardIcon}>{example.icon}</div>
+            <Card 
+              key={example.path} 
+              className={styles.card}
+              style={{ 
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              }}
+              onClick={() => navigate(example.path)}
+              onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = tokens.shadow16;
+              }}
+              onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = tokens.shadow4;
+              }}
+            >
+              <div style={{ padding: '24px', textAlign: 'center' }}>
+                <div className={styles.cardIcon}>{example.icon}</div>
+              </div>
+              
+              <div style={{ padding: '0 24px 24px' }}>
+                <Text 
+                  as="h3" 
+                  weight="semibold" 
+                  size={400}
+                  style={{ 
+                    display: 'block',
+                    marginBottom: '8px',
+                    color: tokens.colorNeutralForeground1 
+                  }}
+                >
+                  {example.title}
+                </Text>
+                
+                <Text 
+                  size={300}
+                  style={{ 
+                    display: 'block',
+                    marginBottom: '16px',
+                    color: tokens.colorNeutralForeground2,
+                    lineHeight: tokens.lineHeightBase300 
+                  }}
+                >
+                  {example.description}
+                </Text>
+                
+                <div style={{ marginBottom: '16px' }}>
+                  {example.features.map((feature, index) => (
+                    <Text
+                      key={index}
+                      size={200}
+                      style={{
+                        display: 'inline-block',
+                        padding: '4px 8px',
+                        margin: '2px',
+                        backgroundColor: tokens.colorNeutralBackground3,
+                        borderRadius: tokens.borderRadiusSmall,
+                        fontSize: '12px',
+                        color: tokens.colorNeutralForeground2,
+                      }}
+                    >
+                      {feature}
+                    </Text>
+                  ))}
                 </div>
-              </CardPreview>
-              <CardHeader>
-                <div style={{ padding: '0 24px 24px' }}>
-                  <h3 className={styles.cardTitle}>{example.title}</h3>
-                  <p className={styles.cardDescription}>{example.description}</p>
-                  
-                  <div style={{ marginBottom: '16px' }}>
-                    {example.features.map((feature, index) => (
-                      <Text
-                        key={index}
-                        size={200}
-                        style={{
-                          display: 'inline-block',
-                          padding: '4px 8px',
-                          margin: '2px',
-                          backgroundColor: tokens.colorNeutralBackground3,
-                          borderRadius: tokens.borderRadiusSmall,
-                          fontSize: '12px',
-                        }}
-                      >
-                        {feature}
-                      </Text>
-                    ))}
-                  </div>
-                  
-                  <Button
-                    as={RouterLink}
-                    to={example.path}
-                    appearance="primary"
-                    icon={<ArrowRightRegular />}
-                    iconPosition="after"
-                    className={styles.cardButton}
-                  >
-                    View Example
-                  </Button>
+                
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between',
+                  color: tokens.colorBrandForeground1,
+                  fontWeight: tokens.fontWeightSemibold,
+                  fontSize: tokens.fontSizeBase200,
+                }}>
+                  <span>Explore Example</span>
+                  <ArrowRightRegular />
                 </div>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Template Features Section */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Template Features</h2>
-        <div className={styles.featuresGrid}>
-          {templateFeatures.map((feature, index) => (
-            <Card key={index} className={styles.featureCard}>
-              <div className={styles.featureIcon}>{feature.icon}</div>
-              <h3 className={styles.featureTitle}>{feature.title}</h3>
-              <p className={styles.featureDescription}>{feature.description}</p>
+              </div>
             </Card>
           ))}
         </div>
