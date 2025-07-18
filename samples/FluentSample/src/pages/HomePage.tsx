@@ -122,10 +122,10 @@ const connectorExamples = [
   },
   {
     path: '/sql',
-    title: 'SQL Database Connector',
-    description: 'See CRUD operations, data grids, and pagination with mock SQL data. Perfect for learning database integration patterns and data management.',
+    title: 'SQL Database Connector Template',
+    description: 'Practice SQL database integration with this ready-to-use template featuring static data. Includes pagination, search, data generation, and professional UI patterns - perfect for learning before connecting to real databases.',
     icon: <DatabaseRegular />,
-    features: ['CRUD Operations', 'Data Grid', 'Pagination', 'Search & Filter'],
+    features: ['Template Mode', 'Static Data', 'Pagination & Search', 'Easy Real Data Migration'],
   },
   {
     path: '/custom-api',
