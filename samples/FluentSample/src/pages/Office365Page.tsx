@@ -1,7 +1,7 @@
 import { Text, Card, makeStyles, shorthands, tokens, Input, Badge, Spinner, Avatar } from '@fluentui/react-components';
 import { PeopleRegular, SearchRegular, PersonRegular } from '@fluentui/react-icons';
 import PageHeader from '../components/PageHeader';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 // TODO: Replace with live Office365UsersService when connecting to real data
 // import { Office365UsersService } from '../Services/Office365UsersService';
 import * as mockData from '../mockData/office365Data';
@@ -123,7 +123,7 @@ export default function Office365Page() {
   };
 
   // Helper function to load user photos
-  const loadPhotosForUsers = async (newUsers: User[]) => {
+  const loadPhotosForUsers = useCallback(async (newUsers: User[]) => {
     const photoPromises = newUsers.map(async (user: User) => {
       const photo = await loadUserPhoto(user.Id);
       return { userId: user.Id, photo };
@@ -138,7 +138,7 @@ export default function Office365Page() {
     });
     
     setUserPhotos(prev => ({ ...prev, ...photoMap }));
-  };
+  }, []);
 
   // Search users with simple SearchUser approach
   useEffect(() => {
@@ -194,7 +194,7 @@ export default function Office365Page() {
     // Add debouncing to avoid too many API calls
     const debounceTimer = setTimeout(searchUsers, 500);
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm]);
+  }, [searchTerm, loadPhotosForUsers]);
 
   return (
     <div className={styles.container}>
