@@ -244,7 +244,7 @@ const SqlPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // TODO: Replace with actual SQL data from Power Apps SDK
-  const allProjects: ProjectItem[] = [
+  const allProjects = useMemo(() => [
     {
       ProjectId: 1,
       Name: "Website Redesign",
@@ -305,7 +305,7 @@ const SqlPage: React.FC = () => {
       TeamSize: 6,
       OwnerId: 105
     }
-  ];
+  ], []);
 
   // Filter projects based on search term
   const filteredProjects = useMemo(() => {
