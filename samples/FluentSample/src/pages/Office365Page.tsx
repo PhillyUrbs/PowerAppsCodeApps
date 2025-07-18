@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 // TODO: Replace with live Office365UsersService when connecting to real data
 // import { Office365UsersService } from '../Services/Office365UsersService';
 import * as mockData from '../mockData/office365Data';
-import type { User } from '../Models/Office365UsersModel';
+import type { User } from '../mockData/office365Data';
 
 const useStyles = makeStyles({
   container: {

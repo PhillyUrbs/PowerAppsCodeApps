@@ -316,7 +316,7 @@ const navItems: NavItem[] = [
   {
     path: '/sql',
     label: 'SQL Database',
-    description: 'CRUD operations and data grid',
+    description: 'Project management with DataGrid',
     icon: <DatabaseRegular />,
     iconFilled: <DatabaseFilled />,
   },

@@ -2,7 +2,27 @@
 // This file demonstrates the data structure expected from Office 365 Users connector
 // The data structure matches the live Office365UsersService.User interface
 
-import type { User } from '../Models/Office365UsersModel';
+// TODO: Replace this mock interface with the actual Office 365 User type from Power Apps SDK
+export interface User {
+  Id: string;
+  AccountEnabled: boolean;
+  BusinessPhones: string[];
+  City: string;
+  CompanyName: string;
+  Country: string;
+  Department: string;
+  DisplayName: string;
+  GivenName: string;
+  JobTitle: string;
+  Mail: string;
+  MailNickname: string;
+  mobilePhone?: string;
+  OfficeLocation: string;
+  PostalCode: string;
+  Surname: string;
+  TelephoneNumber: string;
+  UserPrincipalName: string;
+}
 
 // Mock user profiles that match the Office 365 User interface
 export const mockUsers: User[] = [
