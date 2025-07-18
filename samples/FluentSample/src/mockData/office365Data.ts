@@ -1,146 +1,258 @@
-// Mock data for Office 365 connector examples
-// This file demonstrates the data structure expected from Office 365 connectors
-// Replace this mock data with real Office 365 connector calls in your implementation
+// Mock data for Office 365 Users connector
+// This file demonstrates the data structure expected from Office 365 Users connector
+// The data structure matches the live Office365UsersService.User interface
 
-export interface MockUser {
-  id: string;
-  displayName: string;
-  mail: string;
-  jobTitle: string;
-  department: string;
-  officeLocation: string;
-  mobilePhone: string;
-  businessPhones: string[];
-}
+import type { User } from '../Models/Office365UsersModel';
 
-export interface MockCalendarEvent {
-  id: string;
-  subject: string;
-  start: { dateTime: string; timeZone: string };
-  end: { dateTime: string; timeZone: string };
-  location: { displayName: string };
-  organizer: { emailAddress: { name: string; address: string } };
-  attendees: Array<{ emailAddress: { name: string; address: string } }>;
-}
-
-export interface MockEmail {
-  id: string;
-  subject: string;
-  from: { emailAddress: { name: string; address: string } };
-  receivedDateTime: string;
-  bodyPreview: string;
-  isRead: boolean;
-  importance: 'low' | 'normal' | 'high';
-}
-
-// Mock user profiles (50+ entries for realistic pagination)
-export const mockUsers: MockUser[] = [
+// Mock user profiles that match the Office 365 User interface
+export const mockUsers: User[] = [
   {
-    id: "1",
-    displayName: "Alex Johnson",
-    mail: "alex.johnson@contoso.com",
-    jobTitle: "Software Engineer",
-    department: "Engineering",
-    officeLocation: "Seattle, WA",
-    mobilePhone: "+1 555-0101",
-    businessPhones: ["+1 555-0201"]
+    Id: "550e8400-e29b-41d4-a716-446655440001",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (425) 555-0100"],
+    City: "Seattle",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Engineering",
+    DisplayName: "Alex Johnson",
+    GivenName: "Alex",
+    JobTitle: "Senior Software Engineer",
+    Mail: "alex.johnson@contoso.com",
+    MailNickname: "alexj",
+    mobilePhone: "+1 (425) 555-0101",
+    OfficeLocation: "Building 1, Floor 3",
+    PostalCode: "98052",
+    Surname: "Johnson",
+    TelephoneNumber: "+1 (425) 555-0100",
+    UserPrincipalName: "alex.johnson@contoso.com"
   },
   {
-    id: "2",
-    displayName: "Sarah Chen",
-    mail: "sarah.chen@contoso.com",
-    jobTitle: "Product Manager",
-    department: "Product",
-    officeLocation: "San Francisco, CA",
-    mobilePhone: "+1 555-0102",
-    businessPhones: ["+1 555-0202"]
+    Id: "550e8400-e29b-41d4-a716-446655440002",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (415) 555-0200"],
+    City: "San Francisco",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Product Management",
+    DisplayName: "Sarah Chen",
+    GivenName: "Sarah",
+    JobTitle: "Senior Product Manager",
+    Mail: "sarah.chen@contoso.com",
+    MailNickname: "sarahc",
+    mobilePhone: "+1 (415) 555-0201",
+    OfficeLocation: "Building A, Floor 5",
+    PostalCode: "94105",
+    Surname: "Chen",
+    TelephoneNumber: "+1 (415) 555-0200",
+    UserPrincipalName: "sarah.chen@contoso.com"
   },
   {
-    id: "3",
-    displayName: "Michael Rodriguez",
-    mail: "michael.rodriguez@contoso.com",
-    jobTitle: "UX Designer",
-    department: "Design",
-    officeLocation: "Austin, TX",
-    mobilePhone: "+1 555-0103",
-    businessPhones: ["+1 555-0203"]
-  },
-  // Add more users for pagination testing...
-  ...Array.from({ length: 47 }, (_, i) => ({
-    id: `${i + 4}`,
-    displayName: `User ${i + 4}`,
-    mail: `user${i + 4}@contoso.com`,
-    jobTitle: ['Engineer', 'Manager', 'Designer', 'Analyst'][i % 4],
-    department: ['Engineering', 'Sales', 'Marketing', 'HR'][i % 4],
-    officeLocation: ['Seattle, WA', 'New York, NY', 'Los Angeles, CA'][i % 3],
-    mobilePhone: `+1 555-0${(i + 4).toString().padStart(3, '0')}`,
-    businessPhones: [`+1 555-0${(i + 4 + 100).toString().padStart(3, '0')}`]
-  }))
-];
-
-// Mock calendar events
-export const mockCalendarEvents: MockCalendarEvent[] = [
-  {
-    id: "evt1",
-    subject: "Team Standup",
-    start: { dateTime: "2025-07-18T09:00:00", timeZone: "Pacific Standard Time" },
-    end: { dateTime: "2025-07-18T09:30:00", timeZone: "Pacific Standard Time" },
-    location: { displayName: "Conference Room A" },
-    organizer: { emailAddress: { name: "Alex Johnson", address: "alex.johnson@contoso.com" } },
-    attendees: [
-      { emailAddress: { name: "Sarah Chen", address: "sarah.chen@contoso.com" } },
-      { emailAddress: { name: "Michael Rodriguez", address: "michael.rodriguez@contoso.com" } }
-    ]
+    Id: "550e8400-e29b-41d4-a716-446655440003",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (512) 555-0300"],
+    City: "Austin",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Design",
+    DisplayName: "Michael Rodriguez",
+    GivenName: "Michael",
+    JobTitle: "Principal UX Designer",
+    Mail: "michael.rodriguez@contoso.com",
+    MailNickname: "michaelr",
+    mobilePhone: "+1 (512) 555-0301",
+    OfficeLocation: "Building C, Floor 2",
+    PostalCode: "78701",
+    Surname: "Rodriguez",
+    TelephoneNumber: "+1 (512) 555-0300",
+    UserPrincipalName: "michael.rodriguez@contoso.com"
   },
   {
-    id: "evt2",
-    subject: "Product Review",
-    start: { dateTime: "2025-07-18T14:00:00", timeZone: "Pacific Standard Time" },
-    end: { dateTime: "2025-07-18T15:00:00", timeZone: "Pacific Standard Time" },
-    location: { displayName: "Meeting Room B" },
-    organizer: { emailAddress: { name: "Sarah Chen", address: "sarah.chen@contoso.com" } },
-    attendees: [
-      { emailAddress: { name: "Alex Johnson", address: "alex.johnson@contoso.com" } }
-    ]
-  }
-];
-
-// Mock emails
-export const mockEmails: MockEmail[] = [
-  {
-    id: "mail1",
-    subject: "Project Update Required",
-    from: { emailAddress: { name: "Sarah Chen", address: "sarah.chen@contoso.com" } },
-    receivedDateTime: "2025-07-17T10:30:00Z",
-    bodyPreview: "Hi team, please provide updates on your current projects by EOD...",
-    isRead: false,
-    importance: "high"
+    Id: "550e8400-e29b-41d4-a716-446655440004",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (206) 555-0400"],
+    City: "Seattle",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Marketing",
+    DisplayName: "Emily Davis",
+    GivenName: "Emily",
+    JobTitle: "Marketing Director",
+    Mail: "emily.davis@contoso.com",
+    MailNickname: "emilyd",
+    mobilePhone: "+1 (206) 555-0401",
+    OfficeLocation: "Building 2, Floor 4",
+    PostalCode: "98052",
+    Surname: "Davis",
+    TelephoneNumber: "+1 (206) 555-0400",
+    UserPrincipalName: "emily.davis@contoso.com"
   },
   {
-    id: "mail2",
-    subject: "Welcome to the team!",
-    from: { emailAddress: { name: "HR Team", address: "hr@contoso.com" } },
-    receivedDateTime: "2025-07-17T08:00:00Z",
-    bodyPreview: "Welcome to Contoso! We're excited to have you join our team...",
-    isRead: true,
-    importance: "normal"
+    Id: "550e8400-e29b-41d4-a716-446655440005",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (212) 555-0500"],
+    City: "New York",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Sales",
+    DisplayName: "David Wilson",
+    GivenName: "David",
+    JobTitle: "Sales Manager",
+    Mail: "david.wilson@contoso.com",
+    MailNickname: "davidw",
+    mobilePhone: "+1 (212) 555-0501",
+    OfficeLocation: "Building North, Floor 10",
+    PostalCode: "10001",
+    Surname: "Wilson",
+    TelephoneNumber: "+1 (212) 555-0500",
+    UserPrincipalName: "david.wilson@contoso.com"
+  },
+  {
+    Id: "550e8400-e29b-41d4-a716-446655440006",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (425) 555-0600"],
+    City: "Redmond",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Human Resources",
+    DisplayName: "Lisa Thompson",
+    GivenName: "Lisa",
+    JobTitle: "HR Business Partner",
+    Mail: "lisa.thompson@contoso.com",
+    MailNickname: "lisat",
+    mobilePhone: "+1 (425) 555-0601",
+    OfficeLocation: "Building 4, Floor 1",
+    PostalCode: "98052",
+    Surname: "Thompson",
+    TelephoneNumber: "+1 (425) 555-0600",
+    UserPrincipalName: "lisa.thompson@contoso.com"
+  },
+  {
+    Id: "550e8400-e29b-41d4-a716-446655440007",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (310) 555-0700"],
+    City: "Los Angeles",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Engineering",
+    DisplayName: "James Anderson",
+    GivenName: "James",
+    JobTitle: "DevOps Engineer",
+    Mail: "james.anderson@contoso.com",
+    MailNickname: "jamesa",
+    mobilePhone: "+1 (310) 555-0701",
+    OfficeLocation: "Building West, Floor 3",
+    PostalCode: "90210",
+    Surname: "Anderson",
+    TelephoneNumber: "+1 (310) 555-0700",
+    UserPrincipalName: "james.anderson@contoso.com"
+  },
+  {
+    Id: "550e8400-e29b-41d4-a716-446655440008",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (415) 555-0800"],
+    City: "San Francisco",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Finance",
+    DisplayName: "Jennifer Martinez",
+    GivenName: "Jennifer",
+    JobTitle: "Financial Analyst",
+    Mail: "jennifer.martinez@contoso.com",
+    MailNickname: "jenniferm",
+    mobilePhone: "+1 (415) 555-0801",
+    OfficeLocation: "Building A, Floor 8",
+    PostalCode: "94105",
+    Surname: "Martinez",
+    TelephoneNumber: "+1 (415) 555-0800",
+    UserPrincipalName: "jennifer.martinez@contoso.com"
+  },
+  {
+    Id: "550e8400-e29b-41d4-a716-446655440009",
+    AccountEnabled: false,
+    BusinessPhones: ["+1 (206) 555-0900"],
+    City: "Seattle",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "IT",
+    DisplayName: "Robert Taylor",
+    GivenName: "Robert",
+    JobTitle: "IT Administrator",
+    Mail: "robert.taylor@contoso.com",
+    MailNickname: "robertt",
+    mobilePhone: "+1 (206) 555-0901",
+    OfficeLocation: "Building 3, Floor 1",
+    PostalCode: "98052",
+    Surname: "Taylor",
+    TelephoneNumber: "+1 (206) 555-0900",
+    UserPrincipalName: "robert.taylor@contoso.com"
+  },
+  {
+    Id: "550e8400-e29b-41d4-a716-446655440010",
+    AccountEnabled: true,
+    BusinessPhones: ["+1 (512) 555-1000"],
+    City: "Austin",
+    CompanyName: "Contoso Corporation",
+    Country: "United States",
+    Department: "Legal",
+    DisplayName: "Maria Garcia",
+    GivenName: "Maria",
+    JobTitle: "Legal Counsel",
+    Mail: "maria.garcia@contoso.com",
+    MailNickname: "mariag",
+    mobilePhone: "+1 (512) 555-1001",
+    OfficeLocation: "Building C, Floor 6",
+    PostalCode: "78701",
+    Surname: "Garcia",
+    TelephoneNumber: "+1 (512) 555-1000",
+    UserPrincipalName: "maria.garcia@contoso.com"
   }
 ];
 
 // Helper functions for mock data manipulation
-export const getUserById = (id: string): MockUser | undefined => {
-  return mockUsers.find(user => user.id === id);
+export const getUserById = (id: string): User | undefined => {
+  return mockUsers.find(user => user.Id === id);
 };
 
-export const searchUsers = (query: string): MockUser[] => {
+export const searchUsers = (query: string, top: number = 50): User[] => {
+  if (!query.trim()) {
+    return [];
+  }
+  
   const lowercaseQuery = query.toLowerCase();
-  return mockUsers.filter(user => 
-    user.displayName.toLowerCase().includes(lowercaseQuery) ||
-    user.mail.toLowerCase().includes(lowercaseQuery) ||
-    user.department.toLowerCase().includes(lowercaseQuery)
+  const filtered = mockUsers.filter(user => 
+    user.DisplayName?.toLowerCase().includes(lowercaseQuery) ||
+    user.Mail?.toLowerCase().includes(lowercaseQuery) ||
+    user.Department?.toLowerCase().includes(lowercaseQuery) ||
+    user.JobTitle?.toLowerCase().includes(lowercaseQuery) ||
+    user.GivenName?.toLowerCase().includes(lowercaseQuery) ||
+    user.Surname?.toLowerCase().includes(lowercaseQuery)
   );
+  
+  return filtered.slice(0, top);
 };
 
-export const getUsersByDepartment = (department: string): MockUser[] => {
-  return mockUsers.filter(user => user.department === department);
+export const getUsersByDepartment = (department: string): User[] => {
+  return mockUsers.filter(user => user.Department === department);
+};
+
+// Mock current user (for MyProfile functionality)
+export const mockCurrentUser: User = {
+  Id: "550e8400-e29b-41d4-a716-446655440001",
+  AccountEnabled: true,
+  BusinessPhones: ["+1 (425) 555-0100"],
+  City: "Seattle",
+  CompanyName: "Contoso Corporation",
+  Country: "United States",
+  Department: "Engineering",
+  DisplayName: "Alex Johnson",
+  GivenName: "Alex",
+  JobTitle: "Senior Software Engineer",
+  Mail: "alex.johnson@contoso.com",
+  MailNickname: "alexj",
+  mobilePhone: "+1 (425) 555-0101",
+  OfficeLocation: "Building 1, Floor 3",
+  PostalCode: "98052",
+  Surname: "Johnson",
+  TelephoneNumber: "+1 (425) 555-0100",
+  UserPrincipalName: "alex.johnson@contoso.com"
 };

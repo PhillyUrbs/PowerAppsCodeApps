@@ -1,8 +1,11 @@
-import { Text, Card, makeStyles, shorthands, tokens, Input, Badge } from '@fluentui/react-components';
-import { PeopleRegular, CalendarRegular, MailRegular, SearchRegular } from '@fluentui/react-icons';
+import { Text, Card, makeStyles, shorthands, tokens, Input, Badge, Spinner, Avatar } from '@fluentui/react-components';
+import { PeopleRegular, SearchRegular, PersonRegular } from '@fluentui/react-icons';
 import PageHeader from '../components/PageHeader';
-import { mockUsers, mockCalendarEvents, mockEmails } from '../mockData/office365Data';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+// TODO: Replace with live Office365UsersService when connecting to real data
+// import { Office365UsersService } from '../Services/Office365UsersService';
+import * as mockData from '../mockData/office365Data';
+import type { User } from '../Models/Office365UsersModel';
 
 const useStyles = makeStyles({
   container: {
@@ -36,6 +39,12 @@ const useStyles = makeStyles({
     ...shorthands.padding('16px'),
     height: 'fit-content',
   },
+  userCardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    ...shorthands.gap('12px'),
+    marginBottom: '8px',
+  },
   userName: {
     fontSize: tokens.fontSizeBase300,
     fontWeight: tokens.fontWeightSemibold,
@@ -52,42 +61,6 @@ const useStyles = makeStyles({
     width: '100%',
     marginBottom: '16px',
   },
-  eventCard: {
-    ...shorthands.padding('16px'),
-    marginBottom: '12px',
-  },
-  eventTitle: {
-    fontSize: tokens.fontSizeBase300,
-    fontWeight: tokens.fontWeightSemibold,
-    color: tokens.colorNeutralForeground1,
-    marginBottom: '8px',
-  },
-  eventDetails: {
-    fontSize: tokens.fontSizeBase200,
-    color: tokens.colorNeutralForeground2,
-    lineHeight: tokens.lineHeightBase200,
-  },
-  emailCard: {
-    ...shorthands.padding('16px'),
-    marginBottom: '12px',
-    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
-  },
-  emailHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: '8px',
-  },
-  emailSubject: {
-    fontSize: tokens.fontSizeBase300,
-    fontWeight: tokens.fontWeightSemibold,
-    color: tokens.colorNeutralForeground1,
-  },
-  emailPreview: {
-    fontSize: tokens.fontSizeBase200,
-    color: tokens.colorNeutralForeground2,
-    lineHeight: tokens.lineHeightBase200,
-  },
   mockDataBadge: {
     marginBottom: '16px',
   },
@@ -96,31 +69,212 @@ const useStyles = makeStyles({
 export default function Office365Page() {
   const styles = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [userPhotos, setUserPhotos] = useState<Record<string, string>>({});
 
-  // Filter users based on search term
-  const filteredUsers = mockUsers.filter(user =>
-    user.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Load current user profile
+  useEffect(() => {
+    const loadCurrentUser = async () => {
+      try {
+        // TODO: Replace with live Office365UsersService.MyProfile() when connecting to real data
+        // const result = await Office365UsersService.MyProfile();
+        // if (result.data) {
+        //   setCurrentUser(result.data);
+        //   // Load the current user's photo
+        //   const photo = await loadUserPhoto(result.data.Id);
+        //   if (photo) {
+        //     setUserPhotos(prev => ({ ...prev, [result.data.Id]: photo }));
+        //   }
+        // }
+        
+        // Using mock data for demonstration
+        setCurrentUser(mockData.mockCurrentUser);
+        // Mock users don't have real photos, so we'll simulate loading
+        console.log('Loaded current user profile (mock data):', mockData.mockCurrentUser.DisplayName);
+      } catch (error) {
+        console.error('Error loading current user:', error);
+        // Fallback: show message that Office 365 connection is available but may need permissions
+      }
+    };
+    loadCurrentUser();
+  }, []);
 
-  // Show recent calendar events (next 5)
-  const recentEvents = mockCalendarEvents.slice(0, 5);
+  // Load user photo
+  const loadUserPhoto = async (userId: string): Promise<string | null> => {
+    try {
+      // TODO: Replace with live Office365UsersService.UserPhoto() when connecting to real data
+      // const result = await Office365UsersService.UserPhoto(userId);
+      // if (result.data) {
+      //   // The photo comes as base64 data, create a data URL
+      //   return `data:image/jpeg;base64,${result.data}`;
+      // }
+      
+      // For mock data, we don't have real photos
+      // In a real implementation, this would fetch actual user photos
+      console.log(`Mock: Would load photo for user ${userId}`);
+    } catch (error) {
+      console.error(`Error loading photo for user ${userId}:`, error);
+    }
+    return null;
+  };
 
-  // Show recent emails (first 5)
-  const recentEmails = mockEmails.slice(0, 5);
+  // Helper function to load user photos
+  const loadPhotosForUsers = async (newUsers: User[]) => {
+    const photoPromises = newUsers.map(async (user: User) => {
+      const photo = await loadUserPhoto(user.Id);
+      return { userId: user.Id, photo };
+    });
+    
+    const photoResults = await Promise.all(photoPromises);
+    const photoMap: Record<string, string> = {};
+    photoResults.forEach(({ userId, photo }: { userId: string, photo: string | null }) => {
+      if (photo) {
+        photoMap[userId] = photo;
+      }
+    });
+    
+    setUserPhotos(prev => ({ ...prev, ...photoMap }));
+  };
+
+  // Search users with simple SearchUser approach
+  useEffect(() => {
+    const searchUsers = async () => {
+      // If search term is empty, clear users and don't search
+      if (!searchTerm.trim()) {
+        setUsers([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setUsers([]); // Clear existing users when starting new search
+      
+      try {
+        console.log('Searching users with term:', searchTerm);
+        
+        // TODO: Replace with live Office365UsersService.SearchUser() when connecting to real data
+        // const pageSize = 50;
+        // const result = await Office365UsersService.SearchUser(
+        //   searchTerm.trim(),
+        //   pageSize
+        // );
+        // 
+        // if (result.success && result.data) {
+        //   setUsers(result.data);
+        //   console.log('Users loaded:', result.data.length);
+        //   
+        //   // Load photos for the users
+        //   await loadPhotosForUsers(result.data);
+        // } else {
+        //   console.error('Search failed:', result.errorMessage);
+        //   setUsers([]);
+        // }
+        
+        // Using mock data for demonstration
+        const pageSize = 50;
+        const mockResults = mockData.searchUsers(searchTerm.trim(), pageSize);
+        setUsers(mockResults);
+        console.log('Users loaded (mock data):', mockResults.length);
+        
+        // Simulate photo loading (no actual photos in mock data)
+        await loadPhotosForUsers(mockResults);
+        
+      } catch (error) {
+        console.error('Error searching users:', error);
+        setUsers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    // Add debouncing to avoid too many API calls
+    const debounceTimer = setTimeout(searchUsers, 500);
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]);
 
   return (
     <div className={styles.container}>
       <PageHeader
         title="Office 365 Connector Example"
-        subtitle="This page demonstrates Office 365 connector patterns with user profiles, calendar events, and email integration using comprehensive mock data."
+        subtitle="This page demonstrates Office 365 connector integration with user profiles and organizational directory data. Currently using mock data - use GitHub Copilot to help convert to live Office 365 connector integration."
         icon={<PeopleRegular />}
       />
 
-      <Badge className={styles.mockDataBadge} appearance="tint" color="brand">
-        🎭 Using Mock Data - Replace with real Office 365 connectors
-      </Badge>
+      {currentUser ? (
+        <Badge className={styles.mockDataBadge} appearance="tint" color="important">
+          📋 Demo Mode - Using Mock Data (Welcome, {currentUser.DisplayName}!)
+        </Badge>
+      ) : (
+        <Badge className={styles.mockDataBadge} appearance="tint" color="brand">
+          🔄 Loading user data...
+        </Badge>
+      )}
+
+      {/* Current User Profile Section */}
+      {currentUser && (
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <PersonRegular className={styles.sectionIcon} />
+            <h3 className={styles.sectionTitle}>My Profile</h3>
+          </div>
+          
+          <Card className={styles.userCard} style={{ maxWidth: '600px' }}>
+            <div className={styles.userCardHeader}>
+              <Avatar
+                name={currentUser.DisplayName}
+                size={64}
+                image={userPhotos[currentUser.Id] ? { src: userPhotos[currentUser.Id] } : undefined}
+              />
+              <div>
+                <div className={styles.userName} style={{ fontSize: tokens.fontSizeBase400 }}>
+                  {currentUser.DisplayName}
+                </div>
+                <div style={{ fontSize: tokens.fontSizeBase300, color: tokens.colorNeutralForeground2, fontWeight: tokens.fontWeightMedium }}>
+                  {currentUser.JobTitle}
+                </div>
+              </div>
+            </div>
+            <div className={styles.userDetails}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                <div>
+                  <div><strong>Email:</strong> {currentUser.Mail || 'Not available'}</div>
+                  <div><strong>User Principal:</strong> {currentUser.UserPrincipalName || 'Not available'}</div>
+                  <div><strong>Department:</strong> {currentUser.Department || 'Not specified'}</div>
+                  <div><strong>Company:</strong> {currentUser.CompanyName || 'Not specified'}</div>
+                </div>
+                <div>
+                  <div><strong>Office:</strong> {currentUser.OfficeLocation || 'Not specified'}</div>
+                  <div><strong>Mobile:</strong> {currentUser.mobilePhone || 'Not available'}</div>
+                  <div><strong>Business Phone:</strong> {currentUser.BusinessPhones?.length ? currentUser.BusinessPhones[0] : 'Not available'}</div>
+                  <div><strong>City:</strong> {currentUser.City || 'Not specified'}</div>
+                </div>
+              </div>
+              
+              {(currentUser.GivenName || currentUser.Surname || currentUser.Country || currentUser.PostalCode) && (
+                <div style={{ borderTop: `1px solid ${tokens.colorNeutralStroke2}`, paddingTop: '12px', marginTop: '12px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      {currentUser.GivenName && <div><strong>First Name:</strong> {currentUser.GivenName}</div>}
+                      {currentUser.Surname && <div><strong>Last Name:</strong> {currentUser.Surname}</div>}
+                    </div>
+                    <div>
+                      {currentUser.Country && <div><strong>Country:</strong> {currentUser.Country}</div>}
+                      {currentUser.PostalCode && <div><strong>Postal Code:</strong> {currentUser.PostalCode}</div>}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div style={{ borderTop: `1px solid ${tokens.colorNeutralStroke2}`, paddingTop: '12px', marginTop: '12px', fontSize: tokens.fontSizeBase200, color: tokens.colorNeutralForeground3 }}>
+                <div><strong>Account Status:</strong> {currentUser.AccountEnabled ? '✅ Active' : '❌ Disabled'}</div>
+                <div><strong>User ID:</strong> {currentUser.Id}</div>
+              </div>
+            </div>
+          </Card>
+        </section>
+      )}
 
       {/* Users Section */}
       <section className={styles.section}>
@@ -131,88 +285,89 @@ export default function Office365Page() {
         
         <Input
           className={styles.searchBox}
-          placeholder="Search users by name, department, or role..."
+          placeholder="Enter a search term to find users in your organization..."
           contentBefore={<SearchRegular />}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <div className={styles.grid}>
-          {filteredUsers.slice(0, 8).map((user) => (
-            <Card key={user.id} className={styles.userCard}>
-              <div className={styles.userName}>{user.displayName}</div>
+          {loading && users.length === 0 && (
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+              <Spinner size="medium" label="Loading users..." />
+            </div>
+          )}
+          {users.map((user: User) => (
+            <Card key={user.Id} className={styles.userCard}>
+              <div className={styles.userCardHeader}>
+                <Avatar
+                  name={user.DisplayName}
+                  size={48}
+                  image={userPhotos[user.Id] ? { src: userPhotos[user.Id] } : undefined}
+                />
+                <div>
+                  <div className={styles.userName}>{user.DisplayName}</div>
+                  <div style={{ fontSize: tokens.fontSizeBase200, color: tokens.colorNeutralForeground2 }}>
+                    {user.JobTitle || 'No title specified'}
+                  </div>
+                </div>
+              </div>
               <div className={styles.userDetails}>
-                <div>{user.jobTitle}</div>
-                <div>{user.department}</div>
-                <div>{user.mail}</div>
-                <div>{user.officeLocation}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '12px' }}>
+                  <div>
+                    <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Email:</strong> {user.Mail || 'Not available'}</div>
+                    <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Department:</strong> {user.Department || 'Not specified'}</div>
+                    <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Office:</strong> {user.OfficeLocation || 'Not specified'}</div>
+                    {user.mobilePhone && <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Mobile:</strong> {user.mobilePhone}</div>}
+                    {user.BusinessPhones?.length && <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Business Phone:</strong> {user.BusinessPhones[0]}</div>}
+                  </div>
+                </div>
+                
+                {(user.CompanyName || user.City || user.Country) && (
+                  <div style={{ borderTop: `1px solid ${tokens.colorNeutralStroke2}`, paddingTop: '8px', marginTop: '8px' }}>
+                    {user.CompanyName && <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Company:</strong> {user.CompanyName}</div>}
+                    {user.City && <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>City:</strong> {user.City}</div>}
+                    {user.Country && <div style={{ fontSize: tokens.fontSizeBase200 }}><strong>Country:</strong> {user.Country}</div>}
+                  </div>
+                )}
+                
+                <div style={{ borderTop: `1px solid ${tokens.colorNeutralStroke2}`, paddingTop: '8px', marginTop: '8px', fontSize: tokens.fontSizeBase100, color: tokens.colorNeutralForeground3 }}>
+                  <div><strong>Status:</strong> {user.AccountEnabled ? '✅ Active' : '❌ Disabled'}</div>
+                </div>
               </div>
             </Card>
           ))}
+          {!loading && !searchTerm.trim() && (
+            <div style={{ padding: '20px', textAlign: 'center', color: tokens.colorNeutralForeground2 }}>
+              <SearchRegular style={{ fontSize: '48px', marginBottom: '8px' }} />
+              <div>Enter a search term to find users in your organization</div>
+            </div>
+          )}
+          {!loading && searchTerm && users.length === 0 && (
+            <div style={{ padding: '20px', textAlign: 'center', color: tokens.colorNeutralForeground2 }}>
+              <PersonRegular style={{ fontSize: '48px', marginBottom: '8px' }} />
+              <div>No users found for "{searchTerm}"</div>
+            </div>
+          )}
         </div>
         
-        {filteredUsers.length > 8 && (
-          <Text style={{ marginTop: '16px', color: tokens.colorNeutralForeground2 }}>
-            Showing 8 of {filteredUsers.length} users. Search to filter results.
+        {users.length > 0 && (
+          <Text style={{ marginTop: '16px', color: tokens.colorNeutralForeground2, textAlign: 'center', display: 'block' }}>
+            Showing {users.length} users
           </Text>
         )}
-      </section>
-
-      {/* Calendar Section */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <CalendarRegular className={styles.sectionIcon} />
-          <h3 className={styles.sectionTitle}>Upcoming Calendar Events</h3>
-        </div>
-
-        {recentEvents.map((event) => (
-          <Card key={event.id} className={styles.eventCard}>
-            <div className={styles.eventTitle}>{event.subject}</div>
-            <div className={styles.eventDetails}>
-              <div>📅 {new Date(event.start.dateTime).toLocaleDateString()} at {new Date(event.start.dateTime).toLocaleTimeString()}</div>
-              <div>📍 {event.location.displayName}</div>
-              <div>👤 Organizer: {event.organizer.emailAddress.name}</div>
-              {event.attendees.length > 0 && (
-                <div>👥 {event.attendees.length} attendees</div>
-              )}
-            </div>
-          </Card>
-        ))}
-      </section>
-
-      {/* Email Section */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <MailRegular className={styles.sectionIcon} />
-          <h3 className={styles.sectionTitle}>Recent Emails</h3>
-        </div>
-
-        {recentEmails.map((email) => (
-          <Card key={email.id} className={styles.emailCard}>
-            <div className={styles.emailHeader}>
-              <div className={styles.emailSubject}>{email.subject}</div>
-              <Badge appearance={email.importance === 'high' ? 'filled' : 'tint'} color={email.importance === 'high' ? 'danger' : 'brand'}>
-                {email.importance}
-              </Badge>
-            </div>
-            <div className={styles.emailPreview}>
-              <div>From: {email.from.emailAddress.name}</div>
-              <div>Received: {new Date(email.receivedDateTime).toLocaleString()}</div>
-              <div style={{ marginTop: '8px' }}>{email.bodyPreview}</div>
-            </div>
-          </Card>
-        ))}
       </section>
 
       {/* Integration Note */}
       <Card style={{ padding: '24px', backgroundColor: tokens.colorNeutralBackground2, marginTop: '32px' }}>
         <Text weight="semibold" style={{ display: 'block', marginBottom: '12px', color: tokens.colorNeutralForeground1 }}>
-          🔗 Integration Points
+          � Sample Integration Status
         </Text>
         <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300 }}>
-          To connect real Office 365 data, replace the mock data imports with actual Office 365 connector calls. 
-          Key integration points: User Directory API, Calendar API, and Mail API. The UI components are ready 
-          to receive real data with the same structure as the mock data.
+          This page demonstrates Office 365 connector integration patterns using mock data. To connect to real Office 365 data, 
+          use GitHub Copilot to help convert the mock data calls to live Office365UsersService APIs. The code structure is ready 
+          for live Office365UsersService.SearchUser() and MyProfile() APIs - simply ask Copilot to replace the mock data usage 
+          with real connector calls. This provides a solid foundation for user management applications built on Power Apps Code Apps.
         </Text>
       </Card>
     </div>

@@ -309,7 +309,7 @@ const navItems: NavItem[] = [
   {
     path: '/office365',
     label: 'Office 365',
-    description: 'User profiles and calendar',
+    description: 'User profiles and directory',
     icon: <PeopleRegular />,
     iconFilled: <PeopleFilled />,
   },

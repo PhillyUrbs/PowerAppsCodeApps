@@ -421,5 +421,248 @@ pac code push
 - **Build Errors**: Run `npm run build` before deploying
 - **Authentication**: Use same browser profile as Power Platform tenant
 
+---
+
+# FluentSample Template Guide
+
+## 🎯 Template Overview
+
+The FluentSample template is a comprehensive Power Apps Code Apps example demonstrating:
+- Fluent UI v9 integration patterns in Power Platform context
+- Navigation and data management with realistic mock data
+- Clear transition path from mock data to live Power Platform connectors
+- GitHub Copilot-optimized code patterns for AI-assisted development
+
+## 📁 FluentSample Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   └── Layout.tsx      # Main app layout with navigation
+├── pages/              # Route components
+│   ├── HomePage.tsx    # Landing page with overview
+│   ├── Office365Page.tsx    # Office 365 connector example (READY FOR LIVE DATA)
+│   ├── SqlPage.tsx          # SQL database connector example
+│   └── CustomApiPage.tsx    # Custom API connector example
+├── mockData/           # Mock data matching live API structures
+│   ├── office365Data.ts    # Office 365 Users mock data
+│   ├── sqlData.ts          # SQL mock data
+│   └── customApiData.ts    # Custom API mock data
+├── Services/           # Auto-generated service files
+│   └── Office365UsersService.ts  # Live Office 365 connector (commented out)
+└── Models/             # TypeScript interfaces matching Power Platform
+    └── Office365UsersModel.ts   # Office 365 data models
+```
+
+## 🔄 Converting Mock Data to Live Data in FluentSample
+
+### Office 365 Connector Integration
+
+The Office365Page.tsx file is specifically designed for easy conversion from mock to live data:
+
+#### Step 1: Update Imports
+**Current (Mock Data):**
+```typescript
+// TODO: Replace with live Office365UsersService when connecting to real data
+// import { Office365UsersService } from '../Services/Office365UsersService';
+import * as mockData from '../mockData/office365Data';
+```
+
+**Replace with (Live Data):**
+```typescript
+import { Office365UsersService } from '../Services/Office365UsersService';
+// import * as mockData from '../mockData/office365Data';
+```
+
+#### Step 2: Update Current User Loading
+**Current (Mock Data):**
+```typescript
+// Using mock data for demonstration
+setCurrentUser(mockData.mockCurrentUser);
+```
+
+**Replace with (Live Data):**
+```typescript
+const result = await Office365UsersService.MyProfile();
+if (result.data) {
+  setCurrentUser(result.data);
+  // Load the current user's photo
+  const photo = await loadUserPhoto(result.data.Id);
+  if (photo) {
+    setUserPhotos(prev => ({ ...prev, [result.data.Id]: photo }));
+  }
+}
+```
+
+#### Step 3: Update Photo Loading
+**Current (Mock Data):**
+```typescript
+// For mock data, we don't have real photos
+console.log(`Mock: Would load photo for user ${userId}`);
+```
+
+**Replace with (Live Data):**
+```typescript
+const result = await Office365UsersService.UserPhoto(userId);
+if (result.data) {
+  // The photo comes as base64 data, create a data URL
+  return `data:image/jpeg;base64,${result.data}`;
+}
+```
+
+#### Step 4: Update Search Function
+**Current (Mock Data):**
+```typescript
+// Using mock data for demonstration
+const pageSize = 50;
+const mockResults = mockData.searchUsers(searchTerm.trim(), pageSize);
+setUsers(mockResults);
+```
+
+**Replace with (Live Data):**
+```typescript
+const pageSize = 50;
+const result = await Office365UsersService.SearchUser(
+  searchTerm.trim(),
+  pageSize
+);
+
+if (result.success && result.data) {
+  setUsers(result.data);
+  console.log('Users loaded:', result.data.length);
+  
+  // Load photos for the users
+  await loadPhotosForUsers(result.data);
+} else {
+  console.error('Search failed:', result.errorMessage);
+  setUsers([]);
+}
+```
+
+#### Step 5: Update UI Status Indicators
+**Current (Mock Data):**
+```typescript
+<Badge appearance="tint" color="important">
+  📋 Demo Mode - Using Mock Data (Welcome, {currentUser.DisplayName}!)
+</Badge>
+```
+
+**Replace with (Live Data):**
+```typescript
+<Badge appearance="tint" color="success">
+  ✅ Connected to Office 365 - Welcome, {currentUser.DisplayName}!
+</Badge>
+```
+
+## 🤖 GitHub Copilot Integration for FluentSample
+
+### Optimized Copilot Prompts for FluentSample
+
+**For Office 365 Integration:**
+```
+@workspace Convert the Office 365 mock data to live Office365UsersService calls. Replace the mock searchUsers, mockCurrentUser, and photo loading with actual API calls while maintaining the same UI patterns and error handling.
+```
+
+**For Complete Mock-to-Live Conversion:**
+```
+@workspace I need to replace all mock data in Office365Page.tsx with live Office365UsersService calls. Update the imports, replace mockData.searchUsers with Office365UsersService.SearchUser, replace mockCurrentUser with MyProfile API call, and update photo loading to use UserPhoto API.
+```
+
+**For Error Handling Updates:**
+```
+@workspace Update the error handling in Office365Page.tsx to handle live API failures, network errors, and authentication issues when using Office365UsersService instead of mock data.
+```
+
+**For UI Status Updates:**
+```
+@workspace Update the connection status badge and integration note to reflect live Office 365 connection instead of mock data.
+```
+
+### Copilot-Friendly Code Patterns in FluentSample
+
+The FluentSample code uses specific patterns that Copilot can easily recognize:
+
+1. **Side-by-side mock/live code examples** with clear TODO comments
+2. **Consistent function signatures** between mock and live services
+3. **TypeScript interfaces** that match both mock and live data structures
+4. **Clear separation** between UI logic and data access patterns
+
+Example pattern:
+```typescript
+// TODO: Replace with live Office365UsersService when connecting to real data
+// const result = await Office365UsersService.SearchUser(searchTerm, pageSize);
+// if (result.success && result.data) { ... }
+
+// Using mock data for demonstration
+const mockResults = mockData.searchUsers(searchTerm.trim(), pageSize);
+```
+
+## 🎨 FluentSample Features Demonstrated
+
+### Office 365 Integration (Ready for Live Data)
+- **User Directory Search**: Comprehensive search functionality with realistic Office 365 user data
+- **User Profile Display**: Rich user cards showing DisplayName, JobTitle, BusinessPhones, OfficeLocation
+- **Profile Photos**: User photo loading and display with fallback avatars
+- **Current User Context**: Display of authenticated user profile and photo
+- **Department Grouping**: Users organized by department for realistic organizational view
+- **Responsive Design**: Cards adapt to different screen sizes using Fluent UI responsive patterns
+
+### UI Patterns & Components
+- **Fluent UI v9 Integration**: Modern, accessible components following Microsoft design system
+- **Navigation System**: Sidebar navigation with route management
+- **Search Interface**: Real-time search with loading states and empty state handling
+- **Card Layouts**: Responsive grid layouts for displaying user information
+- **Status Indicators**: Connection badges showing current data source (mock vs live)
+- **Loading States**: Proper loading indicators for async operations
+
+### Developer Experience Features
+- **Clear Transition Path**: Well-documented mock-to-live data conversion
+- **Copilot-Friendly Code**: Structured comments and patterns optimized for AI assistance
+- **TypeScript Integration**: Full type safety with Power Platform data models
+- **Error Handling**: Comprehensive error handling patterns for API integrations
+- **Realistic Mock Data**: Mock data that exactly matches live API structures
+
+## 🔧 Troubleshooting FluentSample Live Data Integration
+
+### Common Issues and Solutions
+
+**Authentication Errors:**
+- Ensure your Office 365 connection is properly configured
+- Check that you have the necessary permissions
+- Verify your Power Platform environment is active
+
+**No Users Returned:**
+- Check your search terms are valid
+- Verify the connector has access to your organization's directory
+- Ensure the Office 365 Users connector is properly connected
+
+**Photos Not Loading:**
+- User photos may not exist for all users
+- Check network permissions and policies
+- Verify the UserPhoto API has proper permissions
+
+**API Rate Limiting:**
+- Implement proper error handling for rate limits
+- Consider caching strategies for frequently accessed data
+- Add loading states for better user experience
+
+## 🔄 Advanced Customization for FluentSample
+
+### Adding New Connector Examples
+
+1. **Create new service file** (auto-generated by Power Platform CLI)
+2. **Create corresponding mock data file** with matching interfaces
+3. **Create new page component** following the Office365Page.tsx pattern
+4. **Add navigation route** in Layout.tsx
+5. **Document conversion steps** in this guide
+
+### Extending the Office 365 Example
+
+The Office 365 integration can be extended with additional features:
+- **Group Management**: Add groups search and member listing
+- **Calendar Integration**: Show user availability and calendar events
+- **Contact Details**: Extended contact information and organizational hierarchy
+- **Manager/Direct Reports**: Organizational chart functionality
+
 
 

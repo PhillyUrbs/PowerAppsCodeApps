@@ -116,9 +116,9 @@ const connectorExamples = [
   {
     path: '/office365',
     title: 'Office 365 Connector',
-    description: 'Explore user profiles, calendar events, and email integration with mock Office 365 data. Learn how to implement authentication and data retrieval patterns.',
+    description: 'Explore user profiles and organizational directory integration with live Office 365 data. Learn how to implement authentication and user search patterns.',
     icon: <PeopleRegular />,
-    features: ['User Profiles', 'Calendar Events', 'Email Integration', 'Search & Filtering'],
+    features: ['User Profiles', 'Directory Search', 'User Photos', 'Live Integration'],
   },
   {
     path: '/sql',
