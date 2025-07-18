@@ -214,6 +214,30 @@ export default function Office365Page() {
         </Badge>
       )}
 
+      {/* Information Note */}
+      <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginBottom: '24px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '8px', fontSize: tokens.fontSizeBase200 }}>
+            💡 Ask Copilot to convert to live Office 365 Connector
+          </Text>
+          <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase100 }}>
+            📚 For more information, check out our{' '}
+            <a 
+              href="https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-data.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ 
+                color: tokens.colorBrandForeground1, 
+                textDecoration: 'none',
+                fontWeight: tokens.fontWeightSemibold
+              }}
+            >
+              data connection guide
+            </a> 🔗
+          </Text>
+        </div>
+      </Card>
+
       {/* Current User Profile Section */}
       {currentUser && (
         <section className={styles.section}>
@@ -360,10 +384,27 @@ export default function Office365Page() {
       </section>
 
       {/* Integration Note */}
-      <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginTop: '32px' }}>
-        <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, textAlign: 'center' }}>
-          💡 <strong>Using mock data</strong> - Ask Copilot to convert to live Office 365 APIs
-        </Text>
+      <Card style={{ padding: '20px', backgroundColor: tokens.colorNeutralBackground2, marginTop: '32px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '12px' }}>
+            💡 <strong>Currently using mock data</strong> - Ask Copilot to convert to live Office 365 Connector
+          </Text>
+          <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase200 }}>
+            📚 For more information on connecting to live data, check out our{' '}
+            <a 
+              href="https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-data.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ 
+                color: tokens.colorBrandForeground1, 
+                textDecoration: 'none',
+                fontWeight: tokens.fontWeightSemibold
+              }}
+            >
+              data connection guide
+            </a> 🔗
+          </Text>
+        </div>
       </Card>
     </div>
   );
