@@ -129,10 +129,10 @@ const connectorExamples = [
   },
   {
     path: '/custom-api',
-    title: 'Custom API Connector',
-    description: 'Understand REST API integration, HTTP methods, and error handling with mock API responses. Great for custom connector development.',
+    title: 'Custom API Connector Template',
+    description: 'Learn custom connector integration patterns with this ready-to-use template featuring static data. Includes DataGrid table, error handling, and clear guidance for connecting to real APIs.',
     icon: <CloudRegular />,
-    features: ['REST API Calls', 'HTTP Methods', 'Error Handling', 'Response Parsing'],
+    features: ['Template Mode', 'Static Data', 'DataGrid Table', 'Easy Real Data Migration'],
   },
 ];
 

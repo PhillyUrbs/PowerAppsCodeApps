@@ -316,14 +316,14 @@ const navItems: NavItem[] = [
   {
     path: '/sql',
     label: 'SQL Database',
-    description: 'Project management with DataGrid',
+    description: 'Project management with DataGrid and pagination',
     icon: <DatabaseRegular />,
     iconFilled: <DatabaseFilled />,
   },
   {
     path: '/custom-api',
     label: 'Custom API',
-    description: 'REST API integration',
+    description: 'Custom connector template',
     icon: <CloudRegular />,
     iconFilled: <CloudFilled />,
   },
