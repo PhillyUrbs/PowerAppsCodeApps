@@ -2,6 +2,13 @@
 
 A comprehensive Power Apps Code Apps template showcasing Fluent UI components, navigation patterns, and connector integrations. Built with GitHub Copilot and designed as a learning resource for developers.
 
+> [!IMPORTANT]
+> **🤖 AI-Generated Code Notice**
+> 
+> This template was entirely generated using GitHub Copilot to demonstrate AI-assisted development workflows with Power Apps Code Apps. The code has been created for **educational and demonstration purposes only** and has not undergone detailed manual code review or security auditing. 
+> 
+> **Please use this sample at your own risk** and ensure proper code review, testing, and security validation before using any patterns or code in production environments.
+
 ## 🎯 What's Included
 
 This template demonstrates:
