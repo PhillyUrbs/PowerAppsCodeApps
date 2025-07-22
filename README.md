@@ -4,13 +4,24 @@
 >
 > - [How to create a First Release Environment](#create-a-first-release-power-platform-environment) - Get an environment ready to run Code Apps!
 > - [Start in minutes with a Hello World sample code](samples/HelloWorld/README.md) - A ready to run React sample, with minimum setps to run on Power Apps.
+> - ✨ [Static Sample / Template](samples/FluentSample/) - The most complete sample. A static App with navigation, build with GitHub Copilot using Fluent UI. Samples includes prompt samples and guide to connect with real data. Includes:
+>   - Office 365
+>   - SQL using data pagination
+>   - Custom Connector
+> 
+> 📂 **Samples**
+>
+> - [Hello World](samples/HelloWorld/) - Basic React sample to get started quickly
+> - [Static Asset Tracker](samples/StaticAssetTracker/) - Asset management with static data.
+> - [Fluent Sample](samples/FluentSample/) - A static App with navigation, build with GitHub Copilot using Fluent UI.
+>
+> 📚 **How to**
+>
 > - [How to create an app from Scratch](docs/how-to-create-from-scratch.md) - A detailed walkthrough to turn a blank app created with vite into Power Apps code app.
 > - [How to connect to data](docs/how-to-connect-to-data.md) - Code apps enable connecting to Power Platform connectors. To do this, you will create connections, add them to the app, and update the app to call them.
-> - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) — Find a detailed walkthrough for connecting your code app to Azure SQL.
-> - [How to analyze data requests/response](docs/how-to-analyze-data-request-response.md) - Guide to troubleshoot and debug.
+> - [How to connect to Azure SQL](docs/how-to-connect-to-azure-sql.md) - Find a detailed walkthrough for connecting your code app to Azure SQL.
+> - [How to analyze data requests/response](docs/how-to-analyze-data-request-response.md) - Troubleshoot API calls
 > - [How to create sample api and a custom connector](docs/how-to-create-api-and-custom-connector.md) - Quickly create a mock api and a custom connector to test Code Apps with Custom Connectors.
-> - ✨ [Sample - Static Asset Tracker](samples/StaticAssetTracker/) - A sample app with static data, ideal for learning how to add data sources and integrate with Power Platform connectors.
-> 
 
 Power Apps empowers developers of all skillsets—including those building web apps in IDEs like Visual Studio Code—to efficiently build and run business apps on a managed platform.
 
