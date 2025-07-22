@@ -19,6 +19,13 @@ This template demonstrates:
 - **Git** for version control
 - **Power Apps CLI** (`pac` command available)
 
+> [!IMPORTANT]
+> **Before connecting to real data, be sure to:**
+> 
+> - **Create a connection for your Office 365 account** - [How to connect to data](../../docs/how-to-connect-to-data.md)
+> - **Create a connection for your SQL Database** - [How to connect to Azure SQL](../../docs/how-to-connect-to-azure-sql.md)  
+> - **Create a custom connector and connection** - [How to create sample API and custom connector](../../docs/how-to-create-api-and-custom-connector.md)
+
 ---
 
 # Getting Started 🚀
