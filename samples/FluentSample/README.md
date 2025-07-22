@@ -133,12 +133,6 @@ This template uses mock data by default. Follow these guides to connect to real 
    - Ensure real API responses match the interface definitions
    - Update TypeScript interfaces if needed
 
-### 📋 Office 365 APIs Available
-- **Users**: `office365users` - Get user profiles, search users
-- **Outlook**: `office365outlook` - Calendar events, emails, contacts  
-- **SharePoint**: `sharepointonline` - Lists, libraries, sites
-- **Teams**: `microsoftteams` - Teams, channels, messages
-
 ---
 
 ## 🛢️ How to Connect to SQL Database
