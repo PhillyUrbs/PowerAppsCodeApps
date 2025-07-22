@@ -66,6 +66,8 @@ npm run dev
 
 This will start both Vite dev server and PAC Code Run automatically for local development and testing.
 
+![Init and run the app locally](contentMedia/2-install_init_run.gif)
+
 ## 5. Deploy to Power Apps (Optional)
 
 ```bash
