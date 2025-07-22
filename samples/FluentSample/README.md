@@ -90,7 +90,13 @@ This template uses mock data by default. Follow these guides to connect to real 
 - Office 365 business account
 - Power Apps environment with Office 365 connectors enabled
 
-### Steps
+![Prerequisites](contentMedia/copilot_office_prereq.gif)
+
+### Use GitHub Copilot to connect with Office 365:
+
+![copilot adding Office 365](contentMedia/copilot_office_prereq.gif)
+
+#### Manual Steps
 
 1. **Create Office 365 Connection**
    ```bash
