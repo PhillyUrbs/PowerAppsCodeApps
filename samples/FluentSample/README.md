@@ -94,7 +94,7 @@ This template uses mock data by default. Follow these guides to connect to real 
 
 ### Use GitHub Copilot to connect with Office 365:
 
-![copilot adding Office 365](contentMedia/copilot_office_prereq.gif)
+![copilot adding Office 365](contentMedia/copilot_office365.gif)
 
 #### Manual Steps
 
