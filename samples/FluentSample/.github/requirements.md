@@ -1,7 +1,15 @@
 # FluentSample Requirements
 
 ## Project Overview
-Create a comprehensive Power Apps Code App that demonstrates various Power Platform connector integrations using modern Fluent UI React components. The app should serve as a showcase and learning resource for different connector types with practical examples.
+This is a **ready-to-use static template** demonstrating Power Apps Code App integration patterns. The template provides a fully functional application with realistic mock data that users can **directly connect to their real Power Platform data sources**. 
+
+**Primary Purpose**: 
+- **Provide Working Foundation**: Complete static app with mock data that users can immediately run and explore
+- **Enable Easy Migration**: Use GitHub Copilot to help users replace mock data with their actual Power Platform connectors
+- **Demonstrate Integration Patterns**: Show practical examples of Office 365, SQL, and Custom API connector usage
+- **Accelerate Development**: Give developers a production-ready starting point for their own Power Apps Code Apps
+
+**User Journey**: Clone → Run locally → Use Copilot to connect to real data → Deploy to Power Platform
 
 ## Core Features
 
@@ -12,36 +20,42 @@ Create a comprehensive Power Apps Code App that demonstrates various Power Platf
 - **Sample descriptions** directly in the navigation to explain what each example demonstrates
 
 ### 2. Office 365 Connector Example
-**Purpose**: Demonstrate user profile and photo integration
+**Current Implementation**: User directory search and profile display with static mock data
 - **Features**:
-  - Display current user profile information (name, email, job title)
-  - Show user profile photo
-  - Display user's manager information
-  - List recent colleagues/contacts
+  - Search functionality across 50+ realistic user profiles with departments, roles, and contact info
+  - User profile cards showing DisplayName, JobTitle, Email, Department, BusinessPhones, OfficeLocation
+  - Profile photo placeholders with fallback avatars
+  - Current user context display
+  - Responsive grid layout adapting to screen sizes
+- **Mock Data Structure**: Matches Office 365 Users connector API response format
+- **Migration Path**: Clear TODO comments and side-by-side code examples for Copilot-assisted conversion
+- **Target Connector**: Office 365 Users connector (`shared_office365users`)
 - **Reference Documentation**: [How to Connect to Data](https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-data.md)
-- **Navigation Description**: "Office 365 Integration - User profiles, photos, and organizational data"
 
 ### 3. SQL Connector Example
-**Purpose**: Demonstrate CRUD operations with Azure SQL Database
+**Purpose**: Demonstrate transitioning from mock database operations to live Azure SQL integration
 - **Features**:
-  - **Data Grid** displaying records from SQL table
-  - **Create** new records with form validation
-  - **Read** detailed record views
-  - **Update** existing records inline or in modal
-  - **Delete** records with confirmation
-  - **Search and filtering** capabilities
-  - **Data pagination** (see pagination requirements below)
+  - Static implementation with realistic SQL mock data (Projects, Tasks, Employees)
+  - Comprehensive CRUD operations with mock data foundation
+  - Data pagination patterns ready for live data
+  - GitHub Copilot-friendly code structure for easy connector migration
+  - Search and filtering capabilities with realistic data scenarios
+- **Copilot Integration Goal**: Guide users through replacing mock database calls with Power Apps SDK SQL connector
 - **Reference Documentation**: [How to Connect to Azure SQL](https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-azure-sql.md)
 - **Navigation Description**: "SQL Database - CRUD operations, search, and data management"
 
 ### 4. Custom Connector Example
-**Purpose**: Show how to integrate with custom APIs and services
+**Current Implementation**: Basic asset management interface with realistic mock data
 - **Features**:
-  - **API Data Display** from custom endpoint
-  - **Custom API calls** with different HTTP methods
-  - **Error handling** for API failures
-  - **Loading states** during API calls
-  - **Response formatting** and data transformation
+  - Asset listing with 30+ realistic business assets (equipment, software, facilities)
+  - Asset cards showing Name, Type, Category, Status, Location, Purchase Date, and Cost
+  - Search functionality to filter assets by name
+  - Status indicators (Available, In Use, Maintenance, Retired)
+  - Category-based organization (IT Equipment, Software, Office Supplies, etc.)
+  - Responsive card layout with detailed asset information
+- **Mock Data Structure**: Designed to match common asset management API response formats
+- **Migration Path**: Structured for easy Copilot-assisted conversion to custom connector calls
+- **Target Integration**: Power Platform custom connectors for asset management APIs
 - **Reference Documentation**: [How to Create API and Custom Connector](https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-create-api-and-custom-connector.md)
 - **Navigation Description**: "Custom API - External service integration and custom connectors"
 
@@ -164,39 +178,37 @@ FluentSample/
 - **Proper authentication** handling for all connectors
 
 ## Success Criteria
-1. **Functional examples** of all three connector types
-2. **Smooth navigation** between sections
-3. **Responsive design** on all device sizes
-4. **Proper error handling** and user feedback
-5. **Performant pagination** with large datasets
-6. **Clear documentation** and learning value
-7. **Production-ready code** quality and patterns
+1. **Effective Copilot Integration**: GitHub Copilot can successfully guide users from mock data to live connectors
+2. **Clear Transition Paths**: Well-documented and AI-friendly code patterns for connector migration
+3. **Functional Static Foundation**: Fully working app with realistic mock data as starting point
+4. **Power Apps SDK Demonstration**: Clear examples of connector usage patterns
+5. **Smooth navigation** between sections and connector examples
+6. **Responsive design** that works across all device sizes
+7. **Comprehensive documentation** supporting both human and AI-assisted development
 
 ## Implementation Status
 
 ### ✅ Completed
-- **Project Structure**: Basic React + TypeScript + Vite setup
-- **Navigation System**: Layout component with routing
-- **Theme System**: Dark/light theme support with context
-- **Page Components**: All four main pages (Home, Office365, SQL, CustomAPI)
-- **Pagination**: Reusable pagination component and hook
-- **Mock Data**: Sample data for all connector types
-- **Documentation**: Comprehensive README with setup instructions
-- **Development Setup**: Build system, linting, and development workflow
+- **Project Structure**: React + TypeScript + Vite foundation ready for connector integration
+- **Static App Foundation**: Fully functional app with realistic mock data across all connector types
+- **Navigation System**: Complete layout with routing between connector examples
+- **Theme System**: Dark/light theme support with context management
+- **Copilot-Optimized Code**: GitHub Copilot-friendly patterns with clear TODO markers for migration
+- **Mock Data Foundation**: Comprehensive mock data matching real Power Platform API structures
+- **Documentation**: Detailed setup guides and connector migration instructions
+- **Development Workflow**: Build system, linting, and development environment ready
 
 ### 🔄 In Progress / Needs Update
-- **Real Connector Integration**: Currently using mock data, needs actual Power Platform connectors
-- **Error Handling**: Basic error states implemented, needs comprehensive error boundary
-- **CRUD Operations**: SQL page has basic structure, needs full CRUD implementation
-- **Office 365 Integration**: User profile display implemented, needs real connector
-- **Custom API Integration**: Page structure ready, needs actual API calls
+- **Copilot Migration Guidance**: Refining prompts and patterns for optimal AI assistance
+- **Power Platform Integration**: Adding more detailed connector integration examples
+- **Error Handling**: Expanding error scenarios for live connector integration
+- **Performance Optimization**: Enhancing patterns for production-ready connector usage
 
-### 📋 Planned Enhancements
-- **Accessibility**: WCAG 2.1 AA compliance audit and improvements
-- **Performance**: Code splitting, lazy loading, and virtualization
-- **Advanced Features**: Search, filtering, export functionality
-- **Testing**: Unit tests and integration tests
-- **Mobile Optimization**: Enhanced responsive design
+### 📋 Next Steps for Users (with Copilot Assistance)
+- **Connect to Office 365**: Use Copilot to replace mock user data with live Office 365 Users connector
+- **Integrate SQL Database**: Leverage AI assistance to connect mock CRUD operations to real Azure SQL
+- **Setup Custom Connectors**: Use Copilot guidance to replace mock API calls with custom connector integration
+- **Environment Configuration**: AI-assisted setup of Power Platform connections and authentication
 
 ## Future Enhancements
 - **SharePoint connector** example
