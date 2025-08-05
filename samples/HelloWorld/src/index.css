@@ -16,7 +16,15 @@ body {
   margin: 0;
   padding: 0;
   min-width: 320px;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+html {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 h1 {

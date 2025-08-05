@@ -16,21 +16,27 @@ import './App.css';
 
 const useStyles = makeStyles({
   root: {
-    minHeight: '100vh',
+    height: '100vh',
+    width: '100vw',
     backgroundColor: tokens.colorNeutralBackground1,
     ...shorthands.padding('20px'),
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
+    overflowY: 'auto',
+    overflowX: 'auto',
+    boxSizing: 'border-box',
   },
   container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     maxWidth: '600px',
     width: '100%',
+    minHeight: '100%',
     ...shorthands.gap('32px'),
+    ...shorthands.padding('20px', '0'),
   },
   card: {
     width: '100%',
@@ -98,12 +104,10 @@ const App: React.FC = () => {
               Power Platform
               <HeartRegular className={styles.heartIcon} />
               Code
-            </Text>
-            
+            </Text>            
             <Text className={styles.subtitle}>
               Build modern business applications with the power of code and the simplicity of Power Platform—a secure, scalable, and fully managed platform designed to accelerate innovation.
-            </Text>
-
+            </Text>            
             <div className={styles.badgeContainer}>
               <Badge appearance="filled" color="brand">
                 Power Apps Code Apps
