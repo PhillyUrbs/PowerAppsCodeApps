@@ -24,7 +24,7 @@ This guide covers:
 
 1. If you are asked, agree to install `create-vite`
 
-1. Accept the default package name `AppFromScratch` by pressing **Enter**.
+1. Accept the default package name `appfromscratch` by pressing **Enter**.
 
 1. If you are asked to select a framework, select **React**.
 
@@ -62,8 +62,6 @@ This guide covers:
    ```
 
 1. **Save** the file.
-
-1. Open the `tsconfig.app.json`, and set the value of `verbatimModuleSyntax` to be `false` . This is currently required to work with the Power SDK Generated code. (See [[Bug\] Power SDK generated code causes error with verbatimModuleSyntax enabled · Issue #14 ](https://github.com/microsoft/PowerAppsCodeApps/issues/14))
 
 1. Enter the following to test your vite app:
 

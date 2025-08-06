@@ -4,7 +4,7 @@
 >
 > - [How to create a First Release Environment](#create-a-first-release-power-platform-environment) - Get an environment ready to run Code Apps!
 > - [Start in minutes with a Hello World sample code](samples/HelloWorld/README.md) - A ready to run React sample, with minimum setps to run on Power Apps.
-> - ✨ [Static Sample / Template](samples/FluentSample/README.md) - The most complete sample. A static App with navigation, build with GitHub Copilot using Fluent UI. Samples includes prompt samples and guide to connect with real data. Includes:
+> - [Static Sample / Template](samples/FluentSample/README.md) - The most complete sample. A static App with navigation, build with GitHub Copilot using Fluent UI. Samples includes prompt samples and guide to connect with real data. Includes:
 >   - Office 365
 >   - SQL using data pagination
 >   - Custom Connector
