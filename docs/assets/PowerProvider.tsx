@@ -1,4 +1,4 @@
-import { initialize } from "@pa-client/power-code-sdk/lib/Lifecycle";
+import { initialize } from "@microsoft/power-apps/app";
 import { useEffect, type ReactNode } from "react";
 
 interface PowerProviderProps {
