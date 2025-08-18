@@ -22,6 +22,8 @@
 > - [How to analyze data requests/response](docs/how-to-analyze-data-request-response.md) - Troubleshoot API calls
 > - [How to create sample api and a custom connector](docs/how-to-create-api-and-custom-connector.md) - Quickly create a mock api and a custom connector to test Code Apps with Custom Connectors.
 
+> - [How to connect to Dataverse](docs/how-to-connect-to-dataverse.md) - Step-by-step guide to connect your code app to Microsoft Dataverse using the Power Apps SDK.
+
 Power Apps empowers developers of all skillsets—including those building web apps in IDEs like Visual Studio Code—to efficiently build and run business apps on a managed platform.
 
 **Code Apps** is a new way for developers to bring Power Apps capabilities into web apps built in a code-first IDE. These capabilities are available both during local development and when an app runs in Power Platform.
