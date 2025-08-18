@@ -17,7 +17,7 @@ This guide covers:
    ```powershell
    mkdir C:\CodeApps -Force
    cd C:\CodeApps
-   npm create vite@latest appfromscratch -- --template react-ts
+   npm create vite@latest AppFromScratch -- --template react-ts
    cd C:\CodeApps\AppFromScratch
    npm install
    ```
@@ -131,8 +131,9 @@ This guide covers:
 5. **Install** the Power SDK using:
 
    ```powershell
-   npm i --save-dev @microsoft/power-apps
+   npm install --save-dev "@pa-client/power-code-sdk@https://github.com/microsoft/PowerAppsCodeApps/releases/download/v0.0.4/7-31-pa-client-power-code-sdk-0.0.1.tgz"
    ```
+> [!IMPORTANT] This SDK is currently not yet available on `npmjs.com` and must be installed from the GitHub release.
 
 6. **Open** the `package.json`, and update the existing line:
 
