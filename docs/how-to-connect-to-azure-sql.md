@@ -14,7 +14,7 @@ This guide covers:
 
 - An Azure subscription
 - Access to the [Azure Portal](https://portal.azure.com)
-- Power Platform environment with Code Apps enabled
+- [Power Platform environment with Code Apps enabled](../README.md#enable-code-apps-on-a-power-platform-environment)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Node.js](https://nodejs.org/) (LTS version)
 - [Power Platform Tools for VS Code](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)

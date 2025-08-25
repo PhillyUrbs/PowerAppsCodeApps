@@ -6,7 +6,7 @@ This guide covers:
 
 ## Prerequisites
 
-- Power Platform environment with Code Apps enabled
+- [Power Platform environment with Code Apps enabled](../README.md#enable-code-apps-on-a-power-platform-environment)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Node.js](https://nodejs.org/) (LTS version)
 - [Power Platform Tools for VS Code](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
