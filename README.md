@@ -43,7 +43,7 @@ The managed platform accelerates innovation in safe environments. When ready, ap
 - [What are code apps?](#what-are-code-apps-)
 - [Prerequisites](#prerequisites-)
   - [Install the following developer tools](#install-the-following-developer-tools)
-  - [Create a first release Power Platform environment](#create-a-first-release-power-platform-environment)
+  - [Enable code apps on a Power Platform environment](#enable-code-apps-on-a-power-platform-environment)
   - [License end-users with Power Apps Premium](#license-end-users-with-power-apps-premium)
 - [Limitations](#limitations)
 - [See also](#see-also)
@@ -70,6 +70,29 @@ Code apps require several developer tools like Visual Studio Code, git, dotnet, 
 - [Node.js](https://nodejs.org/) (LTS version)
 - [Git](https://git-scm.com/)
 - [Power Apps CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
+
+## Enable code apps on a Power Platform environment
+Code apps can be enabled via environment setting which can be set by Power Platform Admins and environment admins. The environment setting respects groups and rules set by Power Platform Admins. 
+1. As an admin, go to https://admin.powerplatform.microsoft.com
+2. Navigate to Manage > Environments > select the environment where you will use code apps
+3. Navigate to Settings >  Expand the Product subsection > Select Features
+4. Navigate to the feature "Power Apps Code Apps" and use the "Enable code apps" toggle for enablement.
+5. Click "Save" in the settings experience.  
+
+<img width="1022" height="369" alt="image" src="https://github.com/user-attachments/assets/a215b7fe-acf4-4082-b7a7-2a7995970a9a" />
+
+
+>[!NOTE]
+> If the Power Apps Code Apps setting doesn't appear in the admin center UI it is because a UI update hasn't reached your environment yet. You can get the setting to appear by appending a query string to the admin center URI.
+>E.g.
+><pre>
+>https://admin.powerplatform.microsoft.com/manage/environments/1c137ea4-049e-ef11-8a66-000d3a106833/settings/Features
+> to
+>https://admin.powerplatform.microsoft.com/manage/environments/1c137ea4-049e-ef11-8a66-000d3a106833/settings/Features<b>?ecs.ShowCodeAppSetting=true</b>
+></pre>
+
+<img width="1031" height="332" alt="image" src="https://github.com/user-attachments/assets/45d3f1d9-56e3-41e9-82cc-4d8fbb30bb79" />
+
 
 ## License end-users with Power Apps Premium
 
