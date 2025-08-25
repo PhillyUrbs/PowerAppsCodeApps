@@ -22,6 +22,9 @@
 > - [How to create sample api and a custom connector](docs/how-to-create-api-and-custom-connector.md) - Quickly create a mock api and a custom connector to test Code Apps with Custom Connectors.
 
 > - [How to connect to Dataverse](docs/how-to-connect-to-dataverse.md) - Step-by-step guide to connect your code app to Microsoft Dataverse using the Power Apps SDK.
+>
+>   **Feedback**
+>   - Email: paCodeAppPreview@microsoft.com
 
 Power Apps empowers developers of all skillsets—including those building web apps in IDEs like Visual Studio Code—to efficiently build and run business apps on a managed platform.
 
@@ -35,8 +38,6 @@ Power Apps empowers developers of all skillsets—including those building web a
 - Adherence to your organization’s Managed Platform policies (app sharing limits, Conditional Access, Data Loss Prevention, etc.)
 
 The managed platform accelerates innovation in safe environments. When ready, apps can be deployed to dedicated production environments. Code Apps and the managed platform reinforce safe, rapid innovation, and, when ready, these apps can be deployed to dedicated production environments.
-
-[**Sign up for Early Access**](https://aka.ms/paCodeAppsEAP)
 
 # 📑 Table of Contents 
 
