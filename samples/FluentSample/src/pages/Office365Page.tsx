@@ -188,7 +188,7 @@ export default function Office365Page() {
       <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginBottom: '24px' }}>
         <div style={{ textAlign: 'center' }}>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '8px', fontSize: tokens.fontSizeBase200 }}>
-            🔗Connected to live Office 365 data from your environment
+            🔗 Connected to live Office 365 data from your environment
           </Text>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase100 }}>
             📚 For more information, check out our{' '}
