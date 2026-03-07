@@ -180,7 +180,7 @@ export default function Office365Page() {
         </Badge>
       ) : (
         <Badge className={styles.mockDataBadge} appearance="tint" color="brand">
-          🔄 Loading user data...
+          {String.fromCodePoint(0x1F504)} Loading user data...
         </Badge>
       )}
 
@@ -188,10 +188,10 @@ export default function Office365Page() {
       <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginBottom: '24px' }}>
         <div style={{ textAlign: 'center' }}>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '8px', fontSize: tokens.fontSizeBase200 }}>
-            🔗 Connected to live Office 365 data from your environment
+            {String.fromCodePoint(0x1F517)} Connected to live Office 365 data from your environment
           </Text>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase100 }}>
-            📚 For more information, check out our{' '}
+            {String.fromCodePoint(0x1F4DA)} For more information, check out our{' '}
             <a 
               href="https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-data.md"
               target="_blank"
@@ -203,7 +203,7 @@ export default function Office365Page() {
               }}
             >
               data connection guide
-            </a> 🔗
+            </a> {String.fromCodePoint(0x1F517)}
           </Text>
         </div>
       </Card>
