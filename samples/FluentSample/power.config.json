@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "appId": "0a7367cc-4785-4609-8fd7-a930f8c35be1",
+  "appDisplayName": "FluentSample",
+  "region": "prod",
+  "environmentId": "1e49cfde-50fc-ead2-a2c3-cd398dad051a",
+  "description": "",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:3000",
+  "logoPath": "Default",
+  "connectionReferences": {
+    "8887b632-937d-49f1-bfa4-9e9cab20ad6c": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_office365users",
+      "displayName": "Office 365 Users",
+      "dataSources": [
+        "office365users"
+      ],
+      "dataSets": {}
+    }
+  },
+  "databaseReferences": {}
+}
