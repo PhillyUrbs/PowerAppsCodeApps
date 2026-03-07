@@ -10,7 +10,7 @@ export const assets: Asset[] = [
     value: 999.99,
     description: 'Company phone with enterprise management',
     deviceId: 'IP15-2024-0047',
-    image: 'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?q=80&w=1000',
+    image: './images/phone.svg',
     brand: 'Apple',
     model: 'iPhone 15 Pro',
     serialNumber: 'DNQXKP0PTF7F'
@@ -25,14 +25,14 @@ export const assets: Asset[] = [
     owner: {
       id: '101',
       name: 'Sarah Chen',
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+      image: './images/avatar-sc.svg',
       title: 'Senior Developer',
       email: 'sarah.chen@company.com',
       phone: '(555) 123-4567'
     },
     description: 'High-performance development machine with M2 chip',
     deviceId: 'MBP-2024-0001',
-    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000',
+    image: './images/macbook.svg',
     brand: 'Apple',
     model: 'MacBook Pro M2 Max',
     serialNumber: 'C02XL0ZDJGH7'
@@ -47,14 +47,14 @@ export const assets: Asset[] = [
     owner: {
       id: '102',
       name: 'James Wilson',
-      image: 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952',
+      image: './images/avatar-jw.svg',
       title: 'Product Manager',
       email: 'james.wilson@company.com',
       phone: '(555) 234-5678'
     },
     description: 'Windows workstation for product team',
     deviceId: 'XPS-2023-0153',
-    image: 'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1000',
+    image: './images/dell-laptop.svg',
     brand: 'Dell',
     model: 'XPS 15 9530',
     serialNumber: 'JQ3XCS2'
@@ -68,7 +68,7 @@ export const assets: Asset[] = [
     value: 1299.99,
     description: 'Design and presentation tablet with Apple Pencil',
     deviceId: 'IPD-2023-0028',
-    image: 'https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?q=80&w=1000',
+    image: './images/ipad.svg',
     brand: 'Apple',
     model: 'iPad Pro M2',
     serialNumber: 'DLXFP89KPLM9'
@@ -82,7 +82,7 @@ export const assets: Asset[] = [
     value: 1699.99,
     description: 'Business laptop with enhanced security features',
     deviceId: 'TPX1-2023-0063',
-    image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1000',
+    image: './images/thinkpad.svg',
     brand: 'Lenovo',
     model: 'ThinkPad X1 Carbon Gen 11',
     serialNumber: 'PF3ED0MK'
@@ -96,7 +96,7 @@ export const assets: Asset[] = [
     value: 799.99,
     description: 'Virtual reality development equipment',
     deviceId: 'VR-2023-0012',
-    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?q=80&w=1000',
+    image: './images/vr-headset.svg',
     brand: 'HTC',
     model: 'Vive Pro 2',
     serialNumber: 'VV2123450067'
@@ -111,14 +111,14 @@ export const assets: Asset[] = [
     owner: {
       id: '106',
       name: 'Daniel Kim',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e',
+      image: './images/avatar-dk.svg',
       title: 'Art Director',
       email: 'daniel.kim@company.com',
       phone: '(555) 678-9012'
     },
     description: 'All-in-one desktop for creative work',
     deviceId: 'SS2-2023-0007',
-    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1000',
+    image: './images/surface-studio.svg',
     brand: 'Microsoft',
     model: 'Surface Studio 2+',
     serialNumber: 'MS3478291SD4'
@@ -132,7 +132,7 @@ export const assets: Asset[] = [
     value: 899.99,
     description: 'Android tablet for field work and presentations',
     deviceId: 'SGT-2024-0015',
-    image: 'https://images.unsplash.com/photo-1589739900243-4b5d65825b36?q=80&w=1000',
+    image: './images/galaxy-tab.svg',
     brand: 'Samsung',
     model: 'Galaxy Tab S9',
     serialNumber: 'RV8XQP72Z541'
@@ -146,7 +146,7 @@ export const assets: Asset[] = [
     value: 399.99,
     description: 'Noise-canceling headphones for development team',
     deviceId: 'SNH-2023-0031',
-    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000',
+    image: './images/headphones.svg',
     brand: 'Sony',
     model: 'WH-1000XM5',
     serialNumber: 'SN45781209XM'
