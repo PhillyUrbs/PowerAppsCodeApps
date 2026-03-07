@@ -1,5 +1,5 @@
 import { Text, Card, makeStyles, shorthands, tokens, Input, Badge, Spinner, Avatar } from '@fluentui/react-components';
-import { PeopleRegular, SearchRegular, PersonRegular, LinkRegular } from '@fluentui/react-icons';
+import { PeopleRegular, SearchRegular, PersonRegular } from '@fluentui/react-icons';
 import PageHeader from '../components/PageHeader';
 import { useState, useEffect, useCallback } from 'react';
 import { Office365UsersService } from '../generated/services/Office365UsersService';
@@ -188,7 +188,7 @@ export default function Office365Page() {
       <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginBottom: '24px' }}>
         <div style={{ textAlign: 'center' }}>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '8px', fontSize: tokens.fontSizeBase200 }}>
-            <LinkRegular style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Connected to live Office 365 data from your environment
+            🔗Connected to live Office 365 data from your environment
           </Text>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase100 }}>
             📚 For more information, check out our{' '}
