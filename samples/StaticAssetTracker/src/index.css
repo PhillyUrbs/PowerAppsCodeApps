@@ -2,91 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Windows 3.1 palette */
+    --win-bg: #c0c0c0;
+    --win-white: #ffffff;
+    --win-dark: #808080;
+    --win-black: #000000;
+    --win-title: #000080;
+    --win-title-text: #ffffff;
+    --win-title-inactive: #808080;
+    --win-field: #ffffff;
+    --win-highlight: #000080;
+    --win-highlight-text: #ffffff;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --background: 0 0% 75.3%;
+    --foreground: 0 0% 0%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 75.3%;
+    --card-foreground: 0 0% 0%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --popover: 0 0% 75.3%;
+    --popover-foreground: 0 0% 0%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --primary: 240 100% 25.1%;
+    --primary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --secondary: 0 0% 75.3%;
+    --secondary-foreground: 0 0% 0%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 0 0% 75.3%;
+    --muted-foreground: 0 0% 33%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --accent: 240 100% 25.1%;
+    --accent-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --border: 0 0% 50%;
+    --input: 0 0% 100%;
+    --ring: 240 100% 25.1%;
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0px;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 75.3%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 240 100% 25.1%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 75.3%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 50%;
+    --sidebar-ring: 240 100% 25.1%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 12%;
+    --foreground: 0 0% 85%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 16%;
+    --card-foreground: 0 0% 85%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 16%;
+    --popover-foreground: 0 0% 85%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 240 100% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 85%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 240 100% 40%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 80% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 0 0% 30%;
+    --input: 0 0% 22%;
+    --ring: 240 100% 40%;
+
+    --win-bg: #1e1e1e;
+    --win-white: #3a3a3a;
+    --win-dark: #0a0a0a;
+    --win-black: #e0e0e0;
+    --win-title: #000080;
+    --win-title-text: #ffffff;
+    --win-title-inactive: #404040;
+    --win-field: #2a2a2a;
+    --win-highlight: #0000aa;
+    --win-highlight-text: #ffffff;
+
+    --sidebar-background: 0 0% 16%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 240 100% 40%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 20%;
+    --sidebar-accent-foreground: 0 0% 85%;
+    --sidebar-border: 0 0% 30%;
+    --sidebar-ring: 240 100% 40%;
   }
 }
 
@@ -97,5 +116,139 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'VT323', 'MS Sans Serif', 'Arial', monospace;
+    font-size: 16px;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+  }
+}
+
+@layer components {
+  /* Windows 3.1 raised bevel (outset) */
+  .win-raised {
+    border: 2px solid;
+    border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+    box-shadow: 1px 1px 0 var(--win-black), inset 1px 1px 0 var(--win-white);
+  }
+
+  /* Windows 3.1 sunken bevel (inset) */
+  .win-sunken {
+    border: 2px solid;
+    border-color: var(--win-dark) var(--win-white) var(--win-white) var(--win-dark);
+    box-shadow: inset 1px 1px 0 var(--win-black);
+  }
+
+  /* Windows 3.1 title bar */
+  .win-titlebar {
+    background: var(--win-title);
+    color: var(--win-title-text);
+    padding: 2px 4px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  /* Windows 3.1 button */
+  .win-button {
+    background: var(--win-bg);
+    border: 2px solid;
+    border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+    box-shadow: 1px 1px 0 var(--win-black);
+    padding: 3px 12px;
+    cursor: pointer;
+    font-family: 'VT323', 'MS Sans Serif', 'Arial', monospace;
+    font-size: 16px;
+    color: var(--win-black);
+  }
+
+  .win-button:active {
+    border-color: var(--win-dark) var(--win-white) var(--win-white) var(--win-dark);
+    box-shadow: inset 1px 1px 0 var(--win-black);
+    padding: 4px 11px 2px 13px;
+  }
+
+  /* Windows 3.1 text field */
+  .win-field {
+    background: var(--win-field);
+    border: 2px solid;
+    border-color: var(--win-dark) var(--win-white) var(--win-white) var(--win-dark);
+    box-shadow: inset 1px 1px 0 var(--win-black);
+    padding: 2px 4px;
+    font-family: 'VT323', 'MS Sans Serif', 'Arial', monospace;
+    font-size: 16px;
+  }
+
+  /* Windows 3.1 group box */
+  .win-groupbox {
+    border: 1px solid var(--win-dark);
+    box-shadow: 1px 1px 0 var(--win-white), inset 1px 1px 0 var(--win-white);
+    padding: 12px 8px 8px;
+    position: relative;
+  }
+
+  /* Windows 3.1 window */
+  .win-window {
+    background: var(--win-bg);
+    border: 2px solid;
+    border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+    box-shadow: 2px 2px 0 var(--win-black);
+  }
+
+  /* Titlebar button (minimize/maximize/close) */
+  .win-titlebar-btn {
+    background: var(--win-bg);
+    border: 2px solid;
+    border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    font-size: 10px;
+    line-height: 1;
+    color: var(--win-black);
+  }
+
+  .win-titlebar-btn:active {
+    border-color: var(--win-dark) var(--win-white) var(--win-white) var(--win-dark);
+  }
+
+  /* Selected list item - Win 3.1 style */
+  .win-selected {
+    background: var(--win-highlight);
+    color: var(--win-highlight-text);
+  }
+
+  /* Status bar */
+  .win-statusbar {
+    background: var(--win-bg);
+    border-top: 2px solid;
+    border-color: var(--win-dark);
+    box-shadow: inset 0 1px 0 var(--win-white);
+    padding: 2px 6px;
+    font-size: 14px;
+  }
+
+  /* Scrollbar styling for Win 3.1 feel */
+  .win-scroll::-webkit-scrollbar {
+    width: 16px;
+  }
+  .win-scroll::-webkit-scrollbar-track {
+    background: repeating-conic-gradient(var(--win-bg) 0% 25%, var(--win-white) 0% 50%) 50% / 2px 2px;
+  }
+  .win-scroll::-webkit-scrollbar-thumb {
+    background: var(--win-bg);
+    border: 2px solid;
+    border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+  }
+  .win-scroll::-webkit-scrollbar-button {
+    background: var(--win-bg);
+    border: 2px solid;
+    border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+    height: 16px;
   }
 }
