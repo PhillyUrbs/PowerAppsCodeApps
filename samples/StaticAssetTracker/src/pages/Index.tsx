@@ -2,16 +2,13 @@ import { useState, useMemo } from 'react';
 import { assets as initialAssets } from '@/data/assets';
 import AssetCard from '@/components/AssetCard';
 import AssetDetail from '@/components/AssetDetail';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Asset } from '@/types/asset';
-import { Cpu, Bell, SlidersHorizontal, X, Check, ChevronDown } from 'lucide-react';
+import { Cpu, Bell, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Slider } from '@/components/ui/slider';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { owners } from '@/data/owners';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { 
   Select,
   SelectContent,
@@ -25,7 +22,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
   const [assets, setAssets] = useState<Asset[]>(initialAssets);
@@ -196,109 +192,121 @@ const Index = () => {
   const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="py-6 shadow-md">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-green-800 flex items-center gap-2">
-              <Cpu className="h-8 w-8" /> Woodgrove Technologies
-            </h1>
-            <div className="flex items-center space-x-4">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" className="rounded-md bg-white">
-                      <Bell className="h-8 w-8 text-gray-600" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Notifications</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              
-              <Card className="px-4 py-2 flex items-center space-x-3 shadow-sm rounded-lg border-0 hover:shadow-md hover:bg-gray-50 transition-all cursor-pointer">
-                <div className="text-right mr-2">
-                  <p className="font-medium">Alex Johnson</p>
-                  <p className="text-sm text-gray-500">IT Administrator</p>
-                </div>
-                <Avatar className="h-10 w-10 ring-2 ring-gray-200">
-                  <AvatarImage src="./images/avatar-aj.svg" alt="Alex Johnson" />
-                  <AvatarFallback>AJ</AvatarFallback>
-                </Avatar>
-              </Card>
+    <div className="min-h-screen p-2" style={{ background: 'var(--win-bg)' }}>
+      {/* === Main Window === */}
+      <div className="win-window max-w-7xl mx-auto">
+        {/* Title Bar */}
+        <div className="win-titlebar">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <Cpu className="h-4 w-4 shrink-0" />
+            <span className="truncate text-lg">Woodgrove Technologies - Asset Tracker</span>
+          </div>
+          <div className="flex items-center gap-1 ml-2">
+            <ThemeToggle />
+            <button className="win-titlebar-btn" title="Minimize">▼</button>
+            <button className="win-titlebar-btn" title="Maximize">▲</button>
+          </div>
+        </div>
+
+        {/* Menu Bar */}
+        <div className="flex items-center gap-0 px-1 py-0.5 border-b" style={{ borderColor: 'var(--win-dark)', background: 'var(--win-bg)' }}>
+          <span className="px-2 py-0.5 hover:bg-[var(--win-highlight)] hover:text-[var(--win-highlight-text)] cursor-pointer text-sm"><u>F</u>ile</span>
+          <span className="px-2 py-0.5 hover:bg-[var(--win-highlight)] hover:text-[var(--win-highlight-text)] cursor-pointer text-sm"><u>E</u>dit</span>
+          <span className="px-2 py-0.5 hover:bg-[var(--win-highlight)] hover:text-[var(--win-highlight-text)] cursor-pointer text-sm"><u>V</u>iew</span>
+          <span className="px-2 py-0.5 hover:bg-[var(--win-highlight)] hover:text-[var(--win-highlight-text)] cursor-pointer text-sm"><u>H</u>elp</span>
+        </div>
+
+        {/* Toolbar */}
+        <div className="flex items-center gap-2 px-2 py-1 border-b" style={{ borderColor: 'var(--win-dark)', background: 'var(--win-bg)' }}>
+          <div className="flex items-center gap-1">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="win-button text-xs flex items-center gap-1" onClick={() => setShowFilters(!showFilters)}>
+                    <SlidersHorizontal className="h-3 w-3" />
+                    Filters
+                    {activeFilterCount > 0 && (
+                      <span className="px-1 text-[var(--win-highlight-text)]" style={{ background: 'var(--win-highlight)' }}>
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent><p>Toggle filter panel</p></TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            {activeFilterCount > 0 && (
+              <button className="win-button text-xs flex items-center gap-1" onClick={clearFilters}>
+                <X className="h-3 w-3" /> Clear
+              </button>
+            )}
+          </div>
+          <div className="flex-1" />
+          <div className="flex items-center gap-1">
+            <label className="text-sm" style={{ color: 'var(--win-black)' }}>Search:</label>
+            <input
+              type="text"
+              placeholder="Find assets..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="win-field w-48 text-sm"
+            />
+          </div>
+          <div className="flex items-center gap-2 ml-2 pl-2 border-l" style={{ borderColor: 'var(--win-dark)' }}>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="win-titlebar-btn" style={{ width: 24, height: 24 }}>
+                    <Bell className="h-3 w-3" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent><p>Notifications</p></TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <div className="flex items-center cursor-pointer px-1" title="Alex Johnson - IT Administrator">
+              <Avatar className="h-6 w-6" style={{ border: '1px solid var(--win-dark)' }}>
+                <AvatarImage src="./images/avatar-aj.svg" alt="Alex Johnson" />
+                <AvatarFallback className="text-xs" style={{ background: 'var(--win-bg)' }}>AJ</AvatarFallback>
+              </Avatar>
             </div>
           </div>
         </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        {/* Unified card containing all components */}
-        <div className="bg-gray-50 rounded-lg shadow-lg overflow-hidden">
-          {/* Asset Tracker Header */}
-          <div className="p-4 border-b bg-gray-100">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-3 mb-4 md:mb-0">
-                <h2 className="text-2xl font-bold text-green-800">Asset Tracker</h2>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="h-8 gap-1.5 text-sm border-green-200 hover:bg-green-50"
-                >
-                  <SlidersHorizontal className="h-3.5 w-3.5" />
-                  Filters
-                  {activeFilterCount > 0 && (
-                    <Badge variant="secondary" className="ml-1 h-5 min-w-5 px-1 bg-green-600 text-white text-xs">
-                      {activeFilterCount}
-                    </Badge>
-                  )}
-                </Button>
-                {activeFilterCount > 0 && (
-                  <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 text-xs text-gray-500 hover:text-gray-700">
-                    <X className="h-3 w-3 mr-1" /> Clear
-                  </Button>
-                )}
-              </div>
-              <Input
-                placeholder="Search assets..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full md:w-64 border-green-200 focus-visible:ring-green-500"
-              />
-            </div>
-          </div>
-          {showFilters && (
-            <div className="p-4 border-b bg-white">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Status Filter (multi-select) */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Status</Label>
+
+        {/* Filter Panel (collapsible) */}
+        {showFilters && (
+          <div className="p-3 border-b" style={{ borderColor: 'var(--win-dark)', background: 'var(--win-bg)' }}>
+            <div className="win-groupbox">
+              <span className="absolute -top-2.5 left-3 px-1 text-xs font-bold" style={{ background: 'var(--win-bg)', color: 'var(--win-black)' }}>
+                Filter Options
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {/* Status Filter */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Status:</label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className="h-9 w-full justify-between font-normal">
+                      <button className="win-button w-full text-left text-xs flex justify-between items-center">
                         <span className="truncate">
                           {statusFilters.size === 3
                             ? 'All Statuses'
                             : [...statusFilters].map(s => statusLabels[s]).join(', ')}
                         </span>
-                        <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
+                        <ChevronDown className="h-3 w-3 shrink-0 ml-1" />
+                      </button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-48 p-1" align="start">
+                    <PopoverContent className="w-48 p-0 rounded-none win-window" align="start">
                       {allStatuses.map(status => (
                         <button
                           key={status}
                           type="button"
                           onClick={() => toggleStatus(status)}
-                          className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-pointer"
+                          className="flex w-full items-center gap-2 px-2 py-1 text-sm hover:bg-[var(--win-highlight)] hover:text-[var(--win-highlight-text)] cursor-pointer"
                         >
-                          <div className={`flex h-4 w-4 items-center justify-center rounded-sm border ${
-                            statusFilters.has(status) ? 'bg-primary border-primary text-primary-foreground' : 'border-gray-300'
-                          }`}>
-                            {statusFilters.has(status) && <Check className="h-3 w-3" />}
-                          </div>
+                          <span className="inline-block w-4 text-center win-sunken bg-[var(--win-field)]" style={{ fontSize: 10, lineHeight: '14px', width: 14, height: 14 }}>
+                            {statusFilters.has(status) ? '✓' : ''}
+                          </span>
                           <span>{statusLabels[status]}</span>
-                          <span className="ml-auto text-xs text-gray-400">{statusCounts[status]}</span>
+                          <span className="ml-auto text-xs opacity-60">{statusCounts[status]}</span>
                         </button>
                       ))}
                     </PopoverContent>
@@ -306,13 +314,13 @@ const Index = () => {
                 </div>
 
                 {/* Owner Filter */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Owner</Label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Owner:</label>
                   <Select value={ownerFilter} onValueChange={setOwnerFilter}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger className="h-7 rounded-none win-field text-xs border-0">
                       <SelectValue placeholder="All Owners" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-none">
                       <SelectItem value="all">All Owners</SelectItem>
                       <SelectItem value="unassigned">Unassigned</SelectItem>
                       {owners.map(owner => (
@@ -323,13 +331,13 @@ const Index = () => {
                 </div>
 
                 {/* Type Filter */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Type</Label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Type:</label>
                   <Select value={typeFilter} onValueChange={setTypeFilter}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger className="h-7 rounded-none win-field text-xs border-0">
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-none">
                       <SelectItem value="all">All Types</SelectItem>
                       {types.map(type => (
                         <SelectItem key={type} value={type}>{type}</SelectItem>
@@ -339,13 +347,13 @@ const Index = () => {
                 </div>
 
                 {/* Brand Filter */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Brand</Label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Brand:</label>
                   <Select value={brandFilter} onValueChange={(val) => { setBrandFilter(val); setModelFilter('all'); }}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger className="h-7 rounded-none win-field text-xs border-0">
                       <SelectValue placeholder="All Brands" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-none">
                       <SelectItem value="all">All Brands</SelectItem>
                       {brands.map(brand => (
                         <SelectItem key={brand} value={brand}>{brand}</SelectItem>
@@ -355,13 +363,13 @@ const Index = () => {
                 </div>
 
                 {/* Model Filter */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Model</Label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Model:</label>
                   <Select value={modelFilter} onValueChange={setModelFilter}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger className="h-7 rounded-none win-field text-xs border-0">
                       <SelectValue placeholder="All Models" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-none">
                       <SelectItem value="all">All Models</SelectItem>
                       {models.map(model => (
                         <SelectItem key={model} value={model}>{model}</SelectItem>
@@ -371,9 +379,9 @@ const Index = () => {
                 </div>
 
                 {/* Value Range */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Value Range</Label>
-                  <div className="flex justify-between text-xs text-gray-500 mb-1">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Value Range:</label>
+                  <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--win-black)' }}>
                     <span>${valueRange[0].toLocaleString()}</span>
                     <span>${valueRange[1].toLocaleString()}</span>
                   </div>
@@ -383,68 +391,76 @@ const Index = () => {
                     step={50}
                     value={valueRange}
                     onValueChange={(val) => setValueRange(val as [number, number])}
-                    className="py-2"
+                    className="py-1"
                   />
                 </div>
 
                 {/* Purchase Date Range */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-gray-500">Purchase Date</Label>
-                  <div className="flex items-center gap-2">
-                    <Input
+                <div className="space-y-1">
+                  <label className="text-xs font-bold" style={{ color: 'var(--win-black)' }}>Purchase Date:</label>
+                  <div className="flex items-center gap-1">
+                    <input
                       type="date"
                       value={dateFrom}
                       onChange={(e) => setDateFrom(e.target.value)}
-                      className="h-9"
+                      className="win-field text-xs h-7 flex-1"
                     />
-                    <span className="text-gray-400 text-sm">–</span>
-                    <Input
+                    <span className="text-xs" style={{ color: 'var(--win-black)' }}>to</span>
+                    <input
                       type="date"
                       value={dateTo}
                       onChange={(e) => setDateTo(e.target.value)}
-                      className="h-9"
+                      className="win-field text-xs h-7 flex-1"
                     />
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Content area with search, asset cards and details */}
-          <div className="p-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1 space-y-4">
-                {/* Asset Cards */}
-                <div className="space-y-3 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
-                  {filteredAssets.length > 0 ? (
-                    filteredAssets.map((asset) => (
-                      <AssetCard
-                        key={asset.id}
-                        asset={asset}
-                        isSelected={asset.id === selectedAssetId}
-                        onClick={() => setSelectedAssetId(asset.id)}
-                      />
-                    ))
-                  ) : (
-                    <div className="text-center p-4 border rounded-md bg-white/80">
-                      <p className="text-gray-500">No assets match your search criteria</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="lg:col-span-2">
-                {selectedAsset && (
-                  <AssetDetail 
-                    asset={selectedAsset} 
-                    onStatusUpdate={(newStatus) => updateAssetStatus(selectedAsset.id, newStatus)}
-                    onAssignOwner={(assetId, ownerId) => assignOwnerToAsset(assetId, ownerId)}
-                    className="bg-white backdrop-blur-sm rounded-xl border border-gray-100" 
-                  />
+        {/* Main Content Area */}
+        <div className="flex flex-col lg:flex-row" style={{ background: 'var(--win-bg)' }}>
+          {/* Left: Asset List */}
+          <div className="lg:w-1/3 border-r" style={{ borderColor: 'var(--win-dark)' }}>
+            <div className="win-sunken m-2 bg-[var(--win-field)]">
+              <div className="max-h-[calc(100vh-220px)] overflow-y-auto win-scroll">
+                {filteredAssets.length > 0 ? (
+                  filteredAssets.map((asset) => (
+                    <AssetCard
+                      key={asset.id}
+                      asset={asset}
+                      isSelected={asset.id === selectedAssetId}
+                      onClick={() => setSelectedAssetId(asset.id)}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center p-4 text-sm" style={{ color: 'var(--win-dark)' }}>
+                    No assets match your search criteria.
+                  </div>
                 )}
               </div>
             </div>
           </div>
+          
+          {/* Right: Asset Detail */}
+          <div className="lg:w-2/3 p-2">
+            {selectedAsset && (
+              <AssetDetail 
+                asset={selectedAsset} 
+                onStatusUpdate={(newStatus) => updateAssetStatus(selectedAsset.id, newStatus)}
+                onAssignOwner={(assetId, ownerId) => assignOwnerToAsset(assetId, ownerId)}
+                className="win-sunken p-3"
+                style={{ background: 'var(--win-field)' }}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Status Bar */}
+        <div className="win-statusbar flex items-center justify-between">
+          <span className="text-xs">{filteredAssets.length} asset(s) displayed</span>
+          <span className="text-xs">Woodgrove Technologies © 1992</span>
         </div>
       </div>
     </div>
