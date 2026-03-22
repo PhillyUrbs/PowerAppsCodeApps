@@ -2,8 +2,10 @@ import { Text, Card, makeStyles, shorthands, tokens, Input, Badge, Spinner, Avat
 import { PeopleRegular, SearchRegular, PersonRegular } from '@fluentui/react-icons';
 import PageHeader from '../components/PageHeader';
 import { useState, useEffect, useCallback } from 'react';
-import { Office365UsersService } from '../generated/services/Office365UsersService';
-import type { User } from '../generated/models/Office365UsersModel';
+// TODO: Replace with live Office365UsersService when connecting to real data
+// import { Office365UsersService } from '../Services/Office365UsersService';
+import * as mockData from '../mockData/office365Data';
+import type { User } from '../mockData/office365Data';
 
 const useStyles = makeStyles({
   container: {
@@ -78,17 +80,24 @@ export default function Office365Page() {
   useEffect(() => {
     const loadCurrentUser = async () => {
       try {
-        const result = await Office365UsersService.MyProfile();
-        if (result.data) {
-          setCurrentUser(result.data);
-          // Load the current user's photo
-          const photo = await loadUserPhoto(result.data.Id);
-          if (photo) {
-            setUserPhotos(prev => ({ ...prev, [result.data!.Id]: photo }));
-          }
-        }
+        // TODO: Replace with live Office365UsersService.MyProfile() when connecting to real data
+        // const result = await Office365UsersService.MyProfile();
+        // if (result.data) {
+        //   setCurrentUser(result.data);
+        //   // Load the current user's photo
+        //   const photo = await loadUserPhoto(result.data.Id);
+        //   if (photo) {
+        //     setUserPhotos(prev => ({ ...prev, [result.data.Id]: photo }));
+        //   }
+        // }
+        
+        // Using mock data for demonstration
+        setCurrentUser(mockData.mockCurrentUser);
+        // Mock users don't have real photos, so we'll simulate loading
+        console.log('Loaded current user profile (mock data):', mockData.mockCurrentUser.DisplayName);
       } catch (error) {
         console.error('Error loading current user:', error);
+        // Fallback: show message that Office 365 connection is available but may need permissions
       }
     };
     loadCurrentUser();
@@ -97,10 +106,16 @@ export default function Office365Page() {
   // Load user photo
   const loadUserPhoto = async (userId: string): Promise<string | null> => {
     try {
-      const result = await Office365UsersService.UserPhoto(userId);
-      if (result.data) {
-        return `data:image/jpeg;base64,${result.data}`;
-      }
+      // TODO: Replace with live Office365UsersService.UserPhoto() when connecting to real data
+      // const result = await Office365UsersService.UserPhoto(userId);
+      // if (result.data) {
+      //   // The photo comes as base64 data, create a data URL
+      //   return `data:image/jpeg;base64,${result.data}`;
+      // }
+      
+      // For mock data, we don't have real photos
+      // In a real implementation, this would fetch actual user photos
+      console.log(`Mock: Would load photo for user ${userId}`);
     } catch (error) {
       console.error(`Error loading photo for user ${userId}:`, error);
     }
@@ -139,19 +154,34 @@ export default function Office365Page() {
       setUsers([]); // Clear existing users when starting new search
       
       try {
+        console.log('Searching users with term:', searchTerm);
+        
+        // TODO: Replace with live Office365UsersService.SearchUser() when connecting to real data
+        // const pageSize = 50;
+        // const result = await Office365UsersService.SearchUser(
+        //   searchTerm.trim(),
+        //   pageSize
+        // );
+        // 
+        // if (result.success && result.data) {
+        //   setUsers(result.data);
+        //   console.log('Users loaded:', result.data.length);
+        //   
+        //   // Load photos for the users
+        //   await loadPhotosForUsers(result.data);
+        // } else {
+        //   console.error('Search failed:', result.errorMessage);
+        //   setUsers([]);
+        // }
+        
+        // Using mock data for demonstration
         const pageSize = 50;
-        const result = await Office365UsersService.SearchUser(
-          searchTerm.trim(),
-          pageSize
-        );
-
-        if (result.data) {
-          setUsers(result.data);
-          await loadPhotosForUsers(result.data);
-        } else {
-          console.error('Search failed:', result.error);
-          setUsers([]);
-        }
+        const mockResults = mockData.searchUsers(searchTerm.trim(), pageSize);
+        setUsers(mockResults);
+        console.log('Users loaded (mock data):', mockResults.length);
+        
+        // Simulate photo loading (no actual photos in mock data)
+        await loadPhotosForUsers(mockResults);
         
       } catch (error) {
         console.error('Error searching users:', error);
@@ -170,17 +200,17 @@ export default function Office365Page() {
     <div className={styles.container}>
       <PageHeader
         title="Office 365 Connector Example"
-        subtitle="This page demonstrates Office 365 connector integration with user profiles and organizational directory data. Connected to your live Office 365 environment."
+        subtitle="This page demonstrates Office 365 connector integration with user profiles and organizational directory data. Currently using mock data - use GitHub Copilot to help convert to live Office 365 connector integration."
         icon={<PeopleRegular />}
       />
 
       {currentUser ? (
-        <Badge className={styles.mockDataBadge} appearance="tint" color="success">
-          ✅ Connected to Office 365 - Welcome, {currentUser.DisplayName}!
+        <Badge className={styles.mockDataBadge} appearance="tint" color="important">
+          📋 Demo Mode - Using Mock Data (Welcome, {currentUser.DisplayName}!)
         </Badge>
       ) : (
         <Badge className={styles.mockDataBadge} appearance="tint" color="brand">
-          {String.fromCodePoint(0x1F504)} Loading user data...
+          🔄 Loading user data...
         </Badge>
       )}
 
@@ -188,10 +218,10 @@ export default function Office365Page() {
       <Card style={{ padding: '16px', backgroundColor: tokens.colorNeutralBackground2, marginBottom: '24px' }}>
         <div style={{ textAlign: 'center' }}>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '8px', fontSize: tokens.fontSizeBase200 }}>
-            {String.fromCodePoint(0x1F517)} Connected to live Office 365 data from your environment
+            💡 Ask Copilot to convert to live Office 365 Connector
           </Text>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase100 }}>
-            {String.fromCodePoint(0x1F4DA)} For more information, check out our{' '}
+            📚 For more information, check out our{' '}
             <a 
               href="https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-data.md"
               target="_blank"
@@ -203,7 +233,7 @@ export default function Office365Page() {
               }}
             >
               data connection guide
-            </a> {String.fromCodePoint(0x1F517)}
+            </a> 🔗
           </Text>
         </div>
       </Card>
@@ -357,7 +387,22 @@ export default function Office365Page() {
       <Card style={{ padding: '20px', backgroundColor: tokens.colorNeutralBackground2, marginTop: '32px' }}>
         <div style={{ textAlign: 'center' }}>
           <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, display: 'block', marginBottom: '12px' }}>
-            ✅ <strong>Connected to live Office 365</strong> - Showing real data from your environment
+            💡 <strong>Currently using mock data</strong> - Ask Copilot to convert to live Office 365 Connector
+          </Text>
+          <Text style={{ color: tokens.colorNeutralForeground2, lineHeight: tokens.lineHeightBase300, fontSize: tokens.fontSizeBase200 }}>
+            📚 For more information on connecting to live data, check out our{' '}
+            <a 
+              href="https://github.com/microsoft/PowerAppsCodeApps/blob/FluentSample/docs/how-to-connect-to-data.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ 
+                color: tokens.colorBrandForeground1, 
+                textDecoration: 'none',
+                fontWeight: tokens.fontWeightSemibold
+              }}
+            >
+              data connection guide
+            </a> 🔗
           </Text>
         </div>
       </Card>

@@ -1,5 +1,7 @@
 import { Asset, Owner } from '@/types/asset';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { 
   Dialog,
   DialogContent,
@@ -24,15 +26,15 @@ interface AssetDetailProps {
   onStatusUpdate: (newStatus: Asset['status']) => void;
   onAssignOwner?: (assetId: string, ownerId: string) => void;
   className?: string;
-  style?: React.CSSProperties;
 }
 
-const AssetDetail = ({ asset, onStatusUpdate, onAssignOwner, className, style }: AssetDetailProps) => {
+const AssetDetail = ({ asset, onStatusUpdate, onAssignOwner, className }: AssetDetailProps) => {
   const [selectedStatus, setSelectedStatus] = useState<Asset['status']>(asset.status);
   const [isReserveDialogOpen, setIsReserveDialogOpen] = useState(false);
   const [selectedOwnerId, setSelectedOwnerId] = useState<string>('');
   const [hasChanges, setHasChanges] = useState(false);
   
+  // When asset changes, update the selected status
   useEffect(() => {
     setSelectedStatus(asset.status);
     setHasChanges(false);
@@ -44,9 +46,11 @@ const AssetDetail = ({ asset, onStatusUpdate, onAssignOwner, className, style }:
   };
 
   const handleSaveChanges = () => {
+    // If changing to in-use and the asset is not already in-use, open the reserve dialog
     if (selectedStatus === 'in-use' && asset.status !== 'in-use') {
       setIsReserveDialogOpen(true);
     } else {
+      // Otherwise just update the status
       onStatusUpdate(selectedStatus);
       setHasChanges(false);
     }
@@ -54,8 +58,13 @@ const AssetDetail = ({ asset, onStatusUpdate, onAssignOwner, className, style }:
 
   const handleReserve = () => {
     if (selectedOwnerId && onAssignOwner) {
+      // First, assign the owner
       onAssignOwner(asset.id, selectedOwnerId);
+      
+      // Then update the status to 'in-use'
       onStatusUpdate('in-use');
+      
+      // Close the dialog and reset selection
       setIsReserveDialogOpen(false);
       setSelectedOwnerId('');
       setHasChanges(false);
@@ -64,181 +73,179 @@ const AssetDetail = ({ asset, onStatusUpdate, onAssignOwner, className, style }:
 
   return (
     <>
-      <div className={cn("h-full", className)} style={style}>
-        {/* Asset Header */}
-        <div className="flex items-center gap-4 mb-4 pb-3" style={{ borderBottom: '1px solid var(--win-dark)' }}>
-          <Avatar className="w-20 h-20 shrink-0" style={{ border: '2px solid var(--win-dark)' }}>
-            <AvatarImage src={asset.image} alt={asset.name} />
-            <AvatarFallback style={{ background: 'var(--win-bg)' }}>{(asset.name).charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <h2 className="text-xl font-bold" style={{ color: 'var(--win-black)' }}>{asset.name}</h2>
-            <p className="text-sm" style={{ color: 'var(--win-dark)' }}>{asset.type}</p>
-          </div>
-        </div>
-        
-        {/* Asset Information Group Box */}
-        <div className="win-groupbox mb-4" style={{ background: 'var(--win-bg)' }}>
-          <span className="absolute -top-2.5 left-3 px-1 text-xs font-bold" style={{ background: 'var(--win-bg)', color: 'var(--win-black)' }}>
-            Asset Information
-          </span>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+      <Card className={cn("h-full", className)}>
+        <CardHeader className="pb-4">
+          <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
+            <Avatar className="w-32 h-32 ring-2 ring-gray-200">
+              <AvatarImage src={asset.image} alt={asset.name} />
+              <AvatarFallback>{(asset.name).charAt(0)}</AvatarFallback>
+            </Avatar>
             <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Current Status:</span>
-              <span className={cn(
-                "ml-2 text-xs px-1.5 py-0.5 win-raised inline-block",
-              )} style={{
-                background: asset.status === 'available' ? '#00aa00' : asset.status === 'in-repair' ? '#aaaa00' : 'var(--win-bg)',
-                color: asset.status === 'available' || asset.status === 'in-repair' ? '#ffffff' : 'var(--win-black)'
-              }}>
-                {asset.status === 'in-use' ? 'In Use' : asset.status === 'in-repair' ? 'In Repair' : 'Available'}
-              </span>
-            </div>
-            <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Value:</span>
-              <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>${asset.value.toLocaleString()}</span>
-            </div>
-            <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Purchase Date:</span>
-              <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.purchaseDate}</span>
-            </div>
-            <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Brand:</span>
-              <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.brand}</span>
-            </div>
-            <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Model:</span>
-              <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.model}</span>
-            </div>
-            <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Serial Number:</span>
-              <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.serialNumber}</span>
-            </div>
-            <div>
-              <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Asset ID:</span>
-              <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.deviceId}</span>
+              <h2 className="text-2xl font-bold">{asset.name}</h2>
+              <p className="text-gray-500">{asset.type}</p>
             </div>
           </div>
-        </div>
+        </CardHeader>
         
-        {/* Owner Information Group Box */}
-        {asset.status === 'in-use' && asset.owner && (
-          <div className="win-groupbox mb-4" style={{ background: 'var(--win-bg)' }}>
-            <span className="absolute -top-2.5 left-3 px-1 text-xs font-bold" style={{ background: 'var(--win-bg)', color: 'var(--win-black)' }}>
-              Owner Information
-            </span>
-            <div className="flex items-center gap-3 mb-2">
-              <Avatar className="h-12 w-12" style={{ border: '2px solid var(--win-dark)' }}>
-                <AvatarImage src={asset.owner.image} alt={asset.owner.name} />
-                <AvatarFallback style={{ background: 'var(--win-bg)' }}>{asset.owner.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <div className="font-bold" style={{ color: 'var(--win-black)' }}>{asset.owner.name}</div>
-                <div className="text-xs" style={{ color: 'var(--win-dark)' }}>{asset.owner.title}</div>
+        <CardContent>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Asset Information</h3>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <p className="text-sm text-gray-500">Current Status</p>
+                  <p className={cn(
+                    "font-medium py-1 px-2 rounded-md inline-block",
+                    asset.status === 'in-use' && 'bg-gray-100 text-gray-800',
+                    asset.status === 'in-repair' && 'bg-yellow-100 text-yellow-800',
+                    asset.status === 'available' && 'bg-green-100 text-green-800'
+                  )}>
+                    {asset.status === 'in-use' ? 'In Use' : 
+                     asset.status === 'in-repair' ? 'In Repair' : 
+                     'Available'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Value</p>
+                  <p className="font-medium">${asset.value.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Purchase Date</p>
+                  <p className="font-medium">{asset.purchaseDate}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Brand</p>
+                  <p className="font-medium">{asset.brand}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Model</p>
+                  <p className="font-medium">{asset.model}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Serial Number</p>
+                  <p className="font-medium">{asset.serialNumber}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Asset ID</p>
+                  <p className="font-medium">{asset.deviceId}</p>
+                </div>
+              </div>
+              
+              {/* Owner Information Section - Only shown for assets that are in-use */}
+              {asset.status === 'in-use' && asset.owner && (
+                <div className="mt-6 bg-green-50 p-4 rounded-lg border border-green-100">
+                  <h3 className="text-lg font-semibold mb-3 text-green-800">Owner Information</h3>
+                  <div className="flex items-center space-x-4 mb-3">
+                    <Avatar className="h-16 w-16 ring-2 ring-green-200">
+                      <AvatarImage src={asset.owner.image} alt={asset.owner.name} />
+                      <AvatarFallback>{asset.owner.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h4 className="font-medium text-lg">{asset.owner.name}</h4>
+                      <p className="text-gray-600">{asset.owner.title}</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-500">Email</p>
+                      <p className="font-medium">{asset.owner.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Phone</p>
+                      <p className="font-medium">{asset.owner.phone}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Status Change Dropdown */}
+              <div className="mt-6 space-y-4">
+                <div>
+                  <p className="text-sm text-gray-500 mb-2">Update Status</p>
+                  <div className="flex space-x-2">
+                    <Select
+                      value={selectedStatus}
+                      onValueChange={(value: Asset['status']) => handleStatusChange(value)}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="available" className="text-green-700">Available</SelectItem>
+                        <SelectItem value="in-repair" className="text-yellow-700">In Repair</SelectItem>
+                        <SelectItem value="in-use" className="text-gray-700">In Use</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSaveChanges}
+                      disabled={!hasChanges || selectedStatus === asset.status}
+                      className="bg-green-600 text-white hover:bg-green-700"
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1">
-              <div>
-                <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Email:</span>
-                <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.owner.email}</span>
-              </div>
-              <div>
-                <span className="text-xs font-bold" style={{ color: 'var(--win-dark)' }}>Phone:</span>
-                <span className="ml-2 text-sm" style={{ color: 'var(--win-black)' }}>{asset.owner.phone}</span>
-              </div>
-            </div>
           </div>
-        )}
-        
-        {/* Status Update Group Box */}
-        <div className="win-groupbox" style={{ background: 'var(--win-bg)' }}>
-          <span className="absolute -top-2.5 left-3 px-1 text-xs font-bold" style={{ background: 'var(--win-bg)', color: 'var(--win-black)' }}>
-            Update Status
-          </span>
-          <div className="flex items-center gap-2">
-            <Select
-              value={selectedStatus}
-              onValueChange={(value: Asset['status']) => handleStatusChange(value)}
-            >
-              <SelectTrigger className="flex-1 h-7 rounded-none win-field text-xs border-0">
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent className="rounded-none">
-                <SelectItem value="available">Available</SelectItem>
-                <SelectItem value="in-repair">In Repair</SelectItem>
-                <SelectItem value="in-use">In Use</SelectItem>
-              </SelectContent>
-            </Select>
-            <button 
-              className="win-button text-xs disabled:opacity-50"
-              onClick={handleSaveChanges}
-              disabled={!hasChanges || selectedStatus === asset.status}
-            >
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Reserve Dialog */}
       <Dialog open={isReserveDialogOpen} onOpenChange={setIsReserveDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] rounded-none win-window p-0">
-          <div className="win-titlebar">
-            <span className="text-sm">Reserve {asset.name}</span>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Reserve {asset.name}</DialogTitle>
+            <DialogDescription>
+              Select an owner to assign this device to.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <Select
+              value={selectedOwnerId}
+              onValueChange={setSelectedOwnerId}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select an owner" />
+              </SelectTrigger>
+              <SelectContent>
+                {owners.map((owner) => (
+                  <SelectItem 
+                    key={owner.id} 
+                    value={owner.id}
+                    className="flex items-center space-x-2"
+                  >
+                    <div className="flex items-center">
+                      <Avatar className="h-6 w-6 mr-2">
+                        <AvatarImage src={owner.image} alt={owner.name} />
+                        <AvatarFallback>{owner.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <span>{owner.name} - {owner.title}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className="p-4" style={{ background: 'var(--win-bg)' }}>
-            <DialogHeader className="mb-3">
-              <DialogTitle className="text-sm font-bold" style={{ color: 'var(--win-black)' }}>Assign Owner</DialogTitle>
-              <DialogDescription className="text-xs" style={{ color: 'var(--win-dark)' }}>
-                Select an owner to assign this device to.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-2">
-              <Select
-                value={selectedOwnerId}
-                onValueChange={setSelectedOwnerId}
-              >
-                <SelectTrigger className="w-full h-7 rounded-none win-field text-xs border-0">
-                  <SelectValue placeholder="Select an owner" />
-                </SelectTrigger>
-                <SelectContent className="rounded-none">
-                  {owners.map((owner) => (
-                    <SelectItem 
-                      key={owner.id} 
-                      value={owner.id}
-                    >
-                      <div className="flex items-center">
-                        <Avatar className="h-5 w-5 mr-2" style={{ border: '1px solid var(--win-dark)' }}>
-                          <AvatarImage src={owner.image} alt={owner.name} />
-                          <AvatarFallback className="text-[8px]">{owner.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <span className="text-xs">{owner.name} - {owner.title}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <DialogFooter className="flex gap-2 justify-end mt-3">
-              <button 
-                className="win-button text-xs"
-                onClick={() => {
-                  setIsReserveDialogOpen(false);
-                  setSelectedStatus(asset.status);
-                  setHasChanges(false);
-                }}
-              >
-                Cancel
-              </button>
-              <button 
-                className="win-button text-xs disabled:opacity-50"
-                onClick={handleReserve}
-                disabled={!selectedOwnerId}
-              >
-                OK
-              </button>
-            </DialogFooter>
-          </div>
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setIsReserveDialogOpen(false);
+                setSelectedStatus(asset.status); // Reset to original status if cancelled
+                setHasChanges(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleReserve}
+              disabled={!selectedOwnerId}
+              className="bg-green-600 text-white hover:bg-green-700"
+            >
+              Confirm Reservation
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
