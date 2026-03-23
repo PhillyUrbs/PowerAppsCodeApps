@@ -122,14 +122,56 @@ jobs:
           echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
 
       - name: Share app with admin account
-        working-directory: apps/${{ inputs.app-name }}
+        if: steps.deploy.outputs.app-id != ''
         env:
           ADMIN_USER_EMAIL: ${{ secrets.POWER_PLATFORM_ADMIN_EMAIL }}
           APP_ID: ${{ steps.deploy.outputs.app-id }}
+          ENV_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
+          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
         run: |
-          if [ -n "$APP_ID" ] && [ -n "$ADMIN_USER_EMAIL" ]; then
-            echo "Sharing app $APP_ID with $ADMIN_USER_EMAIL as co-owner..."
-            pac canvas share --id "$APP_ID" --email "$ADMIN_USER_EMAIL" --role CanEdit
+          if [ -z "$ADMIN_USER_EMAIL" ]; then
+            echo "::warning::POWER_PLATFORM_ADMIN_EMAIL not set, skipping app sharing"
+            exit 0
+          fi
+
+          # Get access token for Power Apps API
+          TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            -d "client_id=$CLIENT_ID" \
+            -d "client_secret=$CLIENT_SECRET" \
+            -d "scope=https://service.powerapps.com/.default" \
+            -d "grant_type=client_credentials" | jq -r '.access_token')
+
+          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
+            echo "::warning::Failed to get access token for Power Apps API"
+            exit 0
+          fi
+
+          echo "Sharing app $APP_ID with $ADMIN_USER_EMAIL as co-owner..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://api.powerapps.com/providers/Microsoft.PowerApps/apps/$APP_ID/modifyPermissions?api-version=2016-11-01&\$filter=environment%20eq%20'$ENV_ID'" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"put\": [{
+                \"properties\": {
+                  \"roleName\": \"CanEdit\",
+                  \"NotifyShareTargetOption\": \"DoNotNotify\",
+                  \"principal\": {
+                    \"email\": \"$ADMIN_USER_EMAIL\",
+                    \"tenantId\": \"$TENANT_ID\",
+                    \"type\": \"User\"
+                  }
+                }
+              }]
+            }")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "App shared successfully with $ADMIN_USER_EMAIL"
           else
-            echo "::warning::Skipping app sharing — app ID not captured or POWER_PLATFORM_ADMIN_EMAIL not set"
+            echo "::warning::Failed to share app (HTTP $HTTP_CODE): $BODY"
           fi
