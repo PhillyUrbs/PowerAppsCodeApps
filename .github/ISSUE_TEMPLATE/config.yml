@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Code Apps Documentation
+    url: https://learn.microsoft.com/en-us/power-apps/developer/code-apps/
+    about: Read the official Power Apps code apps documentation.
+  - name: 💬 Power Apps Community
+    url: https://powerusers.microsoft.com/t5/Power-Apps-Community/ct-p/PowerApps1
+    about: Ask questions and get help from the Power Apps community.
