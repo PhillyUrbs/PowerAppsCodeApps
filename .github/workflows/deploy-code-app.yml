@@ -96,6 +96,64 @@ jobs:
           echo "Generated power.config.json:"
           cat power.config.json
 
+      - name: Create solution if needed
+        env:
+          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
+        run: |
+          SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
+          DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
+
+          # Check if solution already exists
+          if pac solution list | grep -q "$SOLUTION_NAME"; then
+            echo "Solution '$SOLUTION_NAME' already exists"
+          else
+            echo "Creating solution '$SOLUTION_NAME' in Dataverse..."
+
+            # Get the Dataverse URL from pac auth
+            DATAVERSE_URL=$(pac auth list 2>&1 | grep -oP 'https://[^\s/]+\.crm\.dynamics\.com' | head -1)
+
+            # Get access token for Dataverse
+            TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+              -d "client_id=$CLIENT_ID" \
+              -d "client_secret=$CLIENT_SECRET" \
+              -d "scope=${DATAVERSE_URL}/.default" \
+              -d "grant_type=client_credentials" | jq -r '.access_token')
+
+            # Get default publisher ID
+            PUBLISHER_ID=$(curl -s \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "Accept: application/json" \
+              "${DATAVERSE_URL}/api/data/v9.2/publishers?\$filter=uniquename%20eq%20'CDS%20Default%20Publisher'" \
+              | jq -r '.value[0].publisherid')
+
+            if [ "$PUBLISHER_ID" = "null" ] || [ -z "$PUBLISHER_ID" ]; then
+              echo "::warning::Could not find default publisher, using Default Publisher ID"
+              PUBLISHER_ID="d21aab71-79e7-11dd-8874-00188b01e34f"
+            fi
+
+            # Create the solution
+            RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+              "${DATAVERSE_URL}/api/data/v9.2/solutions" \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "{
+                \"uniquename\": \"$SOLUTION_NAME\",
+                \"friendlyname\": \"$DISPLAY_NAME\",
+                \"version\": \"1.0.0.0\",
+                \"publisherid@odata.bind\": \"publishers($PUBLISHER_ID)\"
+              }")
+
+            HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "Solution '$SOLUTION_NAME' created successfully"
+            else
+              BODY=$(echo "$RESPONSE" | sed '$d')
+              echo "::warning::Failed to create solution (HTTP $HTTP_CODE): $BODY"
+            fi
+          fi
+
       - name: Deploy to Power Platform
         id: deploy
         working-directory: apps/${{ inputs.app-name }}
