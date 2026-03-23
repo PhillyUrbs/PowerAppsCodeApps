@@ -140,6 +140,58 @@ jobs:
           echo "power.config.json:"
           cat power.config.json
 
+      - name: Share app with service principal (required for CI updates)
+        working-directory: apps/${{ inputs.app-name }}
+        env:
+          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
+          ENV_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
+        run: |
+          APP_ID=$(jq -r '.appId // empty' power.config.json 2>/dev/null || true)
+          if [ -z "$APP_ID" ] || [ "$APP_ID" = "null" ]; then
+            echo "No appId yet — skipping share (new app will be created by service principal)"
+            exit 0
+          fi
+
+          echo "Ensuring service principal has co-owner access to app $APP_ID..."
+          TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            -d "client_id=$CLIENT_ID" \
+            -d "client_secret=$CLIENT_SECRET" \
+            -d "scope=https://service.powerapps.com/.default" \
+            -d "grant_type=client_credentials" | jq -r '.access_token')
+
+          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
+            echo "::warning::Failed to get access token — push may fail if app was created by another user"
+            exit 0
+          fi
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://api.powerapps.com/providers/Microsoft.PowerApps/apps/$APP_ID/modifyPermissions?api-version=2016-11-01&\$filter=environment%20eq%20'$ENV_ID'" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"put\": [{
+                \"properties\": {
+                  \"roleName\": \"CanEdit\",
+                  \"NotifyShareTargetOption\": \"DoNotNotify\",
+                  \"principal\": {
+                    \"id\": \"$CLIENT_ID\",
+                    \"tenantId\": \"$TENANT_ID\",
+                    \"type\": \"ServicePrincipal\"
+                  }
+                }
+              }]
+            }")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "Service principal granted co-owner access"
+          else
+            echo "::warning::Could not share app with service principal (HTTP $HTTP_CODE) — push may fail"
+            echo "$RESPONSE" | sed '$d'
+          fi
+
       - name: Deploy to Power Platform
         id: deploy
         working-directory: apps/${{ inputs.app-name }}
