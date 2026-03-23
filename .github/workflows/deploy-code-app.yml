@@ -7,6 +7,14 @@ on:
         description: "App folder name to deploy (from apps/ directory)"
         required: true
         type: string
+      auth-method:
+        description: "Authentication method (url = Dataverse URL, environment-id = Environment GUID)"
+        required: true
+        type: choice
+        default: url
+        options:
+          - url
+          - environment-id
 
 jobs:
   deploy:
@@ -58,7 +66,8 @@ jobs:
         if: steps.cache-pac.outputs.cache-hit != 'true'
         run: dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 
-      - name: Authenticate to Power Platform
+      - name: Authenticate to Power Platform (URL)
+        if: inputs.auth-method == 'url'
         run: |
           pac auth clear
           pac auth create \
@@ -68,30 +77,23 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --accept-cleartext-caching
 
-      - name: Generate power.config.json
+      - name: Authenticate to Power Platform (Environment ID)
+        if: inputs.auth-method == 'environment-id'
+        run: |
+          pac auth clear
+          pac auth create \
+            --environment "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
+            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
+            --accept-cleartext-caching
+
+      - name: Initialize Code App
         working-directory: apps/${{ inputs.app-name }}
-        env:
-          ENVIRONMENT_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
         run: |
           # Convert folder name to display name (roadmap-calendar → Roadmap Calendar)
           DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
-
-          jq -n \
-            --arg displayName "$DISPLAY_NAME" \
-            --arg envId "$ENVIRONMENT_ID" \
-            '{
-              version: "1.0",
-              appDisplayName: $displayName,
-              region: "prod",
-              environmentId: $envId,
-              description: "",
-              buildPath: "./dist",
-              buildEntryPoint: "index.html",
-              localAppUrl: "http://localhost:3000",
-              logoPath: "Default",
-              connectionReferences: {},
-              databaseReferences: {}
-            }' > power.config.json
+          pac code init --displayName "$DISPLAY_NAME"
 
       - name: Deploy to Power Platform
         working-directory: apps/${{ inputs.app-name }}
