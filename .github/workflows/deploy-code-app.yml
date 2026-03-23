@@ -7,14 +7,6 @@ on:
         description: "App folder name to deploy (from apps/ directory)"
         required: true
         type: string
-      auth-method:
-        description: "Authentication method (url = Dataverse URL, environment-id = Environment GUID)"
-        required: true
-        type: choice
-        default: url
-        options:
-          - url
-          - environment-id
 
 jobs:
   deploy:
@@ -66,19 +58,7 @@ jobs:
         if: steps.cache-pac.outputs.cache-hit != 'true'
         run: dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 
-      - name: Authenticate to Power Platform (URL)
-        if: inputs.auth-method == 'url'
-        run: |
-          pac auth clear
-          pac auth create \
-            --url "${{ secrets.POWER_PLATFORM_URL }}" \
-            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
-            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
-            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
-            --accept-cleartext-caching
-
-      - name: Authenticate to Power Platform (Environment ID)
-        if: inputs.auth-method == 'environment-id'
+      - name: Authenticate to Power Platform
         run: |
           pac auth clear
           pac auth create \
@@ -122,11 +102,23 @@ jobs:
         run: |
           # Solution name uses the app folder name (hyphens replaced with underscores)
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
-          OUTPUT=$(pac code push --solutionName "$SOLUTION_NAME" 2>&1)
+          OUTPUT=$(pac code push --solutionName "$SOLUTION_NAME" 2>&1) || true
           echo "$OUTPUT"
 
+          # Check for "name already in use" error and extract the existing app ID
+          EXISTING_ID=$(echo "$OUTPUT" | grep -oP "Existing App: '\K[0-9a-f-]+" || true)
+          if [ -n "$EXISTING_ID" ]; then
+            echo "App already exists ($EXISTING_ID), updating power.config.json and retrying..."
+            jq --arg appId "$EXISTING_ID" '. + {appId: $appId}' power.config.json > tmp.json && mv tmp.json power.config.json
+            OUTPUT=$(pac code push --solutionName "$SOLUTION_NAME" 2>&1)
+            echo "$OUTPUT"
+          fi
+
           # Extract app ID from the play URL in the output
-          APP_ID=$(echo "$OUTPUT" | grep -oP '/app/\K[0-9a-f-]+')
+          APP_ID=$(echo "$OUTPUT" | grep -oP '/app/\K[0-9a-f-]+' || true)
+          if [ -z "$APP_ID" ] && [ -n "$EXISTING_ID" ]; then
+            APP_ID="$EXISTING_ID"
+          fi
           echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
 
       - name: Share app with admin account
