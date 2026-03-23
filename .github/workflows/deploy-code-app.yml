@@ -165,6 +165,51 @@ jobs:
           APP_ID=$(grep -oP '/app/\K[0-9a-f-]+' deploy-output.txt || true)
           echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
 
+      - name: Add app to solution
+        if: steps.deploy.outputs.app-id != ''
+        env:
+          APP_ID: ${{ steps.deploy.outputs.app-id }}
+          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
+        run: |
+          SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
+          DATAVERSE_URL=$(pac auth list 2>&1 | grep -oP 'https://[^\s/]+\.crm\.dynamics\.com' | head -1)
+
+          TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            -d "client_id=$CLIENT_ID" \
+            -d "client_secret=$CLIENT_SECRET" \
+            -d "scope=${DATAVERSE_URL}/.default" \
+            -d "grant_type=client_credentials" | jq -r '.access_token')
+
+          # Try multiple component types: 300 (CanvasApp), 109 (PluginAssembly reused for code), and check powerpagecomponent
+          # First, search for the app across multiple Dataverse tables to find what entity type it is
+          echo "Searching for app $APP_ID across Dataverse tables..."
+
+          # Check canvasapps
+          CANVAS_RESULT=$(curl -s -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+            "${DATAVERSE_URL}/api/data/v9.2/canvasapps?\$filter=canvasappid%20eq%20${APP_ID}&\$select=canvasappid,displayname" \
+            | jq -r '.value | length')
+
+          # Check powerpagecomponents (code apps might be here)
+          PPAGE_RESULT=$(curl -s -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+            "${DATAVERSE_URL}/api/data/v9.2/powerpagecomponents?\$filter=powerpagecomponentid%20eq%20${APP_ID}&\$select=powerpagecomponentid,name" \
+            2>/dev/null | jq -r '.value | length' 2>/dev/null || echo "0")
+
+          echo "Canvas matches: $CANVAS_RESULT, PowerPage matches: $PPAGE_RESULT"
+
+          # Try pac solution add-solution-component which might handle code apps
+          echo "Attempting to add via pac solution add-solution-component..."
+          pac solution add-solution-component \
+            --solutionUniqueName "$SOLUTION_NAME" \
+            --component "$APP_ID" \
+            --componentType 300 \
+            2>&1 || true
+
+          # Verify if component was added
+          echo "Checking solution components..."
+          pac solution list-components --solution-unique-name "$SOLUTION_NAME" 2>&1 || true
+
       - name: Share app with admin account
         if: steps.deploy.outputs.app-id != ''
         env:
