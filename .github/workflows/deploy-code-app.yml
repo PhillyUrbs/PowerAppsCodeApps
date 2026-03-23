@@ -117,23 +117,27 @@ jobs:
           cat power.config.json
 
       - name: Deploy to Power Platform
+        id: deploy
         working-directory: apps/${{ inputs.app-name }}
         run: |
           # Solution name uses the app folder name (hyphens replaced with underscores)
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
-          pac code push --solutionName "$SOLUTION_NAME"
+          OUTPUT=$(pac code push --solutionName "$SOLUTION_NAME" 2>&1)
+          echo "$OUTPUT"
+
+          # Extract app ID from the play URL in the output
+          APP_ID=$(echo "$OUTPUT" | grep -oP '/app/\K[0-9a-f-]+')
+          echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
 
       - name: Share app with admin account
         working-directory: apps/${{ inputs.app-name }}
         env:
           ADMIN_USER_EMAIL: ${{ secrets.POWER_PLATFORM_ADMIN_EMAIL }}
+          APP_ID: ${{ steps.deploy.outputs.app-id }}
         run: |
-          # Get the app ID from the generated power.config.json (pac code push updates it)
-          APP_ID=$(jq -r '.appId' power.config.json)
-
-          if [ "$APP_ID" != "null" ] && [ -n "$APP_ID" ] && [ -n "$ADMIN_USER_EMAIL" ]; then
+          if [ -n "$APP_ID" ] && [ -n "$ADMIN_USER_EMAIL" ]; then
             echo "Sharing app $APP_ID with $ADMIN_USER_EMAIL as co-owner..."
             pac canvas share --id "$APP_ID" --email "$ADMIN_USER_EMAIL" --role CanEdit
           else
-            echo "::warning::Skipping app sharing — appId not found in power.config.json or POWER_PLATFORM_ADMIN_EMAIL not set"
+            echo "::warning::Skipping app sharing — app ID not captured or POWER_PLATFORM_ADMIN_EMAIL not set"
           fi
