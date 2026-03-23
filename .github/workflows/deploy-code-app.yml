@@ -88,12 +88,33 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --accept-cleartext-caching
 
-      - name: Initialize Code App
+      - name: Generate power.config.json
         working-directory: apps/${{ inputs.app-name }}
+        env:
+          ENVIRONMENT_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
         run: |
           # Convert folder name to display name (roadmap-calendar → Roadmap Calendar)
           DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
-          pac code init --displayName "$DISPLAY_NAME"
+
+          jq -n \
+            --arg displayName "$DISPLAY_NAME" \
+            --arg envId "$ENVIRONMENT_ID" \
+            '{
+              version: "1.0",
+              appDisplayName: $displayName,
+              region: "prod",
+              environmentId: $envId,
+              description: "",
+              buildPath: "./dist",
+              buildEntryPoint: "index.html",
+              localAppUrl: "http://localhost:3000",
+              logoPath: "Default",
+              connectionReferences: {},
+              databaseReferences: {}
+            }' > power.config.json
+
+          echo "Generated power.config.json:"
+          cat power.config.json
 
       - name: Deploy to Power Platform
         working-directory: apps/${{ inputs.app-name }}
