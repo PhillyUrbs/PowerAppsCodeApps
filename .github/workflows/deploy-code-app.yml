@@ -30,6 +30,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/${{ inputs.app-name }}/package-lock.json
 
       - name: Install dependencies
         working-directory: apps/${{ inputs.app-name }}
@@ -44,7 +46,15 @@ jobs:
         with:
           dotnet-version: "8.x"
 
+      - name: Cache Power Platform CLI
+        id: cache-pac
+        uses: actions/cache@v4
+        with:
+          path: ~/.dotnet/tools
+          key: pac-cli-${{ runner.os }}
+
       - name: Install Power Platform CLI
+        if: steps.cache-pac.outputs.cache-hit != 'true'
         run: dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 
       - name: Authenticate to Power Platform
