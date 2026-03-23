@@ -63,7 +63,8 @@ jobs:
             --environment "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
             --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
             --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
-            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}"
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
+            --accept-cleartext-caching
 
       - name: Generate power.config.json
         working-directory: apps/${{ inputs.app-name }}
