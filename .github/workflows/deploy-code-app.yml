@@ -119,7 +119,7 @@ jobs:
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
           pac code push --solutionName "$SOLUTION_NAME" | tee deploy-output.txt
 
-          # Extract app ID from power.config.json (pac code push updates it) or from output
+          # Extract app ID from power.config.json or from output
           APP_ID=$(jq -r '.appId // empty' power.config.json 2>/dev/null || true)
           if [ -z "$APP_ID" ]; then
             APP_ID=$(grep -oP '/app/\K[0-9a-f-]+' deploy-output.txt || true)
@@ -127,18 +127,11 @@ jobs:
           echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
           echo "Deployed app ID: $APP_ID"
 
-      - name: Add app to solution
-        if: steps.deploy.outputs.app-id != ''
-        run: |
-          SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
-          APP_ID="${{ steps.deploy.outputs.app-id }}"
-
-          echo "Adding app $APP_ID to solution $SOLUTION_NAME..."
-          pac solution add-solution-component \
-            --solutionUniqueName "$SOLUTION_NAME" \
-            --component "$APP_ID" \
-            --componentType 300 \
-            2>&1 || echo "::warning::Could not add app to solution automatically"
+          # NOTE: pac code push --solutionName does not place code apps into solutions
+          # when deployed via service principal. Code apps deployed this way only exist
+          # in the PowerApps platform API, not in the Dataverse canvasapps table.
+          # Solution placement for code apps must be done manually via the portal
+          # or by deploying interactively with pac code init + pac code push.
 
       - name: Share app with admin account
         if: steps.deploy.outputs.app-id != ''
