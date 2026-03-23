@@ -179,6 +179,49 @@ jobs:
           fi
           echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
 
+      - name: Add app to solution
+        if: steps.deploy.outputs.app-id != ''
+        env:
+          APP_ID: ${{ steps.deploy.outputs.app-id }}
+          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
+        run: |
+          SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
+
+          # Get Dataverse URL from pac auth
+          DATAVERSE_URL=$(pac auth list 2>&1 | grep -oP 'https://[^\s/]+\.crm\.dynamics\.com' | head -1)
+
+          # Get access token
+          TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            -d "client_id=$CLIENT_ID" \
+            -d "client_secret=$CLIENT_SECRET" \
+            -d "scope=${DATAVERSE_URL}/.default" \
+            -d "grant_type=client_credentials" | jq -r '.access_token')
+
+          # Add the canvas app to the solution using AddSolutionComponent
+          echo "Adding app $APP_ID to solution $SOLUTION_NAME..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${DATAVERSE_URL}/api/data/v9.2/AddSolutionComponent" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"ComponentId\": \"$APP_ID\",
+              \"ComponentType\": 300,
+              \"SolutionUniqueName\": \"$SOLUTION_NAME\",
+              \"AddRequiredComponents\": false,
+              \"IncludedComponentSettingsValues\": null
+            }")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "App added to solution '$SOLUTION_NAME' successfully"
+          else
+            echo "::warning::Failed to add app to solution (HTTP $HTTP_CODE): $BODY"
+          fi
+
       - name: Share app with admin account
         if: steps.deploy.outputs.app-id != ''
         env:
