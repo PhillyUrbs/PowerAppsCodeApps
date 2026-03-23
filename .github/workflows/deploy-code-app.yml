@@ -59,6 +59,7 @@ jobs:
 
       - name: Authenticate to Power Platform
         run: |
+          pac auth clear
           pac auth create \
             --environment "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
             --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
