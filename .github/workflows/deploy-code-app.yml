@@ -122,3 +122,18 @@ jobs:
           # Solution name uses the app folder name (hyphens replaced with underscores)
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
           pac code push --solutionName "$SOLUTION_NAME"
+
+      - name: Share app with admin account
+        working-directory: apps/${{ inputs.app-name }}
+        env:
+          ADMIN_USER_EMAIL: ${{ secrets.POWER_PLATFORM_ADMIN_EMAIL }}
+        run: |
+          # Get the app ID from the generated power.config.json (pac code push updates it)
+          APP_ID=$(jq -r '.appId' power.config.json)
+
+          if [ "$APP_ID" != "null" ] && [ -n "$APP_ID" ] && [ -n "$ADMIN_USER_EMAIL" ]; then
+            echo "Sharing app $APP_ID with $ADMIN_USER_EMAIL as co-owner..."
+            pac canvas share --id "$APP_ID" --email "$ADMIN_USER_EMAIL" --role CanEdit
+          else
+            echo "::warning::Skipping app sharing — appId not found in power.config.json or POWER_PLATFORM_ADMIN_EMAIL not set"
+          fi
