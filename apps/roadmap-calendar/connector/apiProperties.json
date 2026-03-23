@@ -1,0 +1,9 @@
+{
+  "properties": {
+    "connectionParameters": {},
+    "iconBrandColor": "#0078D4",
+    "capabilities": [],
+    "publisher": "Microsoft (public API)",
+    "stackOwner": "Microsoft"
+  }
+}

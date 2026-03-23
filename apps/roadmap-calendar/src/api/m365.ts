@@ -1,8 +1,6 @@
 import type { RoadmapFeature, Availability } from '../types/index.ts';
 
-const M365_API = import.meta.env.DEV
-  ? '/api/roadmap/M365'
-  : 'https://www.microsoft.com/releasecommunications/api/v2/M365';
+const M365_API = '/api/roadmap/M365';
 const PAGE_SIZE = 100;
 
 interface M365ApiResponse {

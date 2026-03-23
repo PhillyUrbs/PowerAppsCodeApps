@@ -1,8 +1,6 @@
 import type { RoadmapFeature, Availability } from '../types/index.ts';
 
-const AZURE_API = import.meta.env.DEV
-  ? '/api/roadmap/Azure'
-  : 'https://www.microsoft.com/releasecommunications/api/v2/Azure';
+const AZURE_API = '/api/roadmap/Azure';
 const PAGE_SIZE = 100;
 
 interface AzureApiResponse {

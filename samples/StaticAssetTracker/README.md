@@ -24,7 +24,7 @@ Components receive image URLs as props and render them via shadcn/ui's `Avatar` 
 ### Key Components
 
 | Component | Image Usage |
-|-----------|-------------|
+| --------- | ----------- |
 | `AssetCard` | Avatar with `asset.image` URL |
 | `AssetDetail` | Large asset avatar (32×32px) + owner avatar (16×16px) |
 | `Index` (main page) | Admin profile image as direct URL |

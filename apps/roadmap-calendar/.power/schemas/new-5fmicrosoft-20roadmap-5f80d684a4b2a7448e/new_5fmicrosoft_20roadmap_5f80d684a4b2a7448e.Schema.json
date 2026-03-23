@@ -1,0 +1,277 @@
+{
+  "name": "shared_new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e",
+  "id": "/providers/Microsoft.PowerApps/apis/shared_new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e",
+  "type": "Microsoft.PowerApps/apis",
+  "properties": {
+    "xrmConnectorId": "93e2c787-6c26-f111-88b4-000d3a316b1c",
+    "displayName": "Microsoft Roadmap",
+    "iconUri": "https://defaulticons.powerapps.com/defaulticons/api-dedicated.png",
+    "iconBrandColor": "#0078D4",
+    "contact": {},
+    "license": {},
+    "apiEnvironment": "Shared",
+    "isCustomApi": true,
+    "blobUrisAreProxied": true,
+    "connectionParameters": {},
+    "swagger": {
+      "swagger": "2.0",
+      "info": {
+        "title": "Microsoft Roadmap",
+        "description": "Public Microsoft 365 and Azure roadmap API. Returns release features with availability timelines.",
+        "version": "1.0.0"
+      },
+      "host": "usa002-004.azure-apihub.net",
+      "basePath": "/apim/new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e",
+      "schemes": [
+        "https"
+      ],
+      "consumes": [
+        "application/json"
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "paths": {
+        "/{connectionId}/M365": {
+          "get": {
+            "operationId": "GetM365Features",
+            "summary": "Get M365 roadmap features",
+            "description": "Returns a paginated list of Microsoft 365 roadmap features.",
+            "parameters": [
+              {
+                "name": "connectionId",
+                "in": "path",
+                "required": true,
+                "x-ms-visibility": "internal",
+                "type": "string"
+              },
+              {
+                "name": "$skip",
+                "in": "query",
+                "type": "integer",
+                "default": 0,
+                "description": "Number of records to skip for pagination."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "schema": {
+                  "$ref": "#/definitions/RoadmapResponse"
+                }
+              }
+            }
+          }
+        },
+        "/{connectionId}/Azure": {
+          "get": {
+            "operationId": "GetAzureFeatures",
+            "summary": "Get Azure roadmap features",
+            "description": "Returns a paginated list of Azure roadmap features.",
+            "parameters": [
+              {
+                "name": "connectionId",
+                "in": "path",
+                "required": true,
+                "x-ms-visibility": "internal",
+                "type": "string"
+              },
+              {
+                "name": "$skip",
+                "in": "query",
+                "type": "integer",
+                "default": 0,
+                "description": "Number of records to skip for pagination."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "schema": {
+                  "$ref": "#/definitions/RoadmapResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "definitions": {
+        "RoadmapResponse": {
+          "type": "object",
+          "properties": {
+            "@odata.nextLink": {
+              "type": "string",
+              "description": "URL to the next page of results, if available."
+            },
+            "value": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RoadmapFeature"
+              }
+            }
+          }
+        },
+        "RoadmapFeature": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier for the feature."
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "products": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "platforms": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "cloudInstances": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "productCategories": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "releaseRings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "generalAvailabilityDate": {
+              "type": "string"
+            },
+            "previewAvailabilityDate": {
+              "type": "string"
+            },
+            "privatePreviewAvailabilityDate": {
+              "type": "string"
+            },
+            "moreInfoUrls": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "created": {
+              "type": "string"
+            },
+            "modified": {
+              "type": "string"
+            },
+            "locale": {
+              "type": "string"
+            },
+            "availabilities": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Availability"
+              }
+            }
+          }
+        },
+        "Availability": {
+          "type": "object",
+          "properties": {
+            "ring": {
+              "type": "string"
+            },
+            "year": {
+              "type": "integer"
+            },
+            "month": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "securityDefinitions": {},
+      "security": []
+    },
+    "runtimeUrls": [
+      "https://1e49cfde-50fc-ead2-a2c3-cd398dad051a.11.custom.usa002.azure-apihub.net/apim/new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e"
+    ],
+    "primaryRuntimeUrl": "https://1e49cfde-50fc-ead2-a2c3-cd398dad051a.11.custom.usa002.azure-apihub.net/apim/new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e",
+    "doNotUseApiHubNetRuntimeUrl": "https://1e49cfde-50fc-ead2-a2c3-cd398dad051a.11.custom.usa002.azure-apihub.net/apim/new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e",
+    "metadata": {
+      "source": "powerapps-user-defined",
+      "brandColor": "#0078D4",
+      "contact": {},
+      "license": {},
+      "publisherUrl": null,
+      "serviceUrl": null,
+      "documentationUrl": null,
+      "environmentName": "1e49cfde-50fc-ead2-a2c3-cd398dad051a",
+      "xrmConnectorId": "93e2c787-6c26-f111-88b4-000d3a316b1c",
+      "almMode": "Solution",
+      "parameters": {},
+      "useNewApimVersion": "True",
+      "createdBy": "{\"id\":\"b16c070b-7eed-45ef-8f40-d0facbac9245\",\"displayName\":\"MOD Administrator\",\"email\":\"admin@M365x06004729.onmicrosoft.com\",\"type\":\"User\",\"tenantId\":\"72f7eef5-723a-4b8a-acaa-04a2b168cd00\",\"userPrincipalName\":\"admin@M365x06004729.onmicrosoft.com\"}",
+      "modifiedBy": "{\"id\":\"b16c070b-7eed-45ef-8f40-d0facbac9245\",\"displayName\":\"MOD Administrator\",\"email\":\"admin@M365x06004729.onmicrosoft.com\",\"type\":\"User\",\"tenantId\":\"72f7eef5-723a-4b8a-acaa-04a2b168cd00\",\"userPrincipalName\":\"admin@M365x06004729.onmicrosoft.com\"}",
+      "allowSharing": false
+    },
+    "capabilities": [
+      "actions"
+    ],
+    "apiDefinitions": {
+      "originalSwaggerUrl": "https://1e49cfde50fcead2a2c3cd398dad05.1a.environment.api.powerplatformusercontent.com/storage/api-swagger-files/unitedstates-002/new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e.json_original?skoid=e6898b49-53e1-4e33-bbf3-f68cbec72336&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skt=2026-03-22T17%3a11%3a06Z&ske=2026-03-23T17%3a11%3a06Z&sks=b&skv=2025-01-05&sv=2025-01-05&spr=https&se=2026-03-23T13%3a56%3a18Z&sr=b&sp=r&bpsip=IPBindingOnly&ash=usa002004wus3ext.blob.core.windows.net&asr=wcus&api-version=1&esig=MIIDQgYJKoZIhvcNAQcDoIIDMzCCAy8CAQIxggFHooIBQwIBBDCCAQUEVEwAAAAAAAAAAQAAAEtEU0sGAAAAbAEAAAAAAAAGAAAADZiPr3Emsj4hHkcVX-hLQyAAAADD0U5frsJ8rWHEkU3lfxJG6OovP0i5Ygx896rxMByq7DCBrAYJKwYBBAGCN0oBMIGeBgorBgEEAYI3SgENMIGPMIGMMIGJDAREU1RTDIGAdXNlYXN0LWRrZHMuZGtkcy5jb3JlLndpbmRvd3MubmV0O2h0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWU7cG93ZXJwbGF0Zm9ybS1tc3AtYmxvYi1maXJzdHJlbGVhc2UwCwYJYIZIAWUDBAEtBCiCB-j21RoYnfB-QfxWeJU6vMPIHyfdwdfn2GxoLeFWFGBCGlh2ttwAMIIB3QYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAy7Fc1DZYgEdfYiWFACARCAggGuzPDBX3g_xkt5e_F7yVT-PquibqPYYh0oadoSpA70svV0DlpKqISWu4UreTzvtAME9WBjSselzMztO-aVtj89u8Ykwq-9TGqyABqzIjNiyWdS5a_UxzQQtddXjE3X2V9maZ6Y3rMPxSMJ0cApYC6LmVOb3mWPtxboymEan3aRagGKErEQXlvzmr9hZ23qs4fj-WzCn4hfMLUKyafmXgbotRum8LRcefZ2a7HkuzGfOO5dZCNO7fjIIRelbmsr0yf7zgSV9qtQotrLCOZM7_zCFEx1awhFz06s9mhn9E5PUGBnXTtGCAp9Ld3Po8kagzgSXzms7cgHmdumcBPq6lcmsl7S3Sh0A0-6ti3MyrGaClKs5mPfQvX_X5GN86cliXURePjJuZhbYhUaeUQZTRUtzbBWwBRFePwEYqb1q21du1jtI4vxwSNwXCATAm09Uq5Iqw0cehznQrTiZneab05m6Fj_2PdRUZJJTlN_DNZuVrTqKa0hfqm1gWaC2aWj0neMLRf3-jTi8UC_kW-3hFkGdgKFOc6uWKEmesJ2nS22loB1rTVYlllMEqZlCMClLA",
+      "modifiedSwaggerUrl": "https://1e49cfde50fcead2a2c3cd398dad05.1a.environment.api.powerplatformusercontent.com/storage/api-swagger-files/unitedstates-002/new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e.json?skoid=e6898b49-53e1-4e33-bbf3-f68cbec72336&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skt=2026-03-22T17%3a11%3a06Z&ske=2026-03-23T17%3a11%3a06Z&sks=b&skv=2025-01-05&sv=2025-01-05&spr=https&se=2026-03-23T13%3a56%3a18Z&sr=b&sp=r&bpsip=IPBindingOnly&ash=usa002004wus3ext.blob.core.windows.net&asr=wcus&api-version=1&esig=MIIDRAYJKoZIhvcNAQcDoIIDNTCCAzECAQIxggFHooIBQwIBBDCCAQUEVEwAAAAAAAAAAQAAAEtEU0sGAAAAbAEAAAAAAAAGAAAADZiPr3Emsj4hHkcVX-hLQyAAAAAam7R6KQcDSxt6p_oiUdHIPkVWct4R-mGh-PeWhDU9vTCBrAYJKwYBBAGCN0oBMIGeBgorBgEEAYI3SgENMIGPMIGMMIGJDAREU1RTDIGAdXNlYXN0LWRrZHMuZGtkcy5jb3JlLndpbmRvd3MubmV0O2h0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWU7cG93ZXJwbGF0Zm9ybS1tc3AtYmxvYi1maXJzdHJlbGVhc2UwCwYJYIZIAWUDBAEtBCiiHW73GMReGiYPKpXT7ayPZOPXQJZvngVusXcv0P0v3fqGXh9nqkawMIIB3wYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwqWKY3Wukcfgws6acCARCAggGw_E9YXybnZsQ9qFZlBPDWNwuagq5cOY2UBDmTPgzZa2aW6QyXYmZtqkaBDU-Y0JoBnbayRjkKCJobbyrTI9z2K_bPf8bgyiJVrYds1VFupKvx3m7YxR7qIo8laTqw3BzSwJopu_0tzq7Cjy5TBQYkqBhZULeZFp4T6vhw6mGrSx_dyD38strlPpc67PGuWGn-ZuCbH9lkVlmXIXfPoLwVN8h055Msx4BSjjY8lLg7KtmZYBg3-U7p94o15pECVmVvX-PBNEChdkl0CLprNnfhSGB92K_e-zOsMRrNfb7_20SMT9N6xcxz28G4pQmIScQqxKHrkhYIYySgftEhX5VGSJP8pnMr2qUBefe42h4OBUeUYhnb1p7a4l2buSzs-ZQ13tvAe01U9gDnPY_ZH_QFDt7j0sWZ8CgBDfnMFoI4yl7hgzXPyosmzqquvOHiwg99ytMS2JSqNv5vXErvKxjpqzLRXdZt6Qi5js_8loOC0jm4cZsOd7tDxJyu3C5PQsHRNlknC8M5UcKbIATtCd4jqLKQ3CxbUMd55H2dMqwkym9kzLd_uTD3suWDjhFW7mjp"
+    },
+    "backendService": {
+      "serviceUrl": "https://www.microsoft.com/releasecommunications/api/v2"
+    },
+    "createdBy": {
+      "id": "b16c070b-7eed-45ef-8f40-d0facbac9245",
+      "displayName": "MOD Administrator",
+      "email": "admin@M365x06004729.onmicrosoft.com",
+      "type": "User",
+      "tenantId": "72f7eef5-723a-4b8a-acaa-04a2b168cd00",
+      "userPrincipalName": "admin@M365x06004729.onmicrosoft.com"
+    },
+    "modifiedBy": {
+      "id": "b16c070b-7eed-45ef-8f40-d0facbac9245",
+      "displayName": "MOD Administrator",
+      "email": "admin@M365x06004729.onmicrosoft.com",
+      "type": "User",
+      "tenantId": "72f7eef5-723a-4b8a-acaa-04a2b168cd00",
+      "userPrincipalName": "admin@M365x06004729.onmicrosoft.com"
+    },
+    "createdTime": "2026-03-23T03:58:34.4911765Z",
+    "changedTime": "2026-03-23T04:06:35.0256918Z",
+    "environment": {
+      "id": "/providers/Microsoft.PowerApps/environments/1e49cfde-50fc-ead2-a2c3-cd398dad051a",
+      "name": "1e49cfde-50fc-ead2-a2c3-cd398dad051a"
+    },
+    "tier": "Standard",
+    "publisher": "MOD Administrator",
+    "almMode": "Solution",
+    "parameters": {},
+    "rateLimit": 0,
+    "apiVersion": "None"
+  }
+}

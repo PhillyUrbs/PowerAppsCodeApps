@@ -1,21 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchM365Features } from './m365.ts';
-import { fetchAzureFeatures } from './azure.ts';
+import { loadFeatures } from './dataLoader.ts';
 import type { RoadmapFeature, MonthFeature, FilterState } from '../types/index.ts';
 import { MONTH_NAMES } from '../types/index.ts';
-
-async function fetchAllFeatures(): Promise<RoadmapFeature[]> {
-  const [m365, azure] = await Promise.all([
-    fetchM365Features(),
-    fetchAzureFeatures(),
-  ]);
-  return [...m365, ...azure];
-}
 
 export function useRoadmapFeatures() {
   return useQuery({
     queryKey: ['roadmap-features'],
-    queryFn: fetchAllFeatures,
+    queryFn: loadFeatures,
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
   });

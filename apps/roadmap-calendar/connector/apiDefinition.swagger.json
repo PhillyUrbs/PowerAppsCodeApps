@@ -1,0 +1,166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Microsoft Roadmap",
+    "description": "Public Microsoft 365 and Azure roadmap API. Returns release features with availability timelines.",
+    "version": "1.0.0"
+  },
+  "host": "www.microsoft.com",
+  "basePath": "/releasecommunications/api/v2",
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/M365": {
+      "get": {
+        "operationId": "GetM365Features",
+        "summary": "Get M365 roadmap features",
+        "description": "Returns a paginated list of Microsoft 365 roadmap features.",
+        "parameters": [
+          {
+            "name": "$skip",
+            "in": "query",
+            "type": "integer",
+            "default": 0,
+            "description": "Number of records to skip for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/RoadmapResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Azure": {
+      "get": {
+        "operationId": "GetAzureFeatures",
+        "summary": "Get Azure roadmap features",
+        "description": "Returns a paginated list of Azure roadmap features.",
+        "parameters": [
+          {
+            "name": "$skip",
+            "in": "query",
+            "type": "integer",
+            "default": 0,
+            "description": "Number of records to skip for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/RoadmapResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RoadmapResponse": {
+      "type": "object",
+      "properties": {
+        "@odata.nextLink": {
+          "type": "string",
+          "description": "URL to the next page of results, if available."
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoadmapFeature"
+          }
+        }
+      }
+    },
+    "RoadmapFeature": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the feature."
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "products": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "platforms": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "cloudInstances": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "productCategories": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "releaseRings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "generalAvailabilityDate": {
+          "type": "string"
+        },
+        "previewAvailabilityDate": {
+          "type": "string"
+        },
+        "privatePreviewAvailabilityDate": {
+          "type": "string"
+        },
+        "moreInfoUrls": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "created": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "availabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Availability"
+          }
+        }
+      }
+    },
+    "Availability": {
+      "type": "object",
+      "properties": {
+        "ring": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer"
+        },
+        "month": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {},
+  "security": []
+}
