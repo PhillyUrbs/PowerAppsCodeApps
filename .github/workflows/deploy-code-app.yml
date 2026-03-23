@@ -68,79 +68,7 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --accept-cleartext-caching
 
-      - name: Initialize or update Code App
-        working-directory: apps/${{ inputs.app-name }}
-        run: |
-          DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
-
-          # If power.config.json doesn't exist, create it from template or scratch
-          if [ ! -f power.config.json ]; then
-            if [ -f power.config.template.json ]; then
-              echo "Creating power.config.json from template..."
-              cp power.config.template.json power.config.json
-            fi
-          fi
-
-          # Check if app already has an appId
-          HAS_APP_ID=false
-          if [ -f power.config.json ] && jq -e '.appId // empty | select(. != null and . != "")' power.config.json > /dev/null 2>&1; then
-            HAS_APP_ID=true
-          fi
-
-          if [ "$HAS_APP_ID" = "true" ]; then
-            echo "App already initialized (appId found in power.config.json)"
-            # Patch environmentId to match the CI target environment
-            jq --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
-              '.environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
-          else
-            # Check if an app with this name already exists in the environment
-            EXISTING=$(pac code list 2>&1 | grep "$DISPLAY_NAME" | head -1 || true)
-            if [ -n "$EXISTING" ]; then
-              echo "App '$DISPLAY_NAME' already exists in environment, extracting ID..."
-              EXISTING_ID=$(echo "$EXISTING" | grep -oP '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
-              echo "Found existing app ID: $EXISTING_ID"
-
-              if [ -f power.config.json ]; then
-                # Patch the existing power.config.json (preserves connectionReferences)
-                jq --arg appId "$EXISTING_ID" \
-                   --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
-                  '.appId = $appId | .environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
-              else
-                # Generate a minimal power.config.json
-                jq -n \
-                  --arg appId "$EXISTING_ID" \
-                  --arg displayName "$DISPLAY_NAME" \
-                  --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
-                  '{
-                    version: "1.0",
-                    appId: $appId,
-                    appDisplayName: $displayName,
-                    region: "prod",
-                    environmentId: $envId,
-                    description: "",
-                    buildPath: "./dist",
-                    buildEntryPoint: "index.html",
-                    localAppUrl: "http://localhost:3000",
-                    logoPath: "Default",
-                    connectionReferences: {},
-                    databaseReferences: {}
-                  }' > power.config.json
-              fi
-            else
-              if [ -f power.config.json ]; then
-                # Patch environmentId and let pac code push create the app
-                jq --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
-                  '.environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
-              else
-                echo "Initializing new app '$DISPLAY_NAME'..."
-                pac code init --displayName "$DISPLAY_NAME"
-              fi
-            fi
-          fi
-          echo "power.config.json:"
-          cat power.config.json
-
-      - name: Share app with service principal (required for CI updates)
+      - name: Initialize Code App
         working-directory: apps/${{ inputs.app-name }}
         env:
           CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
@@ -148,49 +76,50 @@ jobs:
           TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
           ENV_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
         run: |
-          APP_ID=$(jq -r '.appId // empty' power.config.json 2>/dev/null || true)
-          if [ -z "$APP_ID" ] || [ "$APP_ID" = "null" ]; then
-            echo "No appId yet — skipping share (new app will be created by service principal)"
-            exit 0
+          DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
+
+          # If power.config.json doesn't exist, create from template
+          if [ ! -f power.config.json ]; then
+            if [ -f power.config.template.json ]; then
+              echo "Creating power.config.json from template..."
+              cp power.config.template.json power.config.json
+            fi
           fi
 
-          echo "Ensuring service principal has co-owner access to app $APP_ID..."
-          TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
-            -d "client_id=$CLIENT_ID" \
-            -d "client_secret=$CLIENT_SECRET" \
-            -d "scope=https://service.powerapps.com/.default" \
-            -d "grant_type=client_credentials" | jq -r '.access_token')
+          # Delete any existing app with the same name so the service principal
+          # creates a fresh one it owns (avoids permission conflicts).
+          EXISTING=$(pac code list 2>&1 | grep "$DISPLAY_NAME" | head -1 || true)
+          if [ -n "$EXISTING" ]; then
+            EXISTING_ID=$(echo "$EXISTING" | grep -oP '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
+            echo "Deleting existing app '$DISPLAY_NAME' ($EXISTING_ID) so service principal can recreate it..."
 
-          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
-            echo "::warning::Failed to get access token — push may fail if app was created by another user"
-            exit 0
+            TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+              -d "client_id=$CLIENT_ID" \
+              -d "client_secret=$CLIENT_SECRET" \
+              -d "scope=https://service.powerapps.com/.default" \
+              -d "grant_type=client_credentials" | jq -r '.access_token')
+
+            if [ "$TOKEN" != "null" ] && [ -n "$TOKEN" ]; then
+              HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
+                "https://api.powerapps.com/providers/Microsoft.PowerApps/apps/${EXISTING_ID}?api-version=2016-11-01&\$filter=environment%20eq%20'${ENV_ID}'" \
+                -H "Authorization: Bearer $TOKEN")
+              echo "Delete response: HTTP $HTTP_CODE"
+            else
+              echo "::warning::Could not get token to delete existing app"
+            fi
           fi
 
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
-            "https://api.powerapps.com/providers/Microsoft.PowerApps/apps/$APP_ID/modifyPermissions?api-version=2016-11-01&\$filter=environment%20eq%20'$ENV_ID'" \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"put\": [{
-                \"properties\": {
-                  \"roleName\": \"CanEdit\",
-                  \"NotifyShareTargetOption\": \"DoNotNotify\",
-                  \"principal\": {
-                    \"id\": \"$CLIENT_ID\",
-                    \"tenantId\": \"$TENANT_ID\",
-                    \"type\": \"ServicePrincipal\"
-                  }
-                }
-              }]
-            }")
-
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
-            echo "Service principal granted co-owner access"
+          # Ensure appId is null so pac code push creates a new app
+          if [ -f power.config.json ]; then
+            jq --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+              '.appId = null | .environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
           else
-            echo "::warning::Could not share app with service principal (HTTP $HTTP_CODE) — push may fail"
-            echo "$RESPONSE" | sed '$d'
+            echo "Initializing new app '$DISPLAY_NAME'..."
+            pac code init --displayName "$DISPLAY_NAME"
           fi
+
+          echo "power.config.json:"
+          cat power.config.json
 
       - name: Deploy to Power Platform
         id: deploy
