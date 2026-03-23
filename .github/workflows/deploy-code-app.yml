@@ -73,10 +73,25 @@ jobs:
         run: |
           DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
 
-          # Check if app already exists by looking for appId in power.config.json
-          if [ -f power.config.json ] && jq -e '.appId' power.config.json > /dev/null 2>&1; then
+          # If power.config.json doesn't exist, create it from template or scratch
+          if [ ! -f power.config.json ]; then
+            if [ -f power.config.template.json ]; then
+              echo "Creating power.config.json from template..."
+              cp power.config.template.json power.config.json
+            fi
+          fi
+
+          # Check if app already has an appId
+          HAS_APP_ID=false
+          if [ -f power.config.json ] && jq -e '.appId // empty | select(. != null and . != "")' power.config.json > /dev/null 2>&1; then
+            HAS_APP_ID=true
+          fi
+
+          if [ "$HAS_APP_ID" = "true" ]; then
             echo "App already initialized (appId found in power.config.json)"
-            cat power.config.json
+            # Patch environmentId to match the CI target environment
+            jq --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+              '.environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
           else
             # Check if an app with this name already exists in the environment
             EXISTING=$(pac code list 2>&1 | grep "$DISPLAY_NAME" | head -1 || true)
@@ -85,32 +100,45 @@ jobs:
               EXISTING_ID=$(echo "$EXISTING" | grep -oP '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
               echo "Found existing app ID: $EXISTING_ID"
 
-              # Generate power.config.json with the existing appId
-              jq -n \
-                --arg appId "$EXISTING_ID" \
-                --arg displayName "$DISPLAY_NAME" \
-                --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
-                '{
-                  version: "1.0",
-                  appId: $appId,
-                  appDisplayName: $displayName,
-                  region: "prod",
-                  environmentId: $envId,
-                  description: "",
-                  buildPath: "./dist",
-                  buildEntryPoint: "index.html",
-                  localAppUrl: "http://localhost:3000",
-                  logoPath: "Default",
-                  connectionReferences: {},
-                  databaseReferences: {}
-                }' > power.config.json
+              if [ -f power.config.json ]; then
+                # Patch the existing power.config.json (preserves connectionReferences)
+                jq --arg appId "$EXISTING_ID" \
+                   --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+                  '.appId = $appId | .environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
+              else
+                # Generate a minimal power.config.json
+                jq -n \
+                  --arg appId "$EXISTING_ID" \
+                  --arg displayName "$DISPLAY_NAME" \
+                  --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+                  '{
+                    version: "1.0",
+                    appId: $appId,
+                    appDisplayName: $displayName,
+                    region: "prod",
+                    environmentId: $envId,
+                    description: "",
+                    buildPath: "./dist",
+                    buildEntryPoint: "index.html",
+                    localAppUrl: "http://localhost:3000",
+                    logoPath: "Default",
+                    connectionReferences: {},
+                    databaseReferences: {}
+                  }' > power.config.json
+              fi
             else
-              echo "Initializing new app '$DISPLAY_NAME'..."
-              pac code init --displayName "$DISPLAY_NAME"
+              if [ -f power.config.json ]; then
+                # Patch environmentId and let pac code push create the app
+                jq --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+                  '.environmentId = $envId' power.config.json > power.config.tmp && mv power.config.tmp power.config.json
+              else
+                echo "Initializing new app '$DISPLAY_NAME'..."
+                pac code init --displayName "$DISPLAY_NAME"
+              fi
             fi
-            echo "power.config.json:"
-            cat power.config.json
           fi
+          echo "power.config.json:"
+          cat power.config.json
 
       - name: Deploy to Power Platform
         id: deploy

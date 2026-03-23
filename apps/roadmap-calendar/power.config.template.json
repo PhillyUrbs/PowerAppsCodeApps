@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "appId": null,
+  "appDisplayName": "Roadmap Calendar",
+  "region": "prod",
+  "environmentId": null,
+  "description": "Microsoft 365 and Azure roadmap calendar viewer",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:5173",
+  "logoPath": "Default",
+  "connectionReferences": {
+    "microsoft-roadmap": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_new-5fmicrosoft-20roadmap-5f80d684a4b2a7448e",
+      "displayName": "Microsoft Roadmap",
+      "dataSources": [
+        "new_5fmicrosoft_20roadmap_5f80d684a4b2a7448e"
+      ],
+      "dataSets": {}
+    }
+  },
+  "databaseReferences": {}
+}
