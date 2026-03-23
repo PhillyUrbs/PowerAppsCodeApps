@@ -1,0 +1,88 @@
+name: Deploy Code App to Dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      app-name:
+        description: "App folder name to deploy (from apps/ directory)"
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate app exists
+        run: |
+          if [ ! -d "apps/${{ inputs.app-name }}" ]; then
+            echo "::error::App '${{ inputs.app-name }}' not found in apps/ directory"
+            echo "Available apps:"
+            ls -1 apps/
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: apps/${{ inputs.app-name }}
+        run: npm ci
+
+      - name: Build
+        working-directory: apps/${{ inputs.app-name }}
+        run: npm run build
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x"
+
+      - name: Install Power Platform CLI
+        run: dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+
+      - name: Authenticate to Power Platform
+        run: |
+          pac auth create \
+            --url "${{ secrets.POWER_PLATFORM_URL }}" \
+            --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
+            --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
+            --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}"
+
+      - name: Generate power.config.json
+        working-directory: apps/${{ inputs.app-name }}
+        env:
+          ENVIRONMENT_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
+        run: |
+          # Convert folder name to display name (roadmap-calendar → Roadmap Calendar)
+          DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
+
+          jq -n \
+            --arg displayName "$DISPLAY_NAME" \
+            --arg envId "$ENVIRONMENT_ID" \
+            '{
+              version: "1.0",
+              appDisplayName: $displayName,
+              region: "prod",
+              environmentId: $envId,
+              description: "",
+              buildPath: "./dist",
+              buildEntryPoint: "index.html",
+              localAppUrl: "http://localhost:3000",
+              logoPath: "Default",
+              connectionReferences: {},
+              databaseReferences: {}
+            }' > power.config.json
+
+      - name: Deploy to Power Platform
+        working-directory: apps/${{ inputs.app-name }}
+        run: |
+          # Solution name uses the app folder name (hyphens replaced with underscores)
+          SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
+          pac code push --solution-unique-name "$SOLUTION_NAME"
