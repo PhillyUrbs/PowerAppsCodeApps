@@ -95,4 +95,4 @@ jobs:
         run: |
           # Solution name uses the app folder name (hyphens replaced with underscores)
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
-          pac code push --solution-unique-name "$SOLUTION_NAME"
+          pac code push --solutionName "$SOLUTION_NAME"
