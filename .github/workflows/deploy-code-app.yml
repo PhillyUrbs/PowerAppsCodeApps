@@ -68,90 +68,48 @@ jobs:
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
             --accept-cleartext-caching
 
-      - name: Generate power.config.json
+      - name: Initialize or update Code App
         working-directory: apps/${{ inputs.app-name }}
-        env:
-          ENVIRONMENT_ID: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}
         run: |
-          # Convert folder name to display name (roadmap-calendar → Roadmap Calendar)
           DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
 
-          jq -n \
-            --arg displayName "$DISPLAY_NAME" \
-            --arg envId "$ENVIRONMENT_ID" \
-            '{
-              version: "1.0",
-              appDisplayName: $displayName,
-              region: "prod",
-              environmentId: $envId,
-              description: "",
-              buildPath: "./dist",
-              buildEntryPoint: "index.html",
-              localAppUrl: "http://localhost:3000",
-              logoPath: "Default",
-              connectionReferences: {},
-              databaseReferences: {}
-            }' > power.config.json
-
-          echo "Generated power.config.json:"
-          cat power.config.json
-
-      - name: Create solution if needed
-        env:
-          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
-        run: |
-          SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
-          DISPLAY_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/ /g' | sed 's/\b./\u&/g')
-
-          # Check if solution already exists
-          if pac solution list | grep -q "$SOLUTION_NAME"; then
-            echo "Solution '$SOLUTION_NAME' already exists"
+          # Check if app already exists by looking for appId in power.config.json
+          if [ -f power.config.json ] && jq -e '.appId' power.config.json > /dev/null 2>&1; then
+            echo "App already initialized (appId found in power.config.json)"
+            cat power.config.json
           else
-            echo "Creating solution '$SOLUTION_NAME' in Dataverse..."
+            # Check if an app with this name already exists in the environment
+            EXISTING=$(pac code list 2>&1 | grep "$DISPLAY_NAME" | head -1 || true)
+            if [ -n "$EXISTING" ]; then
+              echo "App '$DISPLAY_NAME' already exists in environment, extracting ID..."
+              EXISTING_ID=$(echo "$EXISTING" | grep -oP '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
+              echo "Found existing app ID: $EXISTING_ID"
 
-            # Get the Dataverse URL from pac auth
-            DATAVERSE_URL=$(pac auth list 2>&1 | grep -oP 'https://[^\s/]+\.crm\.dynamics\.com' | head -1)
-
-            # Get access token for Dataverse
-            TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
-              -d "client_id=$CLIENT_ID" \
-              -d "client_secret=$CLIENT_SECRET" \
-              -d "scope=${DATAVERSE_URL}/.default" \
-              -d "grant_type=client_credentials" | jq -r '.access_token')
-
-            # Get default publisher ID
-            PUBLISHER_ID=$(curl -s \
-              -H "Authorization: Bearer $TOKEN" \
-              -H "Accept: application/json" \
-              "${DATAVERSE_URL}/api/data/v9.2/publishers?\$filter=uniquename%20eq%20'CDS%20Default%20Publisher'" \
-              | jq -r '.value[0].publisherid')
-
-            if [ "$PUBLISHER_ID" = "null" ] || [ -z "$PUBLISHER_ID" ]; then
-              echo "::warning::Could not find default publisher, using Default Publisher ID"
-              PUBLISHER_ID="d21aab71-79e7-11dd-8874-00188b01e34f"
-            fi
-
-            # Create the solution
-            RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
-              "${DATAVERSE_URL}/api/data/v9.2/solutions" \
-              -H "Authorization: Bearer $TOKEN" \
-              -H "Content-Type: application/json" \
-              -d "{
-                \"uniquename\": \"$SOLUTION_NAME\",
-                \"friendlyname\": \"$DISPLAY_NAME\",
-                \"version\": \"1.0.0.0\",
-                \"publisherid@odata.bind\": \"publishers($PUBLISHER_ID)\"
-              }")
-
-            HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
-              echo "Solution '$SOLUTION_NAME' created successfully"
+              # Generate power.config.json with the existing appId
+              jq -n \
+                --arg appId "$EXISTING_ID" \
+                --arg displayName "$DISPLAY_NAME" \
+                --arg envId "${{ secrets.POWER_PLATFORM_ENVIRONMENT_ID }}" \
+                '{
+                  version: "1.0",
+                  appId: $appId,
+                  appDisplayName: $displayName,
+                  region: "prod",
+                  environmentId: $envId,
+                  description: "",
+                  buildPath: "./dist",
+                  buildEntryPoint: "index.html",
+                  localAppUrl: "http://localhost:3000",
+                  logoPath: "Default",
+                  connectionReferences: {},
+                  databaseReferences: {}
+                }' > power.config.json
             else
-              BODY=$(echo "$RESPONSE" | sed '$d')
-              echo "::warning::Failed to create solution (HTTP $HTTP_CODE): $BODY"
+              echo "Initializing new app '$DISPLAY_NAME'..."
+              pac code init --displayName "$DISPLAY_NAME"
             fi
+            echo "power.config.json:"
+            cat power.config.json
           fi
 
       - name: Deploy to Power Platform
@@ -161,54 +119,26 @@ jobs:
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
           pac code push --solutionName "$SOLUTION_NAME" | tee deploy-output.txt
 
-          # Extract app ID from the play URL in the output
-          APP_ID=$(grep -oP '/app/\K[0-9a-f-]+' deploy-output.txt || true)
+          # Extract app ID from power.config.json (pac code push updates it) or from output
+          APP_ID=$(jq -r '.appId // empty' power.config.json 2>/dev/null || true)
+          if [ -z "$APP_ID" ]; then
+            APP_ID=$(grep -oP '/app/\K[0-9a-f-]+' deploy-output.txt || true)
+          fi
           echo "app-id=$APP_ID" >> "$GITHUB_OUTPUT"
+          echo "Deployed app ID: $APP_ID"
 
       - name: Add app to solution
         if: steps.deploy.outputs.app-id != ''
-        env:
-          APP_ID: ${{ steps.deploy.outputs.app-id }}
-          CLIENT_ID: ${{ secrets.POWER_PLATFORM_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.POWER_PLATFORM_TENANT_ID }}
         run: |
           SOLUTION_NAME=$(echo "${{ inputs.app-name }}" | sed 's/-/_/g')
-          DATAVERSE_URL=$(pac auth list 2>&1 | grep -oP 'https://[^\s/]+\.crm\.dynamics\.com' | head -1)
+          APP_ID="${{ steps.deploy.outputs.app-id }}"
 
-          TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
-            -d "client_id=$CLIENT_ID" \
-            -d "client_secret=$CLIENT_SECRET" \
-            -d "scope=${DATAVERSE_URL}/.default" \
-            -d "grant_type=client_credentials" | jq -r '.access_token')
-
-          # Try multiple component types: 300 (CanvasApp), 109 (PluginAssembly reused for code), and check powerpagecomponent
-          # First, search for the app across multiple Dataverse tables to find what entity type it is
-          echo "Searching for app $APP_ID across Dataverse tables..."
-
-          # Check canvasapps
-          CANVAS_RESULT=$(curl -s -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
-            "${DATAVERSE_URL}/api/data/v9.2/canvasapps?\$filter=canvasappid%20eq%20${APP_ID}&\$select=canvasappid,displayname" \
-            | jq -r '.value | length')
-
-          # Check powerpagecomponents (code apps might be here)
-          PPAGE_RESULT=$(curl -s -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
-            "${DATAVERSE_URL}/api/data/v9.2/powerpagecomponents?\$filter=powerpagecomponentid%20eq%20${APP_ID}&\$select=powerpagecomponentid,name" \
-            2>/dev/null | jq -r '.value | length' 2>/dev/null || echo "0")
-
-          echo "Canvas matches: $CANVAS_RESULT, PowerPage matches: $PPAGE_RESULT"
-
-          # Try pac solution add-solution-component which might handle code apps
-          echo "Attempting to add via pac solution add-solution-component..."
+          echo "Adding app $APP_ID to solution $SOLUTION_NAME..."
           pac solution add-solution-component \
             --solutionUniqueName "$SOLUTION_NAME" \
             --component "$APP_ID" \
             --componentType 300 \
-            2>&1 || true
-
-          # Verify if component was added
-          echo "Checking solution components..."
-          pac solution list-components --solution-unique-name "$SOLUTION_NAME" 2>&1 || true
+            2>&1 || echo "::warning::Could not add app to solution automatically"
 
       - name: Share app with admin account
         if: steps.deploy.outputs.app-id != ''
