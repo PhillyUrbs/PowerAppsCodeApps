@@ -62,7 +62,7 @@ jobs:
         run: |
           pac auth clear
           pac auth create \
-            --environment "${{ secrets.POWER_PLATFORM_URL }}" \
+            --url "${{ secrets.POWER_PLATFORM_URL }}" \
             --applicationId "${{ secrets.POWER_PLATFORM_CLIENT_ID }}" \
             --clientSecret "${{ secrets.POWER_PLATFORM_CLIENT_SECRET }}" \
             --tenant "${{ secrets.POWER_PLATFORM_TENANT_ID }}" \
